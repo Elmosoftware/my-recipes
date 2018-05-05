@@ -1,0 +1,20 @@
+{
+  "name": "my-recipes-api",
+  "version": "1.0.0",
+  "description": "This is the API for the My Recipes web site",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "author": "JC",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "http-status-codes": "^1.3.0",
+    "mocha": "^4.0.1",
+    "mongoose": "^4.13.5",
+    "sinon": "^4.1.3"
+  }
+}
