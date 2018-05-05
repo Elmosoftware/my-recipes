@@ -17,3 +17,5 @@ PENDING - Agregar infor de auditoria a las entidades.
 
 PENDING -Investigate about a task to publish a production version, (implement minifiers, etc.).
 PENDING -DEPLOY in NOW.
+
+This file is deprecated. From now on, backlog will be in the GitHub repository project (5/5/2018).

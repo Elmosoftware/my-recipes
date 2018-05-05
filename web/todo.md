@@ -17,3 +17,5 @@ DONE - Actualizar los demas modelos igual que "Ingredients".
 PENDING - Agregar las Recetas!
 PENDING - Paginacion y filtros en el backend para las distintas entidades.
 PENDING - Persistir Error log en la DB.
+
+This file is deprecated. From now on, backlog will be in the GitHub repository project (5/5/2018).
