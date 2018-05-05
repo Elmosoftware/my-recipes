@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="input-group my-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Nombre</span>
+    </div>
+    <input [(ngModel)]="data.name" class="form-control" placeholder="Nombre del plato." type="text">
+  </div>
+  <div class="input-group my-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Descripción</span>
+    </div>
+    <input [(ngModel)]="data.description" class="form-control" placeholder="Descripción del plato." type="text">
+  </div>
+</div>
+<mat-dialog-actions>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-right">
+        <button class="btn btn-secondary mx-1" (click)="closeDlg(data)">Aceptar</button>
+        <button class="btn btn-secondary mx-1" mat-dialog-close="false">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>

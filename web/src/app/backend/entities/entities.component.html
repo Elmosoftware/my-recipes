@@ -1,0 +1,73 @@
+<div class="my-4">
+    <h4>{{title}}</h4>
+</div>
+<div *ngIf="response">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr [ngSwitch]="type">
+                    <th>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openDialog('')">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+                    </th>
+                    <ng-template [ngSwitchCase]="'Level'">
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'MealType'">
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'Unit'">
+                        <th>Abreviación</th>
+                        <th>Nombre completo</th>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'Ingredient'">
+                        <th>Nombre</th>
+                        <th>Unidades de medida compatibles</th>
+                    </ng-template>
+                    <!-- <ng-template ngSwitchDefault>
+                        <th>def1</th>
+                        <th>Def2</th>
+                    </ng-template> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let entity of response.entities" [ngSwitch]="type">
+                    <td>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="delete(entity._id)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openDialog(entity._id)">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                    <ng-template [ngSwitchCase]="'Level'">
+                        <td>{{entity.name}}</td>
+                        <td>{{entity.description}}</td>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'MealType'">
+                        <td>{{entity.name}}</td>
+                        <td>{{entity.description}}</td>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'Unit'">
+                        <td>{{entity.abbrev}}</td>
+                        <td>{{entity.name}}</td>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'Ingredient'">
+                        <td>{{entity.name}}</td>
+                        <!-- <td>{{entity.compatibleUnits}}</td> -->
+                        <td>
+                            <ul>
+                                <li *ngFor="let unit of entity.compatibleUnits">
+                                    {{ unit.name }}
+                                </li>
+                            </ul>
+                        </td>
+                    </ng-template>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

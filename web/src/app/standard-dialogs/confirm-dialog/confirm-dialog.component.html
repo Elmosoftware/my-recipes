@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<mat-dialog-content>
+  {{data.content}}
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-right">
+        <button class="btn btn-secondary mx-1" (click)="closeDlg(1)">{{data.firstButtonText}}</button>
+        <button class="btn btn-secondary mx-1" (click)="closeDlg(2)">{{data.secondButtonText}}</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-actions>
