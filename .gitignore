@@ -3,7 +3,7 @@
 *.ps1
 
 #Mongo DB data folder
-api/data/**
+data/**
 
 # compiled output
 /dist
