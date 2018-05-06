@@ -38,5 +38,9 @@ module.exports = mongoose.model("Recipe",
         level: { type: mongoose.Schema.Types.ObjectId, ref: "Level", required: true },
         mealType: { type: mongoose.Schema.Types.ObjectId, ref: "MealType", required: true },
         ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: "RecipeIngredient", required: true }],
-        directions: [{type: String, required: true}]
+        directions: [{type: String, required: true}],
+        createdOn: { type: Date, required: true},
+        createdBy: { type: String, required: true},
+        lastUpdateOn: { type: Date, required: false},
+        lastUpdateBy: { type: String, required: false}
     }));

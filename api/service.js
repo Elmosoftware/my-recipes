@@ -104,6 +104,8 @@ class Service {
                     let model = results.pop(); //The last promise always holds a reference to the parent document model.
                     let obj = model.hydrate(document);
                     obj.isNew = true;
+                    obj.createdOn = new Date();
+                    obj.createdBy = "anonymous";
                     obj.save(callback);
                 } catch (err) {
                     callback(err, {});
@@ -135,7 +137,10 @@ class Service {
             .then((results) => {
                 try {
                     let model = results.pop();
-                    
+
+                    document.lastUpdateOn = new Date();
+                    document.lastUpdateBy = "anonymous";
+
                     model.update({ _id: id }, document, (err, data) => {
                         //The attempt to update a non existent document by Id is not reported as error by Mongoose:
                         if (!err && data.n == 0) {
@@ -243,6 +248,8 @@ class Service {
         if (!isParentDocument) {
             var obj = this._entity.model.hydrate(doc);
             obj.isNew = true;
+            obj.createdOn = new Date();
+            obj.createdBy = "anonymous";
             promises.push(obj.save());
         }
 

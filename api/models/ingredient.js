@@ -18,5 +18,9 @@ var mongoose = require("mongoose");
 module.exports = mongoose.model("Ingredient",
     new mongoose.Schema({
         name: { type: String, required: true, unique: true },
-        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: "UnitOfMeasure" }]
+        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: "UnitOfMeasure" }],
+        createdOn: { type: Date, required: true},
+        createdBy: { type: String, required: true},
+        lastUpdateOn: { type: Date, required: false},
+        lastUpdateBy: { type: String, required: false}
     }));

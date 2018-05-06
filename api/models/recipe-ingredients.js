@@ -26,5 +26,9 @@ module.exports = mongoose.model("RecipeIngredient",
         recipe: { type: mongoose.Schema.Types.ObjectId, ref: "Recipe" },
         ingredient: { type: mongoose.Schema.Types.ObjectId, ref: "Ingredient" },
         amount: { type: Number, required: true},
-        unit: { type: mongoose.Schema.Types.ObjectId, ref: "UnitOfMeasure" }
+        unit: { type: mongoose.Schema.Types.ObjectId, ref: "UnitOfMeasure" },
+        createdOn: { type: Date, required: true},
+        createdBy: { type: String, required: true},
+        lastUpdateOn: { type: Date, required: false},
+        lastUpdateBy: { type: String, required: false}
     }));

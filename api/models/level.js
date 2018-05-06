@@ -22,5 +22,9 @@ var mongoose = require("mongoose");
 module.exports = mongoose.model("Level",
     new mongoose.Schema({
         name: { type: String, required: true, unique: true },
-        description: { type: String, required: true }
+        description: { type: String, required: true },
+        createdOn: { type: Date, required: true},
+        createdBy: { type: String, required: true},
+        lastUpdateOn: { type: Date, required: false},
+        lastUpdateBy: { type: String, required: false}
     }));
