@@ -147,15 +147,13 @@ GET /api/units/{ "$or" : [ { "abbrev": "UNIT07" }, { "abbrev": "UNIT12" } ] }
 GET /api/units/{ "$and" : [ { "$or" : [ { "abbrev": "UNIT07" } ] },  { "$or" : [ { "abbrev": "UNIT12" } ] } ] }
 
 Query param details:
-top: Will be always number or empty
-skip: Will be always number or empty
+top: Will be always number or empty.
+skip: Will be always number or empty.
 pop: Boolean indcating if subdocuments will be populated.
-sort: String with the following format: FieldName1 {asc|desc} [, FieldName2 {asc|desc}] 
-    e.g:   
-        "name"  <- indicates to sort by name ascending, ("asc" is the default value).
-        "name, createdOn desc" <- Sorting by field "name" ascending and then by field "createdOn" descending. 
-
-
+sort: String with the list of fields separated by spaces and adding a hyphen as modifier when the sort must be descendig.
+    Chek this examples:   
+        "FieldName1"  <- indicates to sort by FieldName1 ascending.
+        "-FieldName2 FieldName3" <- Sorting by field "FieldName2" descending and then by field "FieldName3" ascending. 
 
 -------------------------------------------------------------------------------------------------------------
 Test recipes:
