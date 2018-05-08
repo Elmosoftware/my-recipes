@@ -146,5 +146,83 @@ GET /api/units/{ "$and": [ { "abbrev": "UNIT07" }, { "name": "U7" } ] }
 GET /api/units/{ "$or" : [ { "abbrev": "UNIT07" }, { "abbrev": "UNIT12" } ] }
 GET /api/units/{ "$and" : [ { "$or" : [ { "abbrev": "UNIT07" } ] },  { "$or" : [ { "abbrev": "UNIT12" } ] } ] }
 
+Query param details:
+top: Will be always number or empty
+skip: Will be always number or empty
+pop: Boolean indcating if subdocuments will be populated.
+sort: String with the following format: FieldName1 {asc|desc} [, FieldName2 {asc|desc}] 
+    e.g:   
+        "name"  <- indicates to sort by name ascending, ("asc" is the default value).
+        "name, createdOn desc" <- Sorting by field "name" ascending and then by field "createdOn" descending. 
+
+
+
+-------------------------------------------------------------------------------------------------------------
+Test recipes:
+=====================================================================
+
+{
+	"name": "My 1st Recipe",
+	"description": "This is my recipe description",
+	"estimatedTime": "30",
+	"level": "5aae9c17d096af48709a21de",
+	"mealType": "5ac8a92597c9bf375c2fff3f",
+	"ingredients": [
+		{
+			"ingredient": "5aae9717cadcc74b1455a4da",
+			"amount": "3",
+			"unit": "5a1b572526fa5818f8a82536"
+		}
+		],
+	"directions" : ["Primero hacer esto.", "Luego hacer lo otro.", "Y al final lastrarlo."]
+} 
+
+{
+	"name": "My 2nd Recipe",
+	"description": "This is my recipe description",
+	"estimatedTime": "30",
+	"level": "5aae9bf7d096af48709a21dd",
+	"mealType": "5ac8a94097c9bf375c2fff40",
+	"ingredients": [
+		{
+			"ingredient": "5acc343e71d8618538bfa242",
+			"amount": "3",
+			"unit": "5a43f45f9ff96867941dfde5"
+		}
+		],
+	"directions" : ["2nd Primero hacer esto.", "2nd Luego hacer lo otro.", "2nd Y al final lastrarlo."]
+} 
+
+{
+	"name": "My 3rd Recipe",
+	"description": "This is my recipe description",
+	"estimatedTime": "30",
+	"level": "5aae9c17d096af48709a21de",
+	"mealType": "5ac8a90e97c9bf375c2fff3e",
+	"ingredients": [
+		{
+			"ingredient": "5ad37964a790ea6b089d3724",
+			"amount": "3",
+			"unit": "5a43f4809ff96867941dfde9"
+		}
+		],
+	"directions" : ["3rd Primero hacer esto.", "3rd Luego hacer lo otro.", "3rd Y al final lastrarlo."]
+} 
+
+{
+	"name": "My 4th Recipe",
+	"description": "This is my recipe description",
+	"estimatedTime": "30",
+	"level": "5ac6ebf32303413084121f3d",
+	"mealType": "5ac8a90e97c9bf375c2fff3e",
+	"ingredients": [
+		{
+			"ingredient": "5ac27c982b7d8b42887ab37b",
+			"amount": "3",
+			"unit": "5a1b55d8ee211d57141ec4fb"
+		}
+		],
+	"directions" : ["4th Primero hacer esto.", "4th Luego hacer lo otro.", "4th Y al final lastrarlo."]
+} 
 
 
