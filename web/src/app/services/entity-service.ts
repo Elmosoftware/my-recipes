@@ -25,6 +25,10 @@ export class EntityService {
     return this.http.get(this.getUrl(id, query), this.httpOptions);
   }
 
+  getByFilter(condition: string, query?: EntityServiceQueryParams): Observable<Object> {
+    return this.http.get(this.getUrl(condition, query), this.httpOptions);
+  }
+
   save(entity): Observable<Object> {
 
     //If it's an update:
@@ -44,6 +48,7 @@ export class EntityService {
 
     let queryText:string = "";
 
+    //Recall: This "param" could be both, an ObjectId or a JSON filter condition.
     if (!param) {
       param = "";
     }
@@ -61,6 +66,7 @@ export class EntityServiceQueryParams {
   constructor(pop: string);
   constructor(top: string, skip?: string);
   constructor(top: string, skip?: string, sort?: string);
+  constructor(pop: string, top: string, skip?: string, sort?: string, );
   constructor(pop?: string, top?: string, skip?: string, sort?: string, ) {
     this.pop = pop;
     this.top = top;
