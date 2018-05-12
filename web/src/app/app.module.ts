@@ -20,6 +20,7 @@ import { HomeComponent } from './home/home.component';
 import { BackendComponent } from './backend/backend.component';
 import { EntitiesComponent } from './backend/entities/entities.component';
 import { LatestRecipesComponent } from './home/latest-recipes/latest-recipes.component';
+import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -44,7 +45,8 @@ import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/
     EditLevelDialog,
     EditMealTypeDialog,
     EditIngredientDialog,
-    LatestRecipesComponent
+    LatestRecipesComponent,
+    NewRecipeComponent
   ],
   imports: [
     FormsModule,

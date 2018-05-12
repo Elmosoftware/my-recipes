@@ -6,10 +6,12 @@ import { BackendComponent } from "./backend/backend.component";
 import { EntitiesComponent } from "./backend/entities/entities.component";
 
 import { Unit } from "./model/unit";
+import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'new-recipe', component: NewRecipeComponent },
   { path: 'backend', component: BackendComponent, children:[
     { path: 'levels', component: EntitiesComponent, data: { type: "Level", title: "Niveles de dificultad" } },
     { path: 'mealtypes', component: EntitiesComponent, data: { type: "MealType", title: "Platos" } },
