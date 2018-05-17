@@ -15,18 +15,6 @@
     border-radius: 0;
 }
 
-.navbar-section{
-    opacity: 0.9;
-}
-
-.navbar-section:hover{
-    opacity: 1;
-}
-
-.navbar-logo-small{
-    width: 4%;
-}
-
 .search-by-ingredient-section{
     background-color: rgb(241, 238, 168);
 }

@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light home-page-section navbar-section">
+  <img class="navbar-logo-small mx-4" src="../assets/images/logo.svg" alt="My Recipes Website">
+  <a class="navbar-brand" routerLink="/home">Mis Recetas</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarMain">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a pageScroll class="nav-link" href="#recently-added">Nuevas</a>
+      </li>
+      <li class="nav-item active">
+        <a pageScroll class="nav-link" href="#search-by-ingredient">Hoy quiero con ...</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">Categorias</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" href="#">Categoria 1</a>
+          <a class="dropdown-item" href="#">Categoria 2</a>
+          <a class="dropdown-item" href="#">Categoria 3</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">Administradores</a>
+        <div class="dropdown-menu" aria-labelledby="dropdown01">
+          <a class="dropdown-item" routerLink="/backend">Backend</a>
+        </div>
+      </li>
+    </ul>
+    <form class="navbar-form" role="search">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="La receta que buscás...">
+        <div class="input-group-append">
+          <button class="btn btn-default" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</nav>

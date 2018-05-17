@@ -1,0 +1,11 @@
+.navbar-section{
+    opacity: 0.9;
+}
+
+.navbar-section:hover{
+    opacity: 1;
+}
+
+.navbar-logo-small{
+    width: 4%;
+}
