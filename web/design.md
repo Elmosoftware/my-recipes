@@ -50,3 +50,70 @@ Cuando querramos agregar una nueva entity al Web Site y después de haberla agre
 private entityDefs = {
         Unit: new EntityDef("units", EditUnitDialog, () => { return new Unit(); })
     };
+
+
+---------------------------------------------------------
+New Recipe Component design
+===============================
+
+The form will be divided in this steps:
+1- Recipe
+    name
+    description
+    estimatedTime
+    level
+    mealType
+2- Ingredients
+    ingredients
+        recipeIngredient: 
+            ingredient: Ingredient;
+            amount: number;
+            unit: Unit;
+3- Steps
+    directions
+4- Saving
+    Confirm an save the recipe.
+
+------------------------------------------------------------
+
+Component Cache
+=================
+
+class MySpecificComponentCache inherits ComponentCache:
+--------------------------------------------------------
+
+//Este método es el que se guarda como refreshCallback en el objeto "CacheItem":
+refreshMyData(): Promise{
+    //aca llamamos a lso servicios correspondientes y obtenemos la "data" a cachear:
+
+    return Promise.Resolve(value)
+
+}
+
+class ComponentCache:
+----------------------------
+_pool: [CacheItem]  -> Array con los elementos del cache.
+invalidate()
+refresh()
+destroy()
+get(key)
+add(item: cacheItem)
+remove(key)
+
+class CacheItem
+---------------------------
+key: string ->
+duration: number -> Cuanto tiempo el item va a ser válido, (el tiempo es en segundos y se cuenta desde el                                           ultimo refresh).
+lastRefresh: date ->
+invalidate() -> 
+isValid -> _isValid
+value: any -> 
+refreshCallback function() ->
+
+
+
+
+
+
+
+

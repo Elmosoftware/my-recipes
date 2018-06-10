@@ -27,7 +27,20 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false
+    singleRun: false,
+    /*
+      Following the changes required to debug Jasmine test with Karma test runner using 
+      the "Chrome debugging" extension for VS Code.
+     */
+    //browsers: ['Chrome'],
+    browsers: [
+      'ChromeDebugging'
+    ],
+    customLaunchers: {
+      ChromeDebugging: {
+        base: 'Chrome',
+        flags: [ '--remote-debugging-port=9333' ]
+      }
+    }    
   });
 };

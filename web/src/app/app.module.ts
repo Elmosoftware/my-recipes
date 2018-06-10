@@ -22,11 +22,14 @@ import { EntitiesComponent } from './backend/entities/entities.component';
 import { LatestRecipesComponent } from './home/latest-recipes/latest-recipes.component';
 import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import { WizardModule } from "./shared/wizard/wizard.module";
+
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
 import { EntityServiceFactory } from "./services/entity-service-factory";
 import { StandardDialogService } from "./standard-dialogs/standard-dialog.service";
+import { Cache } from "./shared/cache/cache";
 
 //Dialogs
 import { ConfirmDialogComponent } from './standard-dialogs/confirm-dialog/confirm-dialog.component'
@@ -64,7 +67,8 @@ import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/
       timeOut: 5000
     }), 
     NgxSelectModule,
-    NgxPageScrollModule
+    NgxPageScrollModule,
+    WizardModule
   ],
   entryComponents: [
     ConfirmDialogComponent, 
@@ -77,7 +81,8 @@ import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     EntityServiceFactory,
     SubscriptionService,
-    StandardDialogService
+    StandardDialogService,
+    Cache
   ],
   bootstrap: [AppComponent]
 })

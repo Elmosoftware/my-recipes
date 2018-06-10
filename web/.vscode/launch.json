@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    // "configurations": [
+    //     {
+    //         "type": "node",
+    //         "request": "launch",
+    //         "name": "Launch Program",
+    //         "program": "${workspaceFolder}\\serve",
+    //         "preLaunchTask": "tsc: build - tsconfig.json",
+    //         "outFiles": [
+    //             "${workspaceFolder}/dist/out-tsc/**/*.js"
+    //         ]
+    //     }
+    // ]
+    "configurations": [
+        {
+            /*
+                To debug the test:
+                1st- Run the test typing "ng test" in the terminal window.
+                2nd- Run this task.
+            */
+            "type": "chrome",
+            "request": "attach",
+            "name": "Debug test",
+            "address": "localhost",
+            "port": 9333, //This is the port configure in karma.conf.js for Chrome debugging extension.
+            "pathMapping": {
+                "/": "${workspaceRoot}",
+                "/base/": "${workspaceRoot}/"
+            }
+        }
+    ]
+}

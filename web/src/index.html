@@ -31,6 +31,9 @@
     crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
+      //Initializing all tooltips:
+      $('[data-toggle="tooltip"]').tooltip({container:"body"})
+      //Showing/hiding navigation bar based on page scrolling:
       $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
           $('.navbar').fadeOut();
