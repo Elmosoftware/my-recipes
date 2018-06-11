@@ -17,6 +17,10 @@ export class EntityService {
     return this.entityDef.getInstance();
   }
 
+  getCacheKey(): string {
+    return this.entityDef.cacheKey;
+  }
+
   getAll(): Observable<Object> {
     return this.http.get(this.getUrl(), this.httpOptions);
   }

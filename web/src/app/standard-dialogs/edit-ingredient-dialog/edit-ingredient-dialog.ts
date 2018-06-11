@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Entity } from "../../model/entity";
 import { EntityServiceFactory } from "../../services/entity-service-factory";
 import { EntityService } from "../../services/entity-service";
+import { Cache } from "../../shared/cache/cache";
 import { APIResponse } from '../../model/api-response';
 
 @Component({
@@ -19,28 +20,10 @@ export class EditIngredientDialog implements OnInit {
   constructor(
     private svcFactory: EntityServiceFactory,
     public dialogRef: MatDialogRef<EditIngredientDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-  units: Entity[] = [];
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private cache: Cache) { }
 
   ngOnInit() {
-
-    this.svc = this.svcFactory.getService("Unit");
-    
-    this.svc.getAll().subscribe(data => {
-      
-      let respData = new APIResponse(data);
-      console.log(`After Load UNITs data`);
-      console.log(`Error:"${respData.error}", Payload:"${respData.entities}"`);
-
-      if (respData.error) {
-        throw respData.error
-      }
-      else {
-        this.units = respData.entities;
-      }
-    })  
-
     /* 
     Why this?:
       Because when the ng-select dropdown expands inside the dialog, force the dialog to show a vertical scrollbar. 

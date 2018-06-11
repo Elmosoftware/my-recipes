@@ -9,7 +9,7 @@
     <div class="input-group-prepend">
       <span class="input-group-text">Unidades de Medida</span>
     </div>
-    <ngx-select [multiple]="true" [items]="units" [(ngModel)]="data.compatibleUnits" 
+    <ngx-select [multiple]="true" [items]="cache.units" [(ngModel)]="data.compatibleUnits" 
     optionTextField="name" optionValueField="_id" placeholder="Seleccione una Unidad de medida al menos.">
     </ngx-select>
   </div>

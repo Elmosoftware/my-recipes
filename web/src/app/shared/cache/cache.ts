@@ -21,10 +21,9 @@ export class Cache extends CacheRepository {
     private svcMealType: EntityService;
     private svcUnit: EntityService;
 
-    private readonly DEFAULT_DURATION: number = 60;
+    private readonly DEFAULT_DURATION: number = (10 * 60); //Default 10 minutes cache duration.
 
     constructor(private svcFactory: EntityServiceFactory) {
-        
         super();
         
         this.svcIngredient = this.svcFactory.getService("Ingredient");
@@ -46,8 +45,20 @@ export class Cache extends CacheRepository {
         if (!item.isValid) {
             item.refresh().then(data => {
                 item.value = data;
+                console.log(`CACHE REFRESHED for: ${item.key}`)
             });
         }
+    }
+
+    public invalidateOne(key: CACHE_MEMBERS){
+        let item: CacheItem = super.get(key);
+        console.log(`CACHE ${item.key} INVALIDATED`);
+        item.invalidate();
+    }
+
+    public invalidateAll(){
+        console.log("CACHE INVALIDATED");
+        super.invalidate();
     }
 
     //#region Ingredients

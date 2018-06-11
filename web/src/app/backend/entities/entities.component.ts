@@ -12,6 +12,7 @@ import { ErrorLog } from '../../model/error-log';
 import { APIResponse } from '../../model/api-response';
 import { SubscriptionService } from "../../services/subscription.service";
 import { StandardDialogService, ConfirmDialogConfiguration } from "../../standard-dialogs/standard-dialog.service";
+import { Cache, CACHE_MEMBERS } from "../../shared/cache/cache";
 
 @Component({
   selector: 'app-backend-entities',
@@ -33,7 +34,8 @@ export class EntitiesComponent implements OnInit {
     private zone: NgZone,
     private toastr: ToastrService,
     private dlgSvc: StandardDialogService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private cache: Cache) {
   }
 
   ngOnInit() {
@@ -42,7 +44,7 @@ export class EntitiesComponent implements OnInit {
     this.type = this.route.snapshot.data['type'];
     this.title = this.route.snapshot.data['title'];
     this.svc = this.svcFactory.getService(this.type);
-    
+
     this.dataRefresh();
   }
 
@@ -53,16 +55,16 @@ export class EntitiesComponent implements OnInit {
   dataRefresh() {
     this.svc.getAll()
       .subscribe(
-      data => {
-        this.response = new APIResponse(data);
+        data => {
+          this.response = new APIResponse(data);
 
-        if (this.response.entities.length == 0) {
-          this.showInformationalToaster(`La búsqueda no devolvió resultados. Agregue un elemento haciendo click en el botón "+".`);
-        }
-      },
-      err => {
-        throw err
-      });
+          if (this.response.entities.length == 0) {
+            this.showInformationalToaster(`La búsqueda no devolvió resultados. Agregue un elemento haciendo click en el botón "+".`);
+          }
+        },
+        err => {
+          throw err
+        });
   }
 
   localErrorHandler(item: ErrorLog) {
@@ -80,7 +82,7 @@ export class EntitiesComponent implements OnInit {
       this.toastr.success(message, 'Ok!');
     });
   }
-  
+
   showInformationalToaster(message) {
     this.zone.run(() => {
       this.toastr.info(message, 'Info...');
@@ -101,9 +103,9 @@ export class EntitiesComponent implements OnInit {
           let ent = new APIResponse(data).entities[0];
           this.editAndSave(ent);
         },
-        err => {
-          throw err
-        });
+          err => {
+            throw err
+          });
     }
     else {
       this.editAndSave(this.svc.getNew());
@@ -132,6 +134,10 @@ export class EntitiesComponent implements OnInit {
             else {
               this.showSuccessToaster("Los cambios se guardaron con éxito!");
               this.dataRefresh();
+              //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
+              if (this.svc.getCacheKey()) {
+                this.cache.invalidateOne(this.svc.getCacheKey() as CACHE_MEMBERS)
+              }
             }
           }, err => {
             throw err
@@ -162,6 +168,10 @@ export class EntitiesComponent implements OnInit {
               else {
                 this.showSuccessToaster("El elemento ha sido eliminado.");
                 this.dataRefresh();
+                //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
+                if (this.svc.getCacheKey()) {
+                  this.cache.invalidateOne(this.svc.getCacheKey() as CACHE_MEMBERS)
+                }
               }
             }, err => {
               throw err
