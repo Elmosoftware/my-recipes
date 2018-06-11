@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject, NgZone } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
-import { ToastrService } from 'ngx-toastr';
+import { ToasterHelperService } from "../../services/toaster-helper-service";
 import { Router, ActivatedRoute, Params, Data } from "@angular/router";
 import { CommonModule, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 
@@ -31,8 +31,7 @@ export class EntitiesComponent implements OnInit {
     private svcFactory: EntityServiceFactory,
     public dialog: MatDialog,
     private subs: SubscriptionService,
-    private zone: NgZone,
-    private toastr: ToastrService,
+    private toast: ToasterHelperService,
     private dlgSvc: StandardDialogService,
     private route: ActivatedRoute,
     private cache: Cache) {
@@ -59,7 +58,7 @@ export class EntitiesComponent implements OnInit {
           this.response = new APIResponse(data);
 
           if (this.response.entities.length == 0) {
-            this.showInformationalToaster(`La búsqueda no devolvió resultados. Agregue un elemento haciendo click en el botón "+".`);
+            this.toast.showInformation(`La búsqueda no devolvió resultados. Agregue un elemento haciendo click en el botón "+".`);
           }
         },
         err => {
@@ -68,25 +67,7 @@ export class EntitiesComponent implements OnInit {
   }
 
   localErrorHandler(item: ErrorLog) {
-    this.showErrorToaster(item.getUserMessage());
-  }
-
-  showErrorToaster(message) {
-    this.zone.run(() => {
-      this.toastr.error(message, 'Ooops!, algo no anduvo bien... :-(');
-    });
-  }
-
-  showSuccessToaster(message) {
-    this.zone.run(() => {
-      this.toastr.success(message, 'Ok!');
-    });
-  }
-
-  showInformationalToaster(message) {
-    this.zone.run(() => {
-      this.toastr.info(message, 'Info...');
-    });
+    this.toast.showError(item.getUserMessage());
   }
 
   openDialog(entityId: string): void {
@@ -132,7 +113,7 @@ export class EntitiesComponent implements OnInit {
               throw respData.error
             }
             else {
-              this.showSuccessToaster("Los cambios se guardaron con éxito!");
+              this.toast.showSuccess("Los cambios se guardaron con éxito!");
               this.dataRefresh();
               //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
               if (this.svc.getCacheKey()) {
@@ -166,7 +147,7 @@ export class EntitiesComponent implements OnInit {
                 throw respData.error
               }
               else {
-                this.showSuccessToaster("El elemento ha sido eliminado.");
+                this.toast.showSuccess("El elemento ha sido eliminado.");
                 this.dataRefresh();
                 //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
                 if (this.svc.getCacheKey()) {

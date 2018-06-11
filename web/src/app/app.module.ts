@@ -30,6 +30,7 @@ import { SubscriptionService } from "./services/subscription.service";
 import { EntityServiceFactory } from "./services/entity-service-factory";
 import { StandardDialogService } from "./standard-dialogs/standard-dialog.service";
 import { Cache } from "./shared/cache/cache";
+import { ToasterHelperService } from "./services/toaster-helper-service";
 
 //Dialogs
 import { ConfirmDialogComponent } from './standard-dialogs/confirm-dialog/confirm-dialog.component'
@@ -82,7 +83,8 @@ import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/
     EntityServiceFactory,
     SubscriptionService,
     StandardDialogService,
-    Cache
+    Cache,
+    ToasterHelperService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, NgZone } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit, Inject } from '@angular/core';
+import { ToasterHelperService } from '../../services/toaster-helper-service';
 import { Observable } from 'rxjs/Rx';
 
 import { SubscriptionService } from "../../services/subscription.service";
@@ -21,10 +21,10 @@ export class LatestRecipesComponent implements OnInit {
   svc: EntityService;
   model: Entity[];
 
-  constructor(private subs: SubscriptionService, 
+  constructor(private subs: SubscriptionService,
     private svcFactory: EntityServiceFactory,
-    private zone: NgZone,
-    private toastr: ToastrService) { }
+    private toast: ToasterHelperService) {
+  }
 
   ngOnInit() {
     this.globalErrorSubscription = this.subs.getGlobalErrorEmitter().subscribe(item => this.localErrorHandler(item))
@@ -42,23 +42,20 @@ export class LatestRecipesComponent implements OnInit {
 
     this.svc.getByFilter("", q)
       .subscribe(
-      data => {
-        let response = new APIResponse(data); 
-        this.model = response.entities;
-        if (response.error) {
-          throw response.error;
-        }
-      },
-      err => {
-        throw err
-      });
+        data => {
+          let response = new APIResponse(data);
+          this.model = response.entities;
+          if (response.error) {
+            throw response.error;
+          }
+        },
+        err => {
+          throw err
+        });
   }
 
   localErrorHandler(item: ErrorLog) {
-    //this.showErrorToaster(item.getUserMessage());
-    this.zone.run(() => {
-      this.toastr.error(item.getUserMessage(), 'Ooops!, algo no anduvo bien... :-(');
-    });
+    this.toast.showError(item.getUserMessage());
   }
 
 }

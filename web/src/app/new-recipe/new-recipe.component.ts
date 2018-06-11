@@ -1,6 +1,5 @@
-import { Component, OnInit, AfterViewInit, NgZone, ViewChild } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { ToasterHelperService } from '../services/toaster-helper-service';
 import { WizardComponent } from "../shared/wizard/wizard.component";
 import { SubscriptionService } from "../services/subscription.service";
 import { ErrorLog } from '../model/error-log';
@@ -20,8 +19,8 @@ import { Cache } from "../shared/cache/cache";
 })
 export class NewRecipeComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('wizard') 
-	wizard: WizardComponent;
+  @ViewChild('wizard')
+  wizard: WizardComponent;
 
   isCompleted: boolean;
   globalErrorSubscription: any;
@@ -35,8 +34,7 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
 
   constructor(private subs: SubscriptionService,
     private svcFactory: EntityServiceFactory,
-    private zone: NgZone,
-    private toastr: ToastrService,
+    private toast: ToasterHelperService,
     private cache: Cache) { }
 
   ngOnInit() {
@@ -50,7 +48,7 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
 
-  resetForm(){
+  resetForm() {
 
     //If the form was already completed once, we will reset the wizard:
     if (this.isCompleted) {
@@ -80,10 +78,7 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
 
   addIngredient() {
     if (this.ingredientExists(this.newRecipeIngredient.ingredient)) {
-      this.zone.run(() => {
-        this.toastr.warning("Verifica la lista de ingredientes agregados y modifica las cantidades de ser necesario.",
-          'El ingrediente ya está en tu lista!');
-      });
+      this.toast.showWarning("Verifica la lista de ingredientes agregados y modifica las cantidades de ser necesario.");
     }
     else {
       this.recipe.ingredients.push(Object.assign({}, this.newRecipeIngredient));
@@ -213,9 +208,7 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
           throw respData.error
         }
         else {
-          this.zone.run(() => {
-            this.toastr.success("Los cambios se guardaron con éxito!", 'Ok!');
-          });
+          this.toast.showSuccess("Los cambios se guardaron con éxito!");
           this.isCompleted = true;
         }
       }, err => {
@@ -229,8 +222,6 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
   }
 
   localErrorHandler(item: ErrorLog) {
-    this.zone.run(() => {
-      this.toastr.error(item.getUserMessage(), 'Ooops!, algo no anduvo bien... :-(');
-    });
+    this.toast.showError(item.getUserMessage());
   }
 }
