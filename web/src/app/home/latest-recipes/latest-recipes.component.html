@@ -1,48 +1,22 @@
 <a id="recently-added"></a>
 <div *ngIf="model && model.length; else noData ">
   <div class="jumbotron recently-added-section">
-    <div class="container my-5">
+    <div class="container my-3">
       <div class="row">
-        <div class="col-md-4">
-          <h2>Heading FROM COMPONENT!!!</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
-            nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio
-            dui.
-          </p>
+        <div *ngFor="let recipe of model" class="col-md-4">
+          <h3>{{ recipe.name }}</h3>
+          <p [innerHtml]="getShortText(recipe.description)"></p>
           <p>
-            <a class="btn btn-secondary" href="#" role="button">View details »</a>
+            <a class="btn btn-secondary" routerLink="/recipe/{{recipe._id}}" role="button">View details »</a>
           </p>
         </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum
-            nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio
-            dui.
-          </p>
-          <p>
-            <a class="btn btn-secondary" href="#" role="button">View details »</a>
-          </p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis
-            euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo
-            sit amet risus.
-          </p>
-          <p>
-            <a class="btn btn-secondary" href="#" role="button">View details »</a>
-          </p>
-        </div>
-      </div>
-      <div class="row">
-          <h3 class="text-center my-5">Tambien podés <a routerLink="/new-recipe">crear una nueva</a></h3>
       </div>
     </div>
   </div>
-</div>
-<ng-template #noData>
-  <div class="col-md-12 my-lg-5 my-sm-2">
-    <h3 class="text-center my-5">Aún no hay ninguna receta creada!</h3>
-    <h6 class="my-1">¿Que esperas para <a routerLink="/new-recipe">crear una nueva</a>?</h6>
-  </div>
-</ng-template>
+  <ng-template #noData>
+    <div class="col-md-12 my-lg-5 my-sm-2">
+      <h3 class="text-center my-5">Aún no hay ninguna receta creada!</h3>
+      <h6 class="my-1">¿Que esperas para
+        <a routerLink="/new-recipe">crear una nueva</a>?</h6>
+    </div>
+  </ng-template>

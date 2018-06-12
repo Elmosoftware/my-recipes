@@ -4,13 +4,14 @@ import { AppComponent } from "./app.component";
 import { HomeComponent } from "./home/home.component";
 import { BackendComponent } from "./backend/backend.component";
 import { EntitiesComponent } from "./backend/entities/entities.component";
-
+import { RecipeViewComponent } from "./recipe-view/recipe-view.component";
 import { Unit } from "./model/unit";
 import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'recipe/:id', component: RecipeViewComponent },
   { path: 'new-recipe', component: NewRecipeComponent },
   { path: 'backend', component: BackendComponent, children:[
     { path: 'levels', component: EntitiesComponent, data: { type: "Level", title: "Niveles de dificultad" } },

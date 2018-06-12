@@ -23,7 +23,7 @@ import { LatestRecipesComponent } from './home/latest-recipes/latest-recipes.com
 import { NewRecipeComponent } from './new-recipe/new-recipe.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { WizardModule } from "./shared/wizard/wizard.module";
-
+import { RecipeViewComponent } from './recipe-view/recipe-view.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -52,7 +52,8 @@ import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/
     EditIngredientDialog,
     LatestRecipesComponent,
     NewRecipeComponent,
-    NavigationBarComponent
+    NavigationBarComponent,
+    RecipeViewComponent
   ],
   imports: [
     FormsModule,

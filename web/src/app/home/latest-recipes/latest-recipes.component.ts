@@ -58,4 +58,8 @@ export class LatestRecipesComponent implements OnInit {
     this.toast.showError(item.getUserMessage());
   }
 
+  getShortText(text: string, maxLength: number = 150, posfix: string = "&hellip;"){
+    return (text && text.length > maxLength) ? text.substr(0, maxLength - 1) + '&hellip;' : text;
+  }
+
 }
