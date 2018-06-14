@@ -1,7 +1,7 @@
 <div class="my-4">
     <h4>{{title}}</h4>
 </div>
-<div *ngIf="response">
+<div *ngIf="model">
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped">
             <thead>
@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let entity of response.entities" [ngSwitch]="type">
+                <tr *ngFor="let entity of model" [ngSwitch]="type">
                     <td>
                         <button type="button" class="btn btn-outline-secondary btn-sm" (click)="delete(entity._id)">
                             <i class="fa fa-times" aria-hidden="true"></i>

@@ -6,7 +6,7 @@ import { ErrorLog } from '../model/error-log';
 import { EntityServiceFactory } from "../services/entity-service-factory";
 import { EntityService } from "../services/entity-service";
 import { WordAnalyzerService } from "../services/word-analyzer-service";
-import { APIResponse } from '../model/api-response';
+import { APIResponseParser } from "../services/api-response-parser";
 import { Recipe } from "../model/recipe";
 import { RecipeIngredient } from "../model/recipe-ingredient";
 import { Entity } from "../model/entity";
@@ -200,14 +200,11 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
     this.svcRecipe.save(this.recipe)
       .subscribe(data => {
 
-        let respData = new APIResponse(data);
+        let respData = new APIResponseParser(data);
         console.log(`After Save the Recipe!`);
         console.log(`Error:"${respData.error}", Payload:"${respData.entities}"`);
 
-        if (respData.error) {
-          throw respData.error
-        }
-        else {
+        if(!respData.error) {
           this.toast.showSuccess("Los cambios se guardaron con éxito!");
           this.isCompleted = true;
         }

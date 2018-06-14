@@ -6,7 +6,7 @@ import { SubscriptionService } from "../../services/subscription.service";
 import { ErrorLog } from '../../model/error-log';
 import { EntityServiceFactory } from "../../services/entity-service-factory";
 import { EntityService, EntityServiceQueryParams } from "../../services/entity-service";
-import { APIResponse } from "../../model/api-response";
+import { APIResponseParser } from "../../services/api-response-parser";
 import { Recipe } from "../../model/recipe";
 import { Entity } from '../../model/entity';
 
@@ -43,11 +43,7 @@ export class LatestRecipesComponent implements OnInit {
     this.svc.getByFilter("", q)
       .subscribe(
         data => {
-          let response = new APIResponse(data);
-          this.model = response.entities;
-          if (response.error) {
-            throw response.error;
-          }
+          this.model = new APIResponseParser(data).entities;
         },
         err => {
           throw err
@@ -61,5 +57,4 @@ export class LatestRecipesComponent implements OnInit {
   getShortText(text: string, maxLength: number = 150, posfix: string = "&hellip;"){
     return (text && text.length > maxLength) ? text.substr(0, maxLength - 1) + '&hellip;' : text;
   }
-
 }

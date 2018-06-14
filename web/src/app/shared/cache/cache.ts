@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntityServiceFactory } from "../../services/entity-service-factory";
 import { EntityService } from "../../services/entity-service";
-import { APIResponse } from '../../model/api-response';
+import { APIResponseParser } from "../../services/api-response-parser";
 import { Entity } from "../../model/entity";
 import { CacheItem } from "./cache-item";
 import { CacheRepository } from "./cache-repository";
@@ -63,9 +63,7 @@ export class Cache extends CacheRepository {
 
     //#region Ingredients
     private createCacheIngredients(): CacheItem {
-        
         let item: CacheItem = new CacheItem(CACHE_MEMBERS.Ingredients, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
-        
         item.setRefreshCallback(this, this.refreshCacheIngredients);
         return item;
     }
@@ -75,23 +73,15 @@ export class Cache extends CacheRepository {
     }
 
     public get ingredients(): Entity[] {
-        
         let item: CacheItem = super.get(CACHE_MEMBERS.Ingredients);
-        
-        this.refreshStaleCache(item);
-        // ///////////////////////////////////////////////////////////
-        // //DEBUG ONLY:
-        // console.log(`CACHE STATS - Dur:${item.duration}, LastRef:${item.lastRefresh}, Rem:${item.remainingTime} - Now:${new Date()}`);
-        // ///////////////////////////////////////////////////////////
-        return this.processAPIResponse(item.value);
+        this.refreshStaleCache(item);        
+        return new APIResponseParser(item.value).entities;
     }
     //#endregion
 
     //#region Levels
     private createCacheLevels(): CacheItem {
-        
         let item: CacheItem = new CacheItem(CACHE_MEMBERS.Levels, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
-        
         item.setRefreshCallback(this, this.refreshCacheLevels);
         return item;
     }
@@ -101,19 +91,15 @@ export class Cache extends CacheRepository {
     }
 
     public get levels(): Entity[] {
-
         let item: CacheItem = super.get(CACHE_MEMBERS.Levels);
-        
         this.refreshStaleCache(item);
-        return this.processAPIResponse(item.value);
+        return new APIResponseParser(item.value).entities
     }
     //#endregion
 
     //#region MealTypes
     private createCacheMealTypes(): CacheItem {
-        
         let item: CacheItem = new CacheItem(CACHE_MEMBERS.MealTypes, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
-
         item.setRefreshCallback(this, this.refreshCacheMealTypes);
         return item;
     }
@@ -123,19 +109,15 @@ export class Cache extends CacheRepository {
     }
 
     public get mealTypes(): Entity[] {
-
         let item: CacheItem = super.get(CACHE_MEMBERS.MealTypes);
-        
         this.refreshStaleCache(item);
-        return this.processAPIResponse(item.value);
+        return new APIResponseParser(item.value).entities
     }
     //#endregion
     
     //#region Units
     private createCacheUnits(): CacheItem {
-        
         let item: CacheItem = new CacheItem(CACHE_MEMBERS.Units, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
-
         item.setRefreshCallback(this, this.refreshCacheUnits);
         return item;
     }
@@ -145,23 +127,9 @@ export class Cache extends CacheRepository {
     }
 
     public get units(): Entity[] {
-
         let item: CacheItem = super.get(CACHE_MEMBERS.Units);
-        
         this.refreshStaleCache(item);
-        return this.processAPIResponse(item.value);
+        return new APIResponseParser(item.value).entities
     }
     //#endregion
-
-    private processAPIResponse(data) {
-
-        let respData = new APIResponse(data);
-
-        if (respData.error) {
-            throw respData.error
-        }
-        else {
-            return respData.entities;
-        }
-    }
 }

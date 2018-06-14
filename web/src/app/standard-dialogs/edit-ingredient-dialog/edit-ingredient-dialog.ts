@@ -2,11 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-import { Entity } from "../../model/entity";
-import { EntityServiceFactory } from "../../services/entity-service-factory";
-import { EntityService } from "../../services/entity-service";
 import { Cache } from "../../shared/cache/cache";
-import { APIResponse } from '../../model/api-response';
 
 @Component({
   selector: 'app-edit-ingredient-dialog',
@@ -14,11 +10,8 @@ import { APIResponse } from '../../model/api-response';
   styleUrls: ['./edit-ingredient-dialog.css']
 })
 export class EditIngredientDialog implements OnInit {
-  
-  svc: EntityService
 
   constructor(
-    private svcFactory: EntityServiceFactory,
     public dialogRef: MatDialogRef<EditIngredientDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private cache: Cache) { }
@@ -36,11 +29,10 @@ export class EditIngredientDialog implements OnInit {
     this.dialogRef.afterOpen().subscribe(() => {
 
       let dlg = document.getElementsByTagName("mat-dialog-container");
-      
+
       if (dlg && dlg.length > 0) {
         (dlg[0] as any).style.overflow = "visible";
       }
-
     })
   }
 

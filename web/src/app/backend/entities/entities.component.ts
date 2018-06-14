@@ -9,7 +9,7 @@ import { EntityServiceFactory } from "../../services/entity-service-factory";
 import { EntityService, EntityServiceQueryParams } from "../../services/entity-service";
 import { Entity } from "../../model/entity";
 import { ErrorLog } from '../../model/error-log';
-import { APIResponse } from '../../model/api-response';
+import { APIResponseParser } from "../../services/api-response-parser";
 import { SubscriptionService } from "../../services/subscription.service";
 import { StandardDialogService, ConfirmDialogConfiguration } from "../../standard-dialogs/standard-dialog.service";
 import { Cache, CACHE_MEMBERS } from "../../shared/cache/cache";
@@ -21,7 +21,7 @@ import { Cache, CACHE_MEMBERS } from "../../shared/cache/cache";
 })
 export class EntitiesComponent implements OnInit {
 
-  response: APIResponse;
+  model: Entity[];
   globalErrorSubscription: any;
   type: string;
   title: string;
@@ -55,9 +55,9 @@ export class EntitiesComponent implements OnInit {
     this.svc.getAll()
       .subscribe(
         data => {
-          this.response = new APIResponse(data);
+          this.model = new APIResponseParser(data).entities;
 
-          if (this.response.entities.length == 0) {
+          if (this.model.length == 0) {
             this.toast.showInformation(`La búsqueda no devolvió resultados. Agregue un elemento haciendo click en el botón "+".`);
           }
         },
@@ -80,8 +80,7 @@ export class EntitiesComponent implements OnInit {
 
       this.svc.getById(entityId, query)
         .subscribe(data => {
-          //TODO: Validate if the request was an error or not.
-          let ent = new APIResponse(data).entities[0];
+          let ent = new APIResponseParser(data).entities[0];
           this.editAndSave(ent);
         },
           err => {
@@ -105,14 +104,11 @@ export class EntitiesComponent implements OnInit {
         this.svc.save(result)
           .subscribe(data => {
 
-            let respData = new APIResponse(data);
+            let respData = new APIResponseParser(data);
             console.log(`After Save`);
             console.log(`Error:"${respData.error}", Payload:"${respData.entities}"`);
 
-            if (respData.error) {
-              throw respData.error
-            }
-            else {
+            if (!respData.error) {
               this.toast.showSuccess("Los cambios se guardaron con éxito!");
               this.dataRefresh();
               //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
@@ -138,15 +134,12 @@ export class EntitiesComponent implements OnInit {
           this.svc.delete(entityId)
             .subscribe(data => {
 
-              let respData = new APIResponse(data);
+              let respData = new APIResponseParser(data);
 
               console.log(`After Delete`);
               console.log(`Error:"${respData.error}", Payload:"${respData.entities}"`);
 
-              if (respData.error) {
-                throw respData.error
-              }
-              else {
+              if (!respData.error) {
                 this.toast.showSuccess("El elemento ha sido eliminado.");
                 this.dataRefresh();
                 //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
