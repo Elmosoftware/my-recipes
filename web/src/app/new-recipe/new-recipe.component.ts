@@ -1,4 +1,8 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { Observable } from 'rxjs/Rx';
+
+import { StandardDialogService } from "../standard-dialogs/standard-dialog.service";
 import { ToasterHelperService } from '../services/toaster-helper-service';
 import { WizardComponent } from "../shared/wizard/wizard.component";
 import { SubscriptionService } from "../services/subscription.service";
@@ -33,6 +37,7 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
   newDirection: string;
 
   constructor(private subs: SubscriptionService,
+    private dlgSvc: StandardDialogService,
     private svcFactory: EntityServiceFactory,
     private toast: ToasterHelperService,
     private cache: Cache) { }
@@ -98,6 +103,20 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
     this.recipe.directions.push(this.newDirection);
     this.newDirection = "";
     this.evaluateIngredientUsage();
+  }
+
+  editDirection(index): void {
+    
+    this.dlgSvc.showRecipeDirectionDialog(this.recipe.directions[index])
+      .subscribe(result => {
+
+      //If the user does not cancelled the dialog:
+      if (result && typeof result === "string" && result != "false") {
+        this.recipe.directions[index] = result;
+      }
+      
+      this.evaluateIngredientUsage();
+    });    
   }
 
   moveDirectionDown(index): void {

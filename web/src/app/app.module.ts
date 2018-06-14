@@ -38,6 +38,7 @@ import { EditMealTypeDialog } from "./standard-dialogs/edit-mealtype-dialog/edit
 import { EditLevelDialog } from './standard-dialogs/edit-level-dialog/edit-level-dialog';
 import { EditUnitDialog } from './standard-dialogs/edit-unit-dialog/edit-unit-dialog';
 import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/edit-ingredient-dialog";
+import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direction-dialog/edit-recipe-direction-dialog";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/
     EditLevelDialog,
     EditMealTypeDialog,
     EditIngredientDialog,
+    EditRecipeDirectionDialog,
     LatestRecipesComponent,
     NewRecipeComponent,
     NavigationBarComponent,
@@ -77,7 +79,8 @@ import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/
     EditUnitDialog, 
     EditLevelDialog, 
     EditMealTypeDialog,
-    EditIngredientDialog
+    EditIngredientDialog,
+    EditRecipeDirectionDialog
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandler },

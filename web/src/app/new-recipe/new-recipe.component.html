@@ -111,7 +111,7 @@
           </li>
         </ul>
       </ng-template>
-    </wizard-step> 
+    </wizard-step>
     <wizard-step [title]="'Preparación'" [isValid]="recipe.directions && recipe.directions.length > 0">
       <form class="my-4" #directionsForm="ngForm">
         <div class="form-group">
@@ -143,6 +143,10 @@
               <button class="btn btn-secondary" type="button" (click)="removeDirection(i)" 
                 data-toggle="tooltip" data-placement="top" title="Eliminar este paso de la preparación.">
                 <i class="fa fa-times"></i>
+              </button>
+              <button class="btn btn-secondary mx-1" type="button" (click)="editDirection(i)" 
+                data-toggle="tooltip" data-placement="top" title="Editar este paso de la preparación.">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
               </button>
               <span class="input-group-text mx-3">Paso {{ i + 1 }}</span>
               <button class="btn btn-secondary mx-1" type="button" (click)="moveDirectionDown(i)" 

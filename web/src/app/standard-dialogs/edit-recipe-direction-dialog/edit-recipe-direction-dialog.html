@@ -1,0 +1,23 @@
+<div class="container">
+  <form class="my-4" #recipeDirectionForm="ngForm">
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (direction.valid && direction.dirty), 'validatorInvalid': (direction.invalid && direction.dirty)}"
+          data-toggle="tooltip" data-placement="right" title="Toda receta debe poseer al menos un paso de preparación">Editar el paso de la Preparación</span>
+      </div>
+      <textarea required class="form-control" placeholder="Aqui puede modificar este paso de la preparación." 
+        [(ngModel)]="data" name="direction" #direction="ngModel" rows="3" maxlength="1024"></textarea>
+    </div>
+    <div class="form-group">
+      <mat-dialog-actions>
+        <div class="d-flex justify-content-end">
+          <div class="row">
+              <button class="btn btn-secondary mx-1" type="button" [disabled]="!(recipeDirectionForm.form.valid)" 
+              (click)="closeDlg(data)">Aceptar</button>
+              <button class="btn btn-secondary mx-1" mat-dialog-close="false">Cancelar</button>
+          </div>
+        </div>
+      </mat-dialog-actions>
+    </div>
+  </form>
+</div>

@@ -11,6 +11,7 @@ import { EditLevelDialog } from "../standard-dialogs/edit-level-dialog/edit-leve
 import { EditMealTypeDialog } from "../standard-dialogs/edit-mealtype-dialog/edit-mealtype-dialog";
 import { EditUnitDialog } from "../standard-dialogs/edit-unit-dialog/edit-unit-dialog";
 import { EditIngredientDialog } from "../standard-dialogs/edit-ingredient-dialog/edit-ingredient-dialog";
+import { EditRecipeDirectionDialog } from "../standard-dialogs/edit-recipe-direction-dialog/edit-recipe-direction-dialog";
 
 @Injectable()
 export class StandardDialogService {
@@ -41,6 +42,11 @@ export class StandardDialogService {
     else{
       throw new Error(`There is no edit dialog defined for an entity named "${entityName}".`);
     }
+  }
+
+  showRecipeDirectionDialog(direction: string): Observable<any> {
+    return this.dialog.open(EditRecipeDirectionDialog, { data: direction, width: "600px", })
+        .afterClosed();
   }
 }
 
