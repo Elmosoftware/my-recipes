@@ -11,7 +11,7 @@ import { ErrorLog } from '../model/error-log';
 import { StandardDialogService, ConfirmDialogConfiguration } from "../standard-dialogs/standard-dialog.service";
 import { ToasterHelperService } from '../services/toaster-helper-service';
 import { SubscriptionService } from "../services/subscription.service";
-//declare var $: any;
+
 @Component({
   selector: 'app-recipe-view',
   templateUrl: './recipe-view.component.html',
