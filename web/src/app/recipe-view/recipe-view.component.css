@@ -1,0 +1,43 @@
+/* These are the CSS style overrides for Angular Material components */
+@import "../../assets/css/ang-mat-overrides.css";
+
+.formPositioning{
+    margin-top: 100px; 
+}
+
+.recipeTitle{
+    font-family: 'Bellefair';
+    font-size: 3em;
+}
+
+.recipeDescription{
+    font-family: 'Bellefair';
+    font-size: 1.7em;
+    font-style: italic;
+}
+
+.recipeListTitle{
+    font-family: 'Bellefair';
+    font-size: 2em;
+}
+
+.recipeList{
+    font-family: 'Bellefair';
+    font-size: 1.5em;
+}
+
+.recipeListButton{
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 800;
+    font-size: 1em;
+    height: 3em;
+    width: 3em;
+}
+
+.stepMarkedAsDone::after{
+    font-family: FontAwesome;
+    content: "\f00c";
+    display: inline-block;
+    padding-left: 0.2em;
+    color: rgb(231, 238, 131);
+}

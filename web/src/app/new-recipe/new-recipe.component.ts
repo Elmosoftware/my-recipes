@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { StandardDialogService } from "../standard-dialogs/standard-dialog.service";
 import { ToasterHelperService } from '../services/toaster-helper-service';
+import { Helper } from "../shared/helper";
 import { WizardComponent } from "../shared/wizard/wizard.component";
 import { SubscriptionService } from "../services/subscription.service";
 import { ErrorLog } from '../model/error-log';
@@ -31,6 +32,7 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
   wordAnalyzer: WordAnalyzerService;
   recipe: Recipe;
   svcRecipe: EntityService;
+  helper: Helper;
   missingIngredients: string[];
   compatibleUnits: Entity[];
   newRecipeIngredient: RecipeIngredient;
@@ -45,6 +47,7 @@ export class NewRecipeComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     //Initializing Services and Subscriptions:
     this.wordAnalyzer = new WordAnalyzerService();
+    this.helper = new Helper();
     this.svcRecipe = this.svcFactory.getService("Recipe");
     this.globalErrorSubscription = this.subs.getGlobalErrorEmitter().subscribe(item => this.localErrorHandler(item));
     this.resetForm();

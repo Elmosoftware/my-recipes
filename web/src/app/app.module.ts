@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
@@ -63,6 +64,7 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     BrowserAnimationsModule,
     AppRoutingModule,
     MatDialogModule,
+    MatSlideToggleModule,
     HttpClientModule,
     ToastrModule.forRoot({ 
       maxOpened: 5,

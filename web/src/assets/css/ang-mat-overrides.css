@@ -1,0 +1,37 @@
+/* 
+  Angular Material
+  ----------------------------------------- 
+*/
+
+/* 
+    Material Slide toggle changing default colors
+*/
+
+/* Changing Default "Accent" color to match Bootstrap "Danger" standard color */
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #dc3545; 
+  }
+  
+  ::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: rgba(220,53,69,.5);  
+  }
+  
+  /* Changing "Primary" color to match Bootstrap "Primary" standard color */
+  ::ng-deep .mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #007bff;
+  }
+  
+  ::ng-deep .mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: rgba(0,123,255,.5);
+  }
+  
+  /* Changing "Warn" color to match Bootstrap "Warning" standard color */
+  ::ng-deep .mat-slide-toggle.mat-warn.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #ffc107;
+  }
+  
+  ::ng-deep .mat-slide-toggle.mat-warn.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: rgba(255,193,7,.5);
+  }
+  
+  

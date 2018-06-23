@@ -19,20 +19,28 @@
 
 <body>
   <app-root></app-root>
-  
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script> -->
+
+  <!-- JavaScript 3rd party aquired via CDNs: -->
+
+  <!-- Required by Bootstrap -->
+  <!-- jQuery -->
   <script src="http://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  <!-- Popper -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
     crossorigin="anonymous"></script>
+  <!-- Bootstrap -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
     crossorigin="anonymous"></script>
+
+  <!-- Required by some Angular Material components -->
+  <!-- Hammer -->
+  <script src="https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js"></script>
+
   <script>
     $(document).ready(function () {
       //Initializing all tooltips:
-      $('[data-toggle="tooltip"]').tooltip({container:"body"})
+      //$('[data-toggle="tooltip"]').tooltip({container:"body"});
+      $(document.body).tooltip({ selector: '[data-toggle="tooltip"]' });
       //Showing/hiding navigation bar based on page scrolling:
       $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
@@ -44,13 +52,13 @@
     });
   </script>
 
-<script type="text/javascript">
-             $(document).ready(function () {
-                 $('#sidebarCollapse').on('click', function () {
-                     $('#sidebar').toggleClass('active');
-                 });
-             });
-         </script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+      });
+    });
+  </script>
 
 </body>
 
