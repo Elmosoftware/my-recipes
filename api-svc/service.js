@@ -1,7 +1,7 @@
 // @ts-check
 var mongoose = require("mongoose");
 const ServiceValidator = require("./service-validator");
-const Entities = require("./entities")
+const Entities = require("./entities");
 
 class Service {
 
@@ -119,7 +119,7 @@ class Service {
 
     update(id, document, callback) {
         var val = new ServiceValidator();
-        var promises = [];        
+        var promises = [];
 
         if (!val.validateCallback(callback).isValid) {
             return (callback(val.getErrors(), {}));
@@ -128,7 +128,7 @@ class Service {
         if (!val.isValidObjectId(document._id)) {
             document._id = id;
         }
-        
+
         //Regarding subdocs, we proceed in the same way as in the add method:
         promises = this.saveSubDocs(document, true)
         promises.push(Promise.resolve(this._entity.model));
@@ -146,7 +146,7 @@ class Service {
                         if (!err && data.n == 0) {
                             err = new Error("The last UPDATE operation affects no documents. Verify the document exists before to retry this operation.");
                         }
-                        
+
                         return (callback(err, {}));
                     });
                 } catch (err) {
@@ -181,11 +181,118 @@ class Service {
         }
 
         if (query.pop != "false") {
+            //Populating first level references:
             cursor.populate(this._entity.references.join(" ").toString())
+
+            //We now populate subdocuments references too (up to first subdoc level only):
+            this._entity.references.forEach((item) => {
+                let subdocEntity = null;
+
+                if (Array.isArray(this._entity.model.schema.tree[item])) {
+                    subdocEntity = Entities.getEntityByModelName(this._entity.model.schema.tree[item][0].ref);
+                }
+                else {
+                    subdocEntity = Entities.getEntityByModelName(this._entity.model.schema.tree[item].ref);
+                }
+
+                //If the subdoc has references to  other documents, we need to add them to the populate list:
+                if (subdocEntity.references.length > 0) {
+                    subdocEntity.references.forEach((ref) => {
+                        /* WATCH OUT!:
+                            If the subdocument have a reference to the parent document, we MUST NOT 
+                            POPULATE IT IN ORDER TO AVOID CIRCULAR REFERENCES.
+                            
+                            e.g.: 
+                                To illustrate the case, let's suppose to have the following model defined in our app:
+
+                            mongoose.model("MyCategory",
+                                new mongoose.Schema({
+                                    name: { type: String, required: true, unique: true }
+                                }));
+
+                            mongoose.model("MySubDoc",
+                                new mongoose.Schema({
+                                    name: { type: String, required: true, unique: true },
+                                    parent: { type: mongoose.Schema.Types.ObjectId, ref: "MyParentDoc", required: true }
+                                    category: { type: mongoose.Schema.Types.ObjectId, ref: "MyCategory", required: true }
+                                }));
+
+                            mongoose.model("MyParentDoc",
+                                new mongoose.Schema({
+                                    name: { type: String, required: true, unique: true },
+                                    subdocs: [{ type: mongoose.Schema.Types.ObjectId, ref: "MySubDoc", required: true }]
+                                }));
+
+                            So if we don't populate, (query.pop == "false"), we can have for example the following document:
+                            
+                            {
+                                "_id": "5b22bf5282e20a4d18840633",
+                                "name": "I'm the parent doc",
+                                "subdocs": [
+                                    {
+                                        "_id": "5b22bf5282e20a4d18840634",
+                                        "name": "I'm the first subdoc",
+                                        "parent": "5b22bf5282e20a4d18840633",
+                                        "category": "5af1fe0f52bf1d8be0edd407"
+                                    },
+                                    {
+                                        "_id": "5b22bf5282e20a4d18840635",
+                                        "name": "I'm the second subdoc",
+                                        "parent": "5b22bf5282e20a4d18840633"
+                                        "category": "5af1fe0f52bf1d8be0edd408"
+                                    }
+                                ]
+                            }
+                            
+                            If we execute the same request, but this time populating, (query.pop != "false"), we will have all the 
+                            subdocuments properties (up to first level), populated, with the exception of "parent". Because that one 
+                            is a reference of the same model that the parent document.                            
+                            
+                            So we will get something like this:
+
+                            {
+                                "_id": "5b22bf5282e20a4d18840633",
+                                "name": "I'm the parent doc",
+                                "subdocs": [
+                                    {
+                                        "_id": "5b22bf5282e20a4d18840634",
+                                        "name": "I'm the first subdoc",
+                                        "parent": "5b22bf5282e20a4d18840633",
+                                        "category": {
+                                            "_id": "5af1fe0f52bf1d8be0edd407",
+                                            "name": "My first category"
+                                        }
+                                    },
+                                    {
+                                        "_id": "5b22bf5282e20a4d18840635",
+                                        "name": "I'm the second subdoc",
+                                        "parent": "5b22bf5282e20a4d18840633"
+                                        "category": {
+                                            "_id": "5af1fe0f52bf1d8be0edd408",
+                                            "name": "My second category"
+                                        }
+                                    }
+                                ]
+                            }
+
+                            The reason why we will not populate beyond first level of subdocuments is because seems to 
+                            not be possible on the current version of Mongoose.
+                            This means that if for example if the categories holds a property that is a reference to another 
+                            model. That property won't be populated.
+                        */
+                        if (subdocEntity.model.schema.tree[ref].ref != this._entity.model.modelName) {
+                            cursor.populate({
+                                path: item,
+                                populate: {
+                                    path: ref
+                                }
+                            })
+                        }
+                    })
+                }
+            })
         }
 
-        // cursor.populate(this._entity.references.join(" ").toString())
-        //     .exec(callback);
         cursor.exec(callback);
     }
 
@@ -263,13 +370,13 @@ class Service {
         let refService = new Service(refEntity);
         let val = null;
 
-        if(Number.isInteger(index)){
+        if (Number.isInteger(index)) {
             val = parentDocument[propertyName][index];
         }
-        else{
+        else {
             val = parentDocument[propertyName];
         }
-        
+
         //We assign the "_id" here because we need to persist the value in the parent document references without 
         //to wait to the async callback:
         val._id = this.getNewobjectId();

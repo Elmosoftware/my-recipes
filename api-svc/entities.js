@@ -58,6 +58,23 @@ class Entities {
         }
     }
 
+    // getEntityByKeyName(keyName) {
+    //     let ret = null;
+
+    //     for (let name of Object.getOwnPropertyNames(this._items)) {
+    //         if (this._items[name].name == keyName) {
+    //             ret = this._items[name];
+    //             break;
+    //         }
+    //     }
+
+    //     if (!ret) {
+    //         throw new Error(`There is no entity defined by key name "${keyName}".`);
+    //     }
+
+    //     return ret;
+    // }
+
     getEntityByModelName(modelName){
 
         let ret = null;

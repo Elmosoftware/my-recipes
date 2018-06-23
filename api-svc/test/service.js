@@ -12,13 +12,15 @@ describe("Service", () => {
     var svc = new Service(e);
     var stubModelUpdate;
 
-    it("Should complete with a valid callback as parameter", () => {
+    it("Should complete with a valid callback as parameter", (done) => {
 
       stubModelUpdate = sinon.stub(e.model, "update");
-      svc.update("", {}, () => { });
-      stubModelUpdate.restore();
+      svc.update(svc.getNewobjectId(), {}, () => {});
 
-      assert.ok(stubModelUpdate.called);
+      setTimeout(() =>{ //Because we are testing over a promise:
+        stubModelUpdate.restore();
+        assert.ok(stubModelUpdate.called); 
+        done()}, 10);
     });
     it("Shouldn't complete with a non valid callback as parameter", () => {
 
@@ -68,7 +70,7 @@ describe("Service", () => {
 
       if (sort) {
         ret.sort = sort;
-      
+
       }
       if (pop) {
         ret.pop = pop;
@@ -123,7 +125,7 @@ describe("Service", () => {
 
       stubModelFind = setStub();
       //assert.throws(() => {
-        svc.find("invalid conditions", setQuery("100", "0", "my sort", ""), () => { });
+      svc.find("invalid conditions", setQuery("100", "0", "my sort", ""), () => { });
       //})
       stubModelFind.restore();
 
@@ -218,27 +220,27 @@ describe("Service", () => {
       assert.ok(stubModelFind.called);
     });
     it("Shouldn't complete with a not string type 'pop' parameter", () => {
-      
+
       stubModelFind = setStub();
       svc.find("5a387f92ccbd71477022ea65", setQuery("0", "0", new Object(), 1), () => { });
       stubModelFind.restore();
-      
+
       assert.ok(stubModelFind.notCalled);
     });
     it("Shouldn't complete with a 'pop' parameter that is not 'true', 'false' or an empty string", () => {
-      
+
       stubModelFind = setStub();
       svc.find("5a387f92ccbd71477022ea65", setQuery("0", "0", new Object(), "invalid parameter value"), () => { });
       stubModelFind.restore();
-      
+
       assert.ok(stubModelFind.notCalled);
     });
     it("Should complete with a valid 'pop' parameter", () => {
-      
+
       stubModelFind = setStub();
       svc.find("5a387f92ccbd71477022ea65", setQuery("100", "", "my sort", "true"), () => { });
       stubModelFind.restore();
-      
+
       assert.ok(stubModelFind.called);
     });
   });
@@ -274,7 +276,7 @@ describe("Service", () => {
 
       stubModelRemove = setStub();
       //assert.throws(() => {
-        svc.delete("invalid conditions", () => { });
+      svc.delete("invalid conditions", () => { });
       //})
       stubModelRemove.restore();
 
@@ -296,19 +298,21 @@ describe("Service", () => {
           save: function (callback) { return this; }
         });
     }
-    it("Should complete with all valid parameters", () => {
+    it("Should complete with all valid parameters", (done) => {
 
       stubModelAdd = setStub();
-      svc.add({ _id: "5a387f92ccbd71477022ea65"}, () => { });
-      stubModelAdd.restore();
-
-      assert.ok(stubModelAdd.called);
+      svc.add({ _id: "5a387f92ccbd71477022ea65" }, () => { });
+      
+      setTimeout(() =>{ //Because we are testing over a promise:
+        stubModelAdd.restore();
+        assert.ok(stubModelAdd.called); 
+        done()}, 10);
     });
     it("Shouldn't complete with a non valid callback as parameter", () => {
 
       stubModelAdd = setStub();
       assert.throws(() => {
-        svc.add({ _id: "5a387f92ccbd71477022ea65"}, "invalid callback parameter");
+        svc.add({ _id: "5a387f92ccbd71477022ea65" }, "invalid callback parameter");
       })
       stubModelAdd.restore();
 

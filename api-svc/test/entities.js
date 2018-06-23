@@ -23,9 +23,6 @@ describe("Entities", () => {
     it("Should return 'true' for the entity 'recipeingredients'", () => {
       assert.equal(entities.exists("recipeingredients"), true);
     });
-    // it("Should return 'true' for the entity 'recipeDirections'", () => {
-    //   assert.equal(entities.exists("recipeDirections"), true);
-    // });
     it("Should return 'false' for the entity 'unknownEntity'", () => {
       assert.equal(entities.exists("unknownEntity"), false);
     });
