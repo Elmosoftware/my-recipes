@@ -21,6 +21,7 @@ export class RecipeViewComponent implements OnInit {
 
   globalErrorSubscription: any;
   model: Entity;
+  modelIsReady: boolean;
   svc: EntityService;
   helper: Helper;
   preparationMode: boolean;
@@ -39,6 +40,7 @@ export class RecipeViewComponent implements OnInit {
     this.preparationMode = false;
     this.lastStepDone = 0;
     this.shoppingList = [];
+    this.modelIsReady = false; //This acts like a flag to know when data retrieval process is ready or not.
     this.helper = new Helper();
     this.svc = this.svcFac.getService("Recipe");
 
@@ -53,6 +55,8 @@ export class RecipeViewComponent implements OnInit {
           else {
             this.model = response.entities[0];
           }
+
+          this.modelIsReady = true;
         },
         err => {
           throw err

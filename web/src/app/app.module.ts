@@ -5,11 +5,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material';
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandler } from '@angular/core';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSelectModule } from "ngx-select-ex";
 import { NgxPageScrollModule } from 'ngx-page-scroll';
+import { NgProgressModule, NgProgressInterceptor } from 'ngx-progressbar';
 
 //Support Classes
 import { CustomErrorHandler } from "./custom-error-handler";
@@ -66,20 +67,22 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     MatDialogModule,
     MatSlideToggleModule,
     HttpClientModule,
-    ToastrModule.forRoot({ 
+    ToastrModule.forRoot({
       maxOpened: 5,
       closeButton: true,
       positionClass: "toast-top-right",
       timeOut: 5000
-    }), 
+    }),
     NgxSelectModule,
     NgxPageScrollModule,
-    WizardModule
+    WizardModule,
+    HttpClientModule,
+    NgProgressModule
   ],
   entryComponents: [
-    ConfirmDialogComponent, 
-    EditUnitDialog, 
-    EditLevelDialog, 
+    ConfirmDialogComponent,
+    EditUnitDialog,
+    EditLevelDialog,
     EditMealTypeDialog,
     EditIngredientDialog,
     EditRecipeDirectionDialog
@@ -90,7 +93,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     SubscriptionService,
     StandardDialogService,
     Cache,
-    ToasterHelperService
+    ToasterHelperService,
+    { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

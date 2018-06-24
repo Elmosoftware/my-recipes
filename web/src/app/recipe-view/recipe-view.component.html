@@ -3,7 +3,7 @@
 
 <!-- View Recipe -->
 <div class="container formPositioning">
-  <div *ngIf="model; else noData ">
+  <div *ngIf="model">
     <div class="row">
       <div class="col-12 text-center recipeTitle">
         {{ model.name }}
@@ -12,7 +12,8 @@
     <div class="row mt-3">
       <div class="col-sm-6 col-md-4 col-lg-2">
         <i id="tooltip1" class="fa fa-cutlery" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Plato."></i>
-        <span data-toggle="tooltip" data-placement="top" title="Tipo de plato a servir."> <!-- [title]="model.mealType.description"> -->
+        <span data-toggle="tooltip" data-placement="top" title="Tipo de plato a servir.">
+          <!-- [title]="model.mealType.description"> -->
           {{ model.mealType.name }}</span>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
@@ -21,9 +22,10 @@
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
         <i class="fa fa-signal" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Nivel de dificultad."></i>
-        <span data-toggle="tooltip" data-placement="top" title="Nivel de dificultad."> <!-- [title]="model.level.description" -->
+        <span data-toggle="tooltip" data-placement="top" title="Nivel de dificultad.">
+          <!-- [title]="model.level.description" -->
           {{ model.level.name }}</span>
-      </div> 
+      </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
         <i class="fa fa-ellipsis-v" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Cantidad de ingredientes en la preparación."></i>
         <span>{{ model.ingredients.length }}</span>
@@ -50,8 +52,7 @@
         <ul class="recipeList">
           <li *ngFor="let ing of model.ingredients">
             {{ ing.ingredient.name + ", " + ing.amount.toString() + ing.unit.abbrev }}
-            <mat-slide-toggle class="ml-1" color="primary" checked="false" [hidden]="!preparationMode" 
-            (change)="toggleShoppingListItem(ing.ingredient.name + ', ' + ing.amount.toString() + ing.unit.abbrev)">
+            <mat-slide-toggle class="ml-1" color="primary" checked="false" [hidden]="!preparationMode" (change)="toggleShoppingListItem(ing.ingredient.name + ', ' + ing.amount.toString() + ing.unit.abbrev)">
               <i class="ml-1 fa fa-cart-arrow-down fa-2x" aria-hidden="true" data-toggle="tooltip" data-placement="top" title='Agrega este ingrediente a tu lista de compras.'></i>
             </mat-slide-toggle>
           </li>
@@ -78,21 +79,19 @@
       </div>
     </div>
   </div>
-  <ng-template #noData>
-    <div class="alert alert-warning formPositioning" role="alert">
-      <div class="row">
-        <div class="col-3 align-self-center text-center">
-          <i class="fa fa-chain-broken fa-5x" aria-hidden="true"></i>
-        </div>
-        <div class="col-9 align-self-start">
-          <h3>Oops!</h3>
-          <p>
-            <strong>Parece que la receta que buscas ya no existe!.</strong>
-          </p>
-          <p>Intenta volver a nuestra
-            <a routerLink="/home">página principal</a> y buscarla por su nombre o sus ingredientes.</p>
-        </div>
+  <div *ngIf="modelIsReady && !model" class="alert alert-warning formPositioning" role="alert">
+    <div class="row">
+      <div class="col-3 align-self-center text-center">
+        <i class="fa fa-chain-broken fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="col-9 align-self-start">
+        <h3>Oops!</h3>
+        <p>
+          <strong>Parece que la receta que buscas ya no existe!.</strong>
+        </p>
+        <p>Intenta volver a nuestra
+          <a routerLink="/home">página principal</a> y buscarla por su nombre o sus ingredientes.</p>
       </div>
     </div>
-  </ng-template>
+  </div>
 </div>

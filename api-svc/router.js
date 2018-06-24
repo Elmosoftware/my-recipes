@@ -10,7 +10,7 @@ const Service = require("./service");
 //Middleware function specific to this route:
 router.use(function (req, res, next) {
     //Do anything required here like logging, etc...
-    
+
     req["context"] = new RequestContext(req);
 
     //Setting CORS Headers:
@@ -32,14 +32,21 @@ router.use(function (req, res, next) {
         return;
     }
 
-    next();
+    if (process.env.REQUESTS_ADDED_DELAY && !isNaN(Number(process.env.REQUESTS_ADDED_DELAY))) {
+        setTimeout(() => {
+            next();
+        }, Number(process.env.REQUESTS_ADDED_DELAY));
+    }
+    else{
+        next();
+    }
 });
 
 router.get("/*", function (req, res) {
 
     var filterCond = "";
     const svc = new Service(req["context"].entity);
-    
+
     /*
         This parameter can represent two things:
 

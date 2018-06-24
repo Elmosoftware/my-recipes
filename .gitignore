@@ -3,6 +3,8 @@
 *.ps1
 *.rar
 *.zip
+.env
+.env.*
 
 #Mongo DB data folder
 data/**
