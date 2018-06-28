@@ -39,8 +39,7 @@
   <script>
     $(document).ready(function () {
       //Initializing all tooltips:
-      //$('[data-toggle="tooltip"]').tooltip({container:"body"});
-      $(document.body).tooltip({ selector: '[data-toggle="tooltip"]' });
+      $(document.body).tooltip({ selector: '[data-toggle="tooltip"]', trigger : 'hover' });
       //Showing/hiding navigation bar based on page scrolling:
       $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {

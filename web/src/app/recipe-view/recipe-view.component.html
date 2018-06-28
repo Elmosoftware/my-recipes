@@ -4,9 +4,14 @@
 <!-- View Recipe -->
 <div class="container formPositioning">
   <div *ngIf="model">
-    <div class="row">
-      <div class="col-12 text-center recipeTitle">
+    <div class="row align-items-center">
+      <div class="col-11 text-center recipeTitle">
         {{ model.name }}
+      </div>
+      <div class="col-1">
+        <button id="btnEditRecipe" class="btn btn-primary" type="button" (click)="editRecipe()">
+          <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Editar esta receta."></i>
+        </button>
       </div>
     </div>
     <div class="row mt-3">

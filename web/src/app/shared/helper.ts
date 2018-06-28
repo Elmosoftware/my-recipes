@@ -1,3 +1,6 @@
+import { NgZone } from "@angular/core";
+
+declare var $: any; //jQuery
 
 export class Helper {
 
@@ -28,4 +31,12 @@ export class Helper {
 
         return ret;
     }
+
+    removeTooltips(zone: NgZone){
+        //Sadly, sometime tooltips are not workinga expected and still visible when navigatng or removing the DOM element that hold them.
+        //So, what we need to do is to remove them manually.
+        zone.runOutsideAngular(() => {
+          $("div[role=tooltip]").remove();
+        })
+      }
 }

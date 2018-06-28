@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 import { EntityServiceFactory } from "../services/entity-service-factory";
@@ -11,6 +11,8 @@ import { ErrorLog } from '../model/error-log';
 import { StandardDialogService, ConfirmDialogConfiguration } from "../standard-dialogs/standard-dialog.service";
 import { ToasterHelperService } from '../services/toaster-helper-service';
 import { SubscriptionService } from "../services/subscription.service";
+
+//declare var $: any; //jQuery
 
 @Component({
   selector: 'app-recipe-view',
@@ -28,7 +30,8 @@ export class RecipeViewComponent implements OnInit {
   lastStepDone: number;
   shoppingList: string[];
 
-  constructor(private route: ActivatedRoute,
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private subs: SubscriptionService,
     private dlgSvc: StandardDialogService,
     private svcFac: EntityServiceFactory,
@@ -68,23 +71,7 @@ export class RecipeViewComponent implements OnInit {
       
     //   $(document).ready(function () {
     //     console.log("running outside angular!");
-        
-    //     //$.fn.bootstrapTooltip = $.fn.tooltip.noConflict();
-    //     // $('[data-toggle="tooltip"]').each(() =>{
-    //     //   console.log("this");
-    //     //   $(this).tooltip({ container: "body" })
-    //     // });
-        
-    //     // $('#tooltip1').each(() =>{
-    //     //     console.log("each");
-    //     //     $(this).tooltip({ container: "body" })
-    //     //   });
-    //     //console.log($('#tooltip1'));
-
-    //     //$(document.body).tooltip({ selector: "[title]" });
-    //     // $(document.body).tooltip({ selector: '[data-toggle="tooltip"]' });
-    //     //$('[data-toggle="tooltip"]').tooltip({container:"body"});
-
+    //     $(document.body).tooltip({ selector: '[data-toggle="tooltip"]', trigger : 'hover' });
     //   });
 
     // })
@@ -162,5 +149,10 @@ export class RecipeViewComponent implements OnInit {
 
   localErrorHandler(item: ErrorLog) {
     this.toast.showError(item.getUserMessage());
+  }
+  
+  editRecipe(){
+    this.helper.removeTooltips(this.zone);
+    this.router.navigate([`/recipe/${this.model._id}`]);
   }
 }

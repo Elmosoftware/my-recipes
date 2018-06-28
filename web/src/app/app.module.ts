@@ -22,7 +22,8 @@ import { HomeComponent } from './home/home.component';
 import { BackendComponent } from './backend/backend.component';
 import { EntitiesComponent } from './backend/entities/entities.component';
 import { LatestRecipesComponent } from './home/latest-recipes/latest-recipes.component';
-import { NewRecipeComponent } from './new-recipe/new-recipe.component';
+//import { NewRecipeComponent } from './new-recipe/new-recipe.component';
+import { RecipeComponent } from "./recipe/recipe.component";
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { WizardModule } from "./shared/wizard/wizard.module";
 import { RecipeViewComponent } from './recipe-view/recipe-view.component';
@@ -55,7 +56,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     EditIngredientDialog,
     EditRecipeDirectionDialog,
     LatestRecipesComponent,
-    NewRecipeComponent,
+    //NewRecipeComponent,
+    RecipeComponent,
     NavigationBarComponent,
     RecipeViewComponent
   ],
