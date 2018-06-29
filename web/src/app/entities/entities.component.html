@@ -1,7 +1,11 @@
-<div class="my-4">
+<!-- Navigation Bar -->
+<app-navigation-bar></app-navigation-bar>
+
+<!-- Entities Component -->
+<div class="container formPositioning">
     <h4>{{title}}</h4>
 </div>
-<div *ngIf="model">
+<div class="container my-3" *ngIf="model">
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped">
             <thead>

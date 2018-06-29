@@ -1,18 +1,18 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
-import { ToasterHelperService } from "../../services/toaster-helper-service";
+import { ToasterHelperService } from "../services/toaster-helper-service";
 import { Router, ActivatedRoute, Params, Data } from "@angular/router";
 import { CommonModule, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 
-import { EntityServiceFactory } from "../../services/entity-service-factory";
-import { EntityService, EntityServiceQueryParams } from "../../services/entity-service";
-import { Entity } from "../../model/entity";
-import { ErrorLog } from '../../model/error-log';
-import { APIResponseParser } from "../../services/api-response-parser";
-import { SubscriptionService } from "../../services/subscription.service";
-import { StandardDialogService, ConfirmDialogConfiguration } from "../../standard-dialogs/standard-dialog.service";
-import { Cache, CACHE_MEMBERS } from "../../shared/cache/cache";
+import { EntityServiceFactory } from "../services/entity-service-factory";
+import { EntityService, EntityServiceQueryParams } from "../services/entity-service";
+import { Entity } from "../model/entity";
+import { ErrorLog } from '../model/error-log';
+import { APIResponseParser } from "../services/api-response-parser";
+import { SubscriptionService } from "../services/subscription.service";
+import { StandardDialogService, ConfirmDialogConfiguration } from "../standard-dialogs/standard-dialog.service";
+import { Cache, CACHE_MEMBERS } from "../shared/cache/cache";
 
 @Component({
   selector: 'app-backend-entities',
