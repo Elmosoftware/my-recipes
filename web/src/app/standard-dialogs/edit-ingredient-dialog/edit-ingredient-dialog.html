@@ -1,18 +1,23 @@
 <div class="container">
-  <div class="input-group my-2">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Nombre</span>
+  <form #dialogForm="ngForm">
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (name.valid && name.dirty), 'validatorInvalid': (name.invalid && name.dirty)}"
+          data-toggle="tooltip" data-placement="right" title="Esta información es requerida.">Nombre</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Ingrese aqui el nombre del ingrediente." [(ngModel)]="data.name" name="name"
+        required maxlength="50" autocomplete="off" #name="ngModel">
     </div>
-    <input [(ngModel)]="data.name" class="form-control" placeholder="Nombre del ingrdiente." type="text">
-  </div>
-  <div class="my-2">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Unidades de Medida</span>
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (unit.valid && unit.dirty), 'validatorInvalid': (unit.invalid && unit.dirty)}"
+          data-toggle="tooltip" data-placement="right" title="Esta información es requerida.">Nombre</span>
+      </div>
+      <ngx-select [multiple]="true" [items]="cache.units" [(ngModel)]="data.compatibleUnits" name="unit" #unit="ngModel" 
+        optionTextField="name" optionValueField="_id" placeholder="Seleccione al menos una Unidad de medida.">
+      </ngx-select>
     </div>
-    <ngx-select [multiple]="true" [items]="cache.units" [(ngModel)]="data.compatibleUnits" 
-    optionTextField="name" optionValueField="_id" placeholder="Seleccione una Unidad de medida al menos.">
-    </ngx-select>
-  </div>
+  </form>
   <mat-dialog-actions>
     <div class="container">
       <div class="row">

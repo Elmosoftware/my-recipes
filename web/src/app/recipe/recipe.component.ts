@@ -35,6 +35,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   globalErrorSubscription: any;
   wordAnalyzer: WordAnalyzerService;
   svcRecipe: EntityService;
+  svcIngredient: EntityService;
   helper: Helper;
   missingIngredients: string[];
   compatibleUnits: Entity[];
@@ -65,6 +66,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     this.wordAnalyzer = new WordAnalyzerService();
     this.helper = new Helper();
     this.svcRecipe = this.svcFactory.getService("Recipe");
+    this.svcIngredient = this.svcFactory.getService("Ingredient");
     this.globalErrorSubscription = this.subs.getGlobalErrorEmitter().subscribe(item => this.localErrorHandler(item));
     this.resetForm();
   }
@@ -162,6 +164,37 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   //#region "Ingredientes" tab methods
 
+  newIngredient() {
+
+    this.dlgSvc.showEditEntityDialog("Ingredient", this.svcIngredient.getNew()).subscribe(result => {
+
+      console.log(`Dialog closed. Result: "${result}" `);
+
+      //If the user does not cancelled the dialog:
+      if (typeof result === "object") {
+        
+        console.log(`DATA: Name= "${result.name}"`);
+        
+        this.svcIngredient.save(result).subscribe(data => {
+
+            let respData = new APIResponseParser(data);
+            console.log(`After Save`);
+            console.log(`Error:"${respData.error}", Payload:"${respData.entities}"`);
+
+            if (!respData.error) {
+              this.toast.showSuccess("El ingrediente fué agregado con éxito!");
+              //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
+              if (this.svcIngredient.getCacheKey()) {
+                this.cache.invalidateOne(this.svcIngredient.getCacheKey() as CACHE_MEMBERS)
+              }
+            }
+          }, err => {
+            throw err
+          });
+      }
+    });
+  }
+
   ingredientSelected() {
     //If the ingredient change, we need to update the list of compatible Units:
     this.newRecipeIngredient.unit = null;
@@ -193,7 +226,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     }
 
     this.model.ingredients = this.model.ingredients.filter(recipeIngredient => {
-      
+
       let ingredientId: string = "";
 
       if (typeof recipeIngredient.ingredient == "string") {
@@ -203,7 +236,8 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         ingredientId = recipeIngredient.ingredient._id;
       }
 
-      return id != ingredientId})
+      return id != ingredientId
+    })
   }
 
   ingredientExists(id): boolean {
@@ -211,7 +245,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     if (typeof id != "string") {
       id = (id as Entity)._id;
     }
-    
+
     return (this.model.ingredients.find(recipeIngredient => {
 
       let ingredientId: string = "";
