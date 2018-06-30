@@ -172,25 +172,21 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
       //If the user does not cancelled the dialog:
       if (typeof result === "object") {
-        
+
         console.log(`DATA: Name= "${result.name}"`);
-        
+
         this.svcIngredient.save(result).subscribe(data => {
 
-            let respData = new APIResponseParser(data);
-            console.log(`After Save`);
-            console.log(`Error:"${respData.error}", Payload:"${respData.entities}"`);
+          let respData = new APIResponseParser(data);
+          console.log(`After Save`);
+          console.log(`Error:"${respData.error}", Payload:"${respData.entities}"`);
 
-            if (!respData.error) {
-              this.toast.showSuccess("El ingrediente fué agregado con éxito!");
-              //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
-              if (this.svcIngredient.getCacheKey()) {
-                this.cache.invalidateOne(this.svcIngredient.getCacheKey() as CACHE_MEMBERS)
-              }
-            }
-          }, err => {
-            throw err
-          });
+          if (!respData.error) {
+            this.toast.showSuccess("El ingrediente fué agregado con éxito!");
+          }
+        }, err => {
+          throw err
+        });
       }
     });
   }
@@ -204,7 +200,12 @@ export class RecipeComponent implements OnInit, AfterViewInit {
         "ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked".
     */
     setTimeout(() => {
-      this.compatibleUnits = (this.getIngredientFromCache(this.newRecipeIngredient.ingredient) as any).compatibleUnits;
+
+      let ing: Entity = this.getIngredientFromCache(this.newRecipeIngredient.ingredient);
+
+      if (ing) {
+        this.compatibleUnits = (ing as any).compatibleUnits;
+      }
     });
   }
 
@@ -356,7 +357,12 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     if (this.model) {
       //If not yet, we cached the current list of ingredients set in the "Ingredientes" form step:
       this.model.ingredients.forEach(item => {
-        ret.push((this.getIngredientFromCache(item.ingredient) as any).name)
+        
+        let ing: Entity = this.getIngredientFromCache(item.ingredient);
+
+        if (ing) {
+          ret.push((ing as any).name);
+        }
       })
     }
 

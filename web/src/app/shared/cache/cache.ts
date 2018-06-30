@@ -25,7 +25,14 @@ export class Cache extends CacheRepository {
 
     constructor(private svcFactory: EntityServiceFactory) {
         super();
+        console.log("Cache Created");
         
+        /*
+            We set this cache in the service factory: (This will enable the services to invalidate caches on CRUD ops as needed):
+            It will be easier to add "Cache" as a dependency on the Services itself, but there will be a circular dependency issue :-)
+        */
+        svcFactory.setCache(this);
+
         this.svcIngredient = this.svcFactory.getService("Ingredient");
         this.svcLevel = this.svcFactory.getService("Level");
         this.svcMealType = this.svcFactory.getService("MealType");
@@ -52,12 +59,12 @@ export class Cache extends CacheRepository {
 
     public invalidateOne(key: CACHE_MEMBERS){
         let item: CacheItem = super.get(key);
-        console.log(`CACHE ${item.key} INVALIDATED`);
+        console.log(`CACHE INVALIDATED for: ${item.key}`)
         item.invalidate();
     }
 
     public invalidateAll(){
-        console.log("CACHE INVALIDATED");
+        console.log("ALL CACHE INVALIDATED");
         super.invalidate();
     }
 

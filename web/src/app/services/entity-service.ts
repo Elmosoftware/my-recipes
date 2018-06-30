@@ -4,6 +4,7 @@ import { environment } from "../../environments/environment";
 
 import { Entity } from "../model/entity";
 import { EntityFactory, EntityDef } from "../model/entity-factory";
+import { Cache, CACHE_MEMBERS } from "../shared/cache/cache";
 
 export class EntityService {
 
@@ -11,7 +12,16 @@ export class EntityService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private entityDef: EntityDef, private http: HttpClient) { }
+  constructor(private entityDef: EntityDef, 
+    private http: HttpClient,
+    private cache: Cache) { }
+
+  private invalidateCache(){
+    //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
+    if (this.getCacheKey()) {
+      this.cache.invalidateOne(this.getCacheKey() as CACHE_MEMBERS)
+    }
+  }
 
   getNew(): Entity {
     return this.entityDef.getInstance();
@@ -35,6 +45,8 @@ export class EntityService {
 
   save(entity): Observable<Object> {
 
+    this.invalidateCache();
+    
     //If it's an update:
     if (entity._id) {
       return this.http.put(this.getUrl(entity._id), entity, this.httpOptions);
@@ -45,6 +57,9 @@ export class EntityService {
   }
 
   delete(id: string): Observable<Object> {
+
+    this.invalidateCache()
+
     return this.http.delete(this.getUrl(id), this.httpOptions);
   }
 

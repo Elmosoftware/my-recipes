@@ -111,10 +111,10 @@ export class EntitiesComponent implements OnInit {
             if (!respData.error) {
               this.toast.showSuccess("Los cambios se guardaron con éxito!");
               this.dataRefresh();
-              //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
-              if (this.svc.getCacheKey()) {
-                this.cache.invalidateOne(this.svc.getCacheKey() as CACHE_MEMBERS)
-              }
+              // //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
+              // if (this.svc.getCacheKey()) {
+              //   this.cache.invalidateOne(this.svc.getCacheKey() as CACHE_MEMBERS)
+              // }
             }
           }, err => {
             throw err
@@ -142,10 +142,10 @@ export class EntitiesComponent implements OnInit {
               if (!respData.error) {
                 this.toast.showSuccess("El elemento ha sido eliminado.");
                 this.dataRefresh();
-                //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
-                if (this.svc.getCacheKey()) {
-                  this.cache.invalidateOne(this.svc.getCacheKey() as CACHE_MEMBERS)
-                }
+                // //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
+                // if (this.svc.getCacheKey()) {
+                //   this.cache.invalidateOne(this.svc.getCacheKey() as CACHE_MEMBERS)
+                // }
               }
             }, err => {
               throw err
