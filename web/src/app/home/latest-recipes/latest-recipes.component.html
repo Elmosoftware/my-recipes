@@ -1,11 +1,11 @@
 <a id="recently-added"></a>
-<div *ngIf="model && model.length; else noData ">
+<div *ngIf="cache.latestRecipes && cache.latestRecipes.length; else noData ">
   <div class="jumbotron recently-added-section">
     <div class="container my-3">
       <div class="row">
-        <div *ngFor="let recipe of model" class="col-md-4">
+        <div *ngFor="let recipe of cache.latestRecipes" class="col-md-4">
           <h3>{{ recipe.name }}</h3>
-          <p [innerHtml]="getShortText(recipe.description)"></p>
+          <p [innerHtml]="helper.getShortText(recipe.description)"></p>
           <p>
             <a class="btn btn-secondary" routerLink="/recipe-view/{{recipe._id}}" role="button">View details »</a>
           </p>
@@ -20,3 +20,4 @@
         <a routerLink="/new-recipe">crear una nueva</a>?</h6>
     </div>
   </ng-template>
+</div>

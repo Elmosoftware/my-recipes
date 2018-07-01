@@ -4,12 +4,12 @@ declare var $: any; //jQuery
 
 export class Helper {
 
-    constructor(){
+    constructor() {
     }
 
-    estimatedFriendlyTime(timeInMinutes: number): string{      
+    estimatedFriendlyTime(timeInMinutes: number): string {
 
-        let hours: number = Math.trunc(timeInMinutes/60);
+        let hours: number = Math.trunc(timeInMinutes / 60);
         let mins: number = (hours > 0) ? timeInMinutes - (hours * 60) : timeInMinutes;
         let ret: string = "";
 
@@ -25,18 +25,22 @@ export class Helper {
             ret += " y ";
         }
 
-        if(mins > 0 || (hours + mins == 0)){
+        if (mins > 0 || (hours + mins == 0)) {
             ret += `${mins} minutos`
         }
 
         return ret;
     }
 
-    removeTooltips(zone: NgZone){
+    removeTooltips(zone: NgZone) {
         //Sadly, sometime tooltips are not workinga expected and still visible when navigatng or removing the DOM element that hold them.
         //So, what we need to do is to remove them manually.
         zone.runOutsideAngular(() => {
-          $("div[role=tooltip]").remove();
+            $("div[role=tooltip]").remove();
         })
-      }
+    }
+
+    getShortText(text: string, maxLength: number = 150, posfix: string = "&hellip;") {
+        return (text && text.length > maxLength) ? text.substr(0, maxLength - 1) + '&hellip;' : text;
+    }
 }

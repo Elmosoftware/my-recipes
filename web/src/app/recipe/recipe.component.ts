@@ -381,6 +381,10 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
         if (!respData.error) {
           this.toast.showSuccess("Los cambios se guardaron con éxito!");
+          //If this is a new recipe, we need to invalidate the "LatestRecipes" cache:
+          if (this.isNewRecipe) {
+            this.cache.invalidateOne(CACHE_MEMBERS.LatestRecipes);
+          }
           this.isCompleted = true;
         }
       }, err => {

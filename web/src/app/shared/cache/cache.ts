@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityServiceFactory } from "../../services/entity-service-factory";
-import { EntityService } from "../../services/entity-service";
+import { EntityService, EntityServiceQueryParams } from "../../services/entity-service";
 import { APIResponseParser } from "../../services/api-response-parser";
 import { Entity } from "../../model/entity";
 import { CacheItem } from "./cache-item";
@@ -10,7 +10,8 @@ export const enum CACHE_MEMBERS {
     Ingredients = "INGREDIENTS",
     Levels = "LEVELS",
     MealTypes = "MEALTYPES",
-    Units = "UNITS"
+    Units = "UNITS",
+    LatestRecipes = "LATEST_RECIPES"
 };
 
 @Injectable()
@@ -20,6 +21,7 @@ export class Cache extends CacheRepository {
     private svcLevel: EntityService;
     private svcMealType: EntityService;
     private svcUnit: EntityService;
+    private svcRecipe: EntityService;
 
     private readonly DEFAULT_DURATION: number = (10 * 60); //Default 10 minutes cache duration.
 
@@ -37,6 +39,7 @@ export class Cache extends CacheRepository {
         this.svcLevel = this.svcFactory.getService("Level");
         this.svcMealType = this.svcFactory.getService("MealType");
         this.svcUnit = this.svcFactory.getService("Unit");
+        this.svcRecipe = this.svcFactory.getService("Recipe");
 
         this.initialize();
     }
@@ -46,6 +49,7 @@ export class Cache extends CacheRepository {
         super.add(this.createCacheLevels());
         super.add(this.createCacheMealTypes());
         super.add(this.createCacheUnits());
+        super.add(this.createCacheLatestRecipes());
     }
 
     private refreshStaleCache(item: CacheItem): void {
@@ -67,24 +71,6 @@ export class Cache extends CacheRepository {
         console.log("ALL CACHE INVALIDATED");
         super.invalidate();
     }
-
-    //#region Ingredients
-    private createCacheIngredients(): CacheItem {
-        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Ingredients, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
-        item.setRefreshCallback(this, this.refreshCacheIngredients);
-        return item;
-    }
-
-    private refreshCacheIngredients(): Promise<Object> {
-        return this.svcIngredient.getAll().toPromise();
-    }
-
-    public get ingredients(): Entity[] {
-        let item: CacheItem = super.get(CACHE_MEMBERS.Ingredients);
-        this.refreshStaleCache(item);        
-        return new APIResponseParser(item.value).entities;
-    }
-    //#endregion
 
     //#region Levels
     private createCacheLevels(): CacheItem {
@@ -137,6 +123,43 @@ export class Cache extends CacheRepository {
         let item: CacheItem = super.get(CACHE_MEMBERS.Units);
         this.refreshStaleCache(item);
         return new APIResponseParser(item.value).entities
+    }
+    //#endregion
+
+    //#region Ingredients
+    private createCacheIngredients(): CacheItem {
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Ingredients, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
+        item.setRefreshCallback(this, this.refreshCacheIngredients);
+        return item;
+    }
+
+    private refreshCacheIngredients(): Promise<Object> {
+        return this.svcIngredient.getAll().toPromise();
+    }
+
+    public get ingredients(): Entity[] {
+        let item: CacheItem = super.get(CACHE_MEMBERS.Ingredients);
+        this.refreshStaleCache(item);        
+        return new APIResponseParser(item.value).entities;
+    }
+    //#endregion
+
+    //#region Latest Recipes
+    private createCacheLatestRecipes(): CacheItem {
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.LatestRecipes, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
+        item.setRefreshCallback(this, this.refreshCacheLatestRecipes);
+        return item;
+    }
+
+    private refreshCacheLatestRecipes(): Promise<Object> {
+        let q = new EntityServiceQueryParams("false", "3", "", "-createdOn");
+        return this.svcRecipe.getByFilter("", q).toPromise();
+    }
+
+    public get latestRecipes(): Entity[] {
+        let item: CacheItem = super.get(CACHE_MEMBERS.LatestRecipes);
+        this.refreshStaleCache(item);        
+        return new APIResponseParser(item.value).entities;
     }
     //#endregion
 }
