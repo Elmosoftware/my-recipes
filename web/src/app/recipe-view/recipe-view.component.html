@@ -77,7 +77,7 @@
           <span class="col-3 offset-3 col-md-3 offset-md-3">Preparación</span>
         </div>
         <div class="mb-2 recipeList" *ngFor="let dir of model.directions; let i = index">
-          <button [disabled]="!preparationMode" class="btn btn-primary rounded-circle text-center recipeListButton" type="button" (click)="stepDone(i+1)"
+          <button [disabled]="!preparationMode" class="btn btn-primary rounded-circle text-center roundedList" type="button" (click)="stepDone(i+1)"
             [ngClass]="{'stepMarkedAsDone': lastStepDone >= (i+1)}">{{ i + 1 }}</button>
           {{ dir }}
         </div>

@@ -25,6 +25,7 @@ import { RecipeComponent } from "./recipe/recipe.component";
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import { WizardModule } from "./shared/wizard/wizard.module";
 import { RecipeViewComponent } from './recipe-view/recipe-view.component';
+import { SearchComponent } from './search/search.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -45,6 +46,7 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
   declarations: [
     AppComponent,
     HomeComponent,
+    SearchComponent,
     EntitiesComponent,
     ConfirmDialogComponent,
     EditUnitDialog,
@@ -55,7 +57,7 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     LatestRecipesComponent,
     RecipeComponent,
     NavigationBarComponent,
-    RecipeViewComponent
+    RecipeViewComponent    
   ],
   imports: [
     FormsModule,

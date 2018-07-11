@@ -63,9 +63,6 @@ class ServiceValidator extends ValidatorBase {
         else if (query.skip || query.top) {
             this._validatePagination(query.skip, query.top);
         }
-        else if (query.sort) {
-            this._validateSorting(query.sort);
-        }
         else if (query.pop) {
             this._validatePopulateReferences(query.pop);
         }
@@ -127,21 +124,6 @@ class ServiceValidator extends ValidatorBase {
         else if (top != "" && Number(top) <= 0) {
             ret = `The pagination parameter "top" can't be negative or zero.
                 Current value: "top"=${top}.`;
-        }
-
-        if (ret) {
-            super._addError(ret);
-        }
-
-        return this;
-    }
-
-    _validateSorting(sort, allowEmpty = true) {
-        var ret = "";
-
-        if (!(typeof sort === "string")) {
-            ret = `We expected a String for the parameter "sort".
-                Current type: "sort" is "${typeof sort}".`;
         }
 
         if (ret) {

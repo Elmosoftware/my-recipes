@@ -158,10 +158,10 @@ class Service {
             });
     }
 
-    find(conditions, query, callback) {
+    find(conditions, projection, query, callback) {
         var val = new ServiceValidator();
         var cursor = null;
-
+        
         if (!val.validateCallback(callback)
             .validateConditions(conditions, false)
             .validateQuery(query)
@@ -169,7 +169,7 @@ class Service {
             return (callback(val.getErrors(), {}));
         }
 
-        cursor = this._entity.model.find(this._parseConditions(conditions))
+        cursor = this._entity.model.find(this._parseConditions(conditions), projection)
             .skip(Number(query.skip));
 
         if (query.top) {

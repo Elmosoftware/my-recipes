@@ -14,6 +14,7 @@ class RequestContext {
         this._entity = null;
         this._params = new Array();
         this._paramIsFilter = false;
+        this._paramIsTextSearch = false;
         this._query = { top: "", skip: "", sort: "", pop:""};
         this._hasQueryParameters = false;
         this._url = "";
@@ -58,6 +59,8 @@ class RequestContext {
     get params() { return this._params; }
     
     get paramIsFilter() { return this._paramIsFilter; }
+    
+    get paramIsTextSearch() { return this._paramIsTextSearch; }
     
     get query() { return this._query; }
 
@@ -113,6 +116,11 @@ class RequestContext {
 
                 if (path[i]) {
                     this._paramIsFilter = (path[i].startsWith("{"));
+
+                    if (this._paramIsFilter) {
+                        this._paramIsTextSearch = (path[i].indexOf(`"$text":`) != -1) ? true : false;
+                    }
+
                     this._params.push(path[i]);
                 }
             }

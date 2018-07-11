@@ -15,25 +15,17 @@ body{
 /* FORMS */
 
 .validatorInvalid::after{
-  /* content: " !";
-  color: red;
-  font-weight: bold; */
   font-family: FontAwesome;
   content: "\f00d";
   display: inline-block;
   padding-left: 0.5em;
-  /* vertical-align: middle; */
   color: #a94442;
 }
 .validatorValid::after{
-  /* content: " V";
-  color: green;
-  font-weight: bold; */
   font-family: FontAwesome;
   content: "\f00c";
   display: inline-block;
   padding-left: 0.5em;
-  /* vertical-align: middle; */
   color: #42A948;
 }
 
@@ -41,48 +33,29 @@ body{
   Helper classes 
   ----------------------------------------- 
 */
-
-/* .link-unstyled {
-    &,
-    &:visited,
-    &:hover,
-    &:active,
-    &:focus,
-    &:active:hover {
-      font-style: inherit;
-      color: inherit;
-      background-color: transparent;
-      font-size: inherit;
-      text-decoration: none;
-      font-variant: inherit;
-      font-weight: inherit;
-      line-height: inherit;
-      font-family: inherit;
-      border-radius: inherit;
-      border: inherit;
-      outline: inherit;
-      box-shadow: inherit;
-      padding: inherit;
-      vertical-align: inherit;
-    }
-  } */
-
-  .hlp-unstyled {
-      font-style: inherit;
-      color: inherit;
-      background-color: transparent;
-      font-size: inherit;
-      text-decoration: none;
-      font-variant: inherit;
-      font-weight: inherit;
-      line-height: inherit;
-      font-family: inherit;
-      border-radius: inherit;
-      /* border: inherit; */
-      outline: inherit;
-      box-shadow: inherit;
-      padding: inherit;
-      vertical-align: inherit;
+.hlp-unstyled {
+    font-style: inherit;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    text-decoration: none;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    border-radius: inherit;
+    outline: inherit;
+    box-shadow: inherit;
+    padding: inherit;
+    vertical-align: inherit;
   }
+
+  .roundedList{
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 800;
+    font-size: 1em;
+    height: 3em;
+    width: 3em;
+}
 
 

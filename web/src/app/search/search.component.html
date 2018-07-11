@@ -1,0 +1,33 @@
+<!-- Navigation Bar -->
+<app-navigation-bar></app-navigation-bar>
+
+<!-- Search Component -->
+<div class="container formPositioning col-lg-8 col-sm">
+  <div class="row my-2">
+    <div class="col-12">
+      <div class="input-group input-group-md">
+        <input type="text" class="form-control" aria-label="Search" [(ngModel)]="params.term">
+        <div class="input-group-append">
+          <button [disabled]="!modelIsReady" class="btn btn-default" (click)="search()">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-5" *ngIf="modelIsReady">
+    <div class="col-12" *ngFor="let recipe of model">
+      <a routerLink="/recipe-view/{{recipe._id}}" role="button">
+        <h4 [innerHTML]="recipe.name"></h4>
+      </a>
+      <p [innerHTML]="recipe.description"></p>
+      <div class="mb-2" *ngFor="let dir of recipe.directions; let i = index">
+        <small *ngIf="dir">
+          <button class="btn btn-secondary rounded-circle text-center roundedList" type="button">{{ i + 1 }}</button>
+          <span [innerHTML]="dir"></span>
+        </small>
+      </div>
+      <hr>
+    </div>
+  </div>
+</div>
