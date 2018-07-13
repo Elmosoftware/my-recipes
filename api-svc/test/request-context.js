@@ -8,7 +8,7 @@ function getReq(url, method, query) {
   const ret = {
     url: "",
     method: "",
-    query: {top: "", skip: "", sort: "", pop: ""}
+    query: {top: "", skip: "", sort: "", pop: "", filter: ""}
   }
   
   if (url) {
@@ -102,7 +102,63 @@ describe("RequestContext", () => {
   });
   describe("Context for GET /api/units/?{query parameters}", () => {
     
-    const context = new RequestContext(getReq("/units/?top=10&skip=4&sort=-abbrev name", "GET", {top: "10", skip: "4", sort: "-abbrev name", pop:""}));
+    const context = new RequestContext(getReq("/units/?top=10&skip=4&sort=-abbrev name&filter={ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }", 
+      "GET", {top: "10", skip: "4", sort: "-abbrev name", pop: "", 
+        filter: "{ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }"}));
+
+    it("Method is 'GET'", () => {
+      assert.equal(context.method, "GET");
+    });
+    it("Method is allowed", () => {
+      assert.equal(context.isMethodAllowed, true);
+    });
+    it("Entity is in context", () => {
+      assert.ok(context.entity);
+    });
+    it("Model is 'units'", () => {
+      assert.equal(context.model.modelName, "UnitOfMeasure");
+    });
+    it("modelPopulateOpts is an empty string", () => {
+      assert.equal(context.modelPopulateOpts, "");
+    });
+    it("params has no elements", () => {
+      assert.equal(context.params.length, 0);
+    });
+    it("query.top value is right", () => {
+      assert.equal(context.query.top, 10);
+    });
+    it("query.skip value is right", () => {
+      assert.equal(context.query.skip, 4);
+    });
+    it("query.sort value is right", () => {
+      assert.equal(context.query.sort, "-abbrev name");
+    });
+    it("query.pop value is right", () => {
+      assert.equal(context.query.pop, "");
+    });
+    it("query.filter value is right", () => {
+      assert.equal(context.query.filter, "{ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }");
+    });
+    it("url is '/units/?top=10&skip=4&sort=-abbrev name&filter={ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }'", () => {
+      assert.equal(context.url, "/units/?top=10&skip=4&sort=-abbrev name&filter={ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }");
+    });
+    it("hasQueryParameters is true", () => {
+      assert.equal(context.hasQueryParameters, true);
+    });
+    it("filterIsTextSearch is false", () => {
+      assert.equal(context.filterIsTextSearch, false);
+    });
+    it("getStatusCode() for Success returns 200", () => {
+      assert.equal(context.getStatusCode(null), 200);
+    });
+    it("getStatusCode() for Error returns 500", () => {
+      assert.equal(context.getStatusCode(new Error("Error")), 500);
+    });
+  });
+  describe("Context for GET /api/units/?{query parameters with full text search filter}", () => {
+    
+    const context = new RequestContext(getReq(`/units/?top=10&skip=4&sort=-abbrev name&pop=false&filter={"$text":{"$search":"\\"receta\\""}}`, "GET", 
+      {top: "10", skip: "4", sort: "-abbrev name", pop:"false", filter:`{"$text":{"$search":"\\"receta\\""}}`}));
 
     it("Method is 'GET'", () => {
       assert.equal(context.method, "GET");
@@ -132,64 +188,19 @@ describe("RequestContext", () => {
       assert.equal(context.query.sort, "-abbrev name");
     });
     it("query.pop value is right", () => {
-      assert.equal(context.query.pop, "");
-    });
-    it("url is '/units/?top=10&skip=4&sort=-abbrev name'", () => {
-      assert.equal(context.url, "/units/?top=10&skip=4&sort=-abbrev name");
-    });
-    it("hasQueryParameters is true", () => {
-      assert.equal(context.hasQueryParameters, true);
-    });
-    it("getStatusCode() for Success returns 200", () => {
-      assert.equal(context.getStatusCode(null), 200);
-    });
-    it("getStatusCode() for Error returns 500", () => {
-      assert.equal(context.getStatusCode(new Error("Error")), 500);
-    });
-  });
-  describe("Context for GET /api/units/{filter expression}/?{query parameters}", () => {
-    
-    const context = new RequestContext(getReq("/units/{ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }/?top=10&skip=4&sort=-abbrev name&pop=false", "GET", 
-      {top: "10", skip: "4", sort: "-abbrev name", pop:"false"}));
-
-    it("Method is 'GET'", () => {
-      assert.equal(context.method, "GET");
-    });
-    it("Method is allowed", () => {
-      assert.equal(context.isMethodAllowed, true);
-    });
-    it("Entity is in context", () => {
-      assert.ok(context.entity);
-    });
-    it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
-    });
-    it("modelPopulateOpts is and empty string", () => {
-      assert.equal(context.modelPopulateOpts, "");
-    });
-    it("params has one single element", () => {
-      assert.equal(context.params.length, 1);
-    });
-    it("params[0] matches the filter expression", () => {
-      assert.equal(context.params[0], "{ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }");
-    });
-    it("query.top value is right", () => {
-      assert.equal(context.query.top, 10);
-    });
-    it("query.skip value is right", () => {
-      assert.equal(context.query.skip, 4);
-    });
-    it("query.sort value is right", () => {
-      assert.equal(context.query.sort, "-abbrev name");
-    });
-    it("query.pop value is right", () => {
       assert.equal(context.query.pop, "false");
     });
-    it("url is '/units/{ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }/?top=10&skip=4&sort=-abbrev name&pop=false'", () => {
-      assert.equal(context.url, "/units/{ '$or' : [ { 'abbrev': 'UNIT07' }, { 'abbrev': 'UNIT12' } ] }/?top=10&skip=4&sort=-abbrev name&pop=false");
+    it("query.filter value is right", () => {
+      assert.equal(context.query.filter, `{"$text":{"$search":"\\"receta\\""}}`);
+    });
+    it(`url is: /units/?top=10&skip=4&sort=-abbrev name&pop=false&filter={"$text":{"$search":"\\"receta\\""}}`  , () => {
+      assert.equal(context.url, `/units/?top=10&skip=4&sort=-abbrev name&pop=false&filter={"$text":{"$search":"\\"receta\\""}}`);
     });
     it("hasQueryParameters is true", () => {
       assert.equal(context.hasQueryParameters, true);
+    });
+    it("filterIsTextSearch is true", () => {
+      assert.equal(context.filterIsTextSearch, true);
     });
     it("getStatusCode() for Success returns 200", () => {
       assert.equal(context.getStatusCode(null), 200);

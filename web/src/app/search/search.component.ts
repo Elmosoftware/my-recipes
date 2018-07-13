@@ -68,19 +68,10 @@ export class SearchComponent implements OnInit {
 
   search() {
 
-    let q = new EntityServiceQueryParams("false");
+    let q = new EntityServiceQueryParams("false", JSON.stringify({ $text: { $search: this.params.term}}));
+    
     this.modelIsReady = false;
-
-    //this.svcRecipe.getByFilter(`{"$text": {"$search": ${JSON.stringify(this.params.term)}}}`, q)
-
-/*
-
-JSON.stringify({ $text: { $search: bus}})
-"{"$text":{"$search":"\"busq\""}}"
-
-*/
-
-    this.svcRecipe.getByFilter(JSON.stringify({ $text: { $search: this.params.term}}), q)
+    this.svcRecipe.get("", q)
       .subscribe(
         data => {
           let response: APIResponseParser = new APIResponseParser(data);
@@ -102,7 +93,6 @@ JSON.stringify({ $text: { $search: bus}})
         let r: Recipe = (recipe as Recipe);
 
         r.name = this.wordAnalyzer.searchAndReplaceWord(r.name, this.params.term, this.params.HTMLHighlightedTerm);
-        //r.description = this.wordAnalyzer.searchAndReplaceWord(r.description, this.params.term, this.params.HTMLHighlightedTerm);
         r.description = this.wordAnalyzer.searchReplaceAndHighlightWord(r.description, this.params.term,
           this.params.HTMLHighlightedTerm, { surroundingTextLong: 100, maxOcurrences: 3 });
 
@@ -115,8 +105,6 @@ JSON.stringify({ $text: { $search: bus}})
           //If the search term is not in the recipe direction, we will remove it from the list.
           //There is no reason to keep the direction if the search term is not on it! :-)
           if (r.directions[i] == origDir) {
-            // r.directions.splice(i, 1);
-            // i--;
             r.directions[i] = "";
           }
           else { 

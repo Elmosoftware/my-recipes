@@ -44,40 +44,34 @@ router.use(function (req, res, next) {
 
 router.get("/*", function (req, res) {
 
-    var filterCond = "";
     const svc = new Service(req["context"].entity);
+    var condition = ""; //This is the search condition. Could be an Object Id or a JSON filter.
     var projection = null;
 
     /*
-        This parameter can represent two things:
-
-        1st- An object ID:
-        ==================
-        GET /api/myentity/5a319f76f45778387c6835f7 -> This will retrieve one single document searching by ID.
-
-        2nd- A filter/full text search condition:
-        =========================================
-        GET /api/myentity/{ "name": { "$in": [ "U7", "U8" ] } } -> This will retrieve all the documents that fullfill the condition.
-        Or a text search condition:
-        GET /api/recipes/{"$text": {"$search": "my search term"}}
-
-        So far, just the first parameter is processed, if there is others, those will be ignored.
+        The first element in the "params" collections is an Object ID, (e.g: "5a319f76f45778387c6835f7"), a 
+        document unique identifier.
+        NOTE: So far, just the first parameter is processed, if there is others, those will be ignored.
     */
     if (req["context"].params.length > 0) {
-        filterCond = req["context"].params[0];
+        condition = req["context"].params[0];
     }
+    else if(req["context"].query.filter) { //If the condition is not an Object ID, we look at the filter querystring parameter:
 
-    //If the filter condition is a FULL test search condition:
-    if (req["context"].paramIsTextSearch) {
-        //We add the projections and sort conditions so we can return the results sorted by relevance:
-        projection = {score: {$meta: "textScore"}};
+        condition = req["context"].query.filter
 
-        if (!req["context"].query.sort) {
-            req["context"].query.sort = {score:{$meta:"textScore"}};
+        //If the filter condition is a FULL test search condition:
+        if (req["context"].filterIsTextSearch) {
+            //We add the projections and sort conditions so we can return the results sorted by relevance:
+            projection = { score: { $meta: "textScore" }};
+
+            if (!req["context"].query.sort) {
+                req["context"].query.sort = { score: { $meta:"textScore" }};
+            }
         }
-    }
+    }   
 
-    svc.find(filterCond, projection, req["context"].query, (err, data) => {
+    svc.find(condition, projection, req["context"].query, (err, data) => {
         handleResponse(res, err, data, req["context"].getStatusCode(err));
     });
 });

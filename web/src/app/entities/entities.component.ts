@@ -52,7 +52,7 @@ export class EntitiesComponent implements OnInit {
   }
 
   dataRefresh() {
-    this.svc.getAll()
+    this.svc.get("", null)
       .subscribe(
         data => {
           this.model = new APIResponseParser(data).entities;
@@ -78,7 +78,7 @@ export class EntitiesComponent implements OnInit {
 
       let query = new EntityServiceQueryParams("false")
 
-      this.svc.getById(entityId, query)
+      this.svc.get(entityId, query)
         .subscribe(data => {
           let ent = new APIResponseParser(data).entities[0];
           this.editAndSave(ent);

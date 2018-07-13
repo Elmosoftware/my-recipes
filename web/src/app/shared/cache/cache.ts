@@ -80,7 +80,7 @@ export class Cache extends CacheRepository {
     }
 
     private refreshCacheLevels(): Promise<Object> {
-        return this.svcLevel.getAll().toPromise();
+        return this.svcLevel.get("", null).toPromise();
     }
 
     public get levels(): Entity[] {
@@ -98,7 +98,7 @@ export class Cache extends CacheRepository {
     }
 
     private refreshCacheMealTypes(): Promise<Object> {
-        return this.svcMealType.getAll().toPromise();
+        return this.svcMealType.get("", null).toPromise();
     }
 
     public get mealTypes(): Entity[] {
@@ -116,7 +116,7 @@ export class Cache extends CacheRepository {
     }
 
     private refreshCacheUnits(): Promise<Object> {
-        return this.svcUnit.getAll().toPromise();
+        return this.svcUnit.get("", null).toPromise();
     }
 
     public get units(): Entity[] {
@@ -134,7 +134,7 @@ export class Cache extends CacheRepository {
     }
 
     private refreshCacheIngredients(): Promise<Object> {
-        return this.svcIngredient.getAll().toPromise();
+        return this.svcIngredient.get("", null).toPromise();
     }
 
     public get ingredients(): Entity[] {
@@ -152,8 +152,8 @@ export class Cache extends CacheRepository {
     }
 
     private refreshCacheLatestRecipes(): Promise<Object> {
-        let q = new EntityServiceQueryParams("false", "3", "", "-createdOn");
-        return this.svcRecipe.getByFilter("", q).toPromise();
+        let q = new EntityServiceQueryParams("false", "", "3", "", "-createdOn");
+        return this.svcRecipe.get("", q).toPromise();
     }
 
     public get latestRecipes(): Entity[] {

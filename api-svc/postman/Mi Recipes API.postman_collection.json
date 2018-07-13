@@ -1,0 +1,1787 @@
+{
+	"info": {
+		"_postman_id": "26367228-e99c-b787-b7fd-2c92f4db315a",
+		"name": "Mi Recipes API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Units",
+			"description": "",
+			"item": [
+				{
+					"name": "POST",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/units/",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"abbrev\": \"UNIT28\",\n\"name\": \"Unit Name 28\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "PUT",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/units/Valid id but not existent id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"abbrev\": \"UNIT12\",\r\n\"name\": \"Unit Name 12 UPDATED 3\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/units/5a319f95f41155387c6835f2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"units",
+										"5a319f95f41155387c6835f2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/Valid id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"abbrev\": \"UNIT12\",\r\n\"name\": \"Unit Name 12 UPDATED 5\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/5a319f98f45778387c6835f8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"5a319f98f45778387c6835f8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"abbrev\": \"UNIT03\",\r\n\"name\": \"Unit Name 3 UPDATED\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/units/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"units",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/Invalid Id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"abbrev\": \"UNIT03\",\r\n\"name\": \"Unit Name 3 UPDATED\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/units/111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"units",
+										"111"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "DELETE",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/units/Valid id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/5aae775587a1d70918bf4011",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"5aae775587a1d70918bf4011"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/Non-Existent Id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/5aae4ff3505f4a1c1c8aa83a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"5aae4ff3505f4a1c1c8aa83a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/InValid Id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/4ssse",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"4ssse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/{Filter Condition}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/{ \"$or\" : [ { \"abbrev\": \"UNIT07\" }, { \"abbrev\": \"UNIT12\" } ] }",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"{ \"$or\" : [ { \"abbrev\": \"UNIT07\" }, { \"abbrev\": \"UNIT12\" } ] }"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/units/ {No filter}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/?",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/?",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/ {Filter condition}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/?filter={ \"$or\" : [ { \"abbrev\": \"cm3\" }, { \"abbrev\": \"g\" } ] }",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										""
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{ \"$or\" : [ { \"abbrev\": \"cm3\" }, { \"abbrev\": \"g\" } ] }"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/ {Filter condition}?And pagination",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/{ \"$or\" : [ { \"abbrev\": \"cm3\" }, { \"abbrev\": \"g\" } ] }?sort=name",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"{ \"$or\" : [ { \"abbrev\": \"cm3\" }, { \"abbrev\": \"g\" } ] }"
+									],
+									"query": [
+										{
+											"key": "sort",
+											"value": "name"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/ {pagination}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/?top=3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										""
+									],
+									"query": [
+										{
+											"key": "top",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/Valid id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/5af1fd7a52bf1d8be0edd403",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"5af1fd7a52bf1d8be0edd403"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/units/Invalid id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/1111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"1111"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										""
+									]
+								},
+								"description": "Test to hit the root API"
+							},
+							"response": []
+						},
+						{
+							"name": "/api/invalidentity",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/invalid",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"invalid"
+									]
+								},
+								"description": "Test to hit an invalid entity"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Levels",
+			"description": "",
+			"item": [
+				{
+					"name": "POST",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/levels/",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Level 03\",\n\"description\": \"This is Level 03\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "PUT",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/levels/Valid id but not existent id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Level 02\",\n\"description\": \"This is Level 02 UPDATED\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/5a319f95f41151387c6835f2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										"5a319f95f41151387c6835f2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/Valid id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Level 01\",\n\"description\": \"This is Level 01 UPDATED\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/5aae9bf7d096af48709a21dd",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										"5aae9bf7d096af48709a21dd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"abbrev\": \"UNIT03\",\r\n\"name\": \"Unit Name 3 UPDATED\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/Invalid Id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"abbrev\": \"UNIT03\",\r\n\"name\": \"Unit Name 3 UPDATED\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/1111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										"1111"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "DELETE",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/levels/Valid id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/5ac5807bb024698bf804acc4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										"5ac5807bb024698bf804acc4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/non-existent",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/units/5aae4ff3505f4a1c1c8aa83f",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										"5aae4ff3505f4a1c1c8aa83f"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/levels/ {No filter}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/ {Filter condition}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/?filter={ \"$or\" : [ { \"name\": \"Básico\" }, { \"name\": \"Avanzado\" } ] }",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										""
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "{ \"$or\" : [ { \"name\": \"Básico\" }, { \"name\": \"Avanzado\" } ] }"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/ {pagination}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/?top=3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										""
+									],
+									"query": [
+										{
+											"key": "top",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/Valid id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/5af1fa1252bf1d8be0edd3ff",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										"5af1fa1252bf1d8be0edd3ff"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/levels/Invalid id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/levels/111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"levels",
+										"111"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "MealTypes",
+			"description": "",
+			"item": [
+				{
+					"name": "GET",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/mealtypes/ {No filter}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/mealtypes/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"mealtypes",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/mealtypes/ {Filter condition}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/mealtypes/?filter{ \"$or\" : [ { \"name\": \"Desayuno\" }, { \"name\": \"Aperitivo\" } ] }",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"mealtypes",
+										""
+									],
+									"query": [
+										{
+											"key": "filter{ \"$or\" : [ { \"name\": \"Desayuno\" }, { \"name\": \"Aperitivo\" } ] }",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/mealtypes/ {pagination}",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/mealtypes/?top=3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"mealtypes",
+										""
+									],
+									"query": [
+										{
+											"key": "top",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/mealtypes/Valid id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/mealtypes/5af1f92f52bf1d8be0edd3fd",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"mealtypes",
+										"5af1f92f52bf1d8be0edd3fd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/mealtypes/Invalid id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/mealtypes/111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"mealtypes",
+										"111"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "POST",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/mealtypes/",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Test dates 3\",\n\"description\": \"This is TEST  DATES 3\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/mealtypes/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"mealtypes",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "PUT",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/mealtypes/Valid Id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"name\": \"Test dates 3\",\n\"description\": \"This is TEST  DATES 3 UPDATED\"\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/mealtypes/5aee5bacec16886ac4d4dd2a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"mealtypes",
+										"5aee5bacec16886ac4d4dd2a"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Ingredients",
+			"description": "",
+			"item": [
+				{
+					"name": "GET",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/ingredients/",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/ingredients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"ingredients",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/ingredients/?pop=false",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/ingredients/?pop=false",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"ingredients",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "false"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/ingredients/:id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/ingredients/5af2000c52bf1d8be0edd409",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"ingredients",
+										"5af2000c52bf1d8be0edd409"
+									]
+								},
+								"description": "Return an ingredient ginding by id"
+							},
+							"response": []
+						},
+						{
+							"name": "/api/ingredients/:id {invalid id format}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/ingredients/1111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"ingredients",
+										"1111"
+									]
+								},
+								"description": "Return an ingredient ginding by id"
+							},
+							"response": []
+						},
+						{
+							"name": "/api/ingredients/:id {non-existent id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/ingredients/5a35822e0a66be24b8d56faa",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"ingredients",
+										"5a35822e0a66be24b8d56faa"
+									]
+								},
+								"description": "Return an ingredient ginding by id"
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "POST",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/ingredients/",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"INGR02\",\r\n\"compatibleUnits\":[\"5a1b55d8ee211d57141ec4fb\"]\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/ingredients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"ingredients",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/ingredients/ non existent comp unit",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"INGR02\",\r\n\"compatibleUnits\":[\"5ffb55d8ee211d57141ec4fb\"]\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/ingredients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"ingredients",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/ingredients/ invalid compatible unit ids",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"INGR02\",\r\n\"compatibleUnits\":[\"aaa\",\"1111\"]\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/ingredients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"ingredients",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Invalid Requests",
+			"description": "",
+			"item": [
+				{
+					"name": "/api/non-existent-model/ {non existent model}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:3000/api/non-existent-model/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"non-existent-model",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/units/ {non supported method}",
+					"request": {
+						"method": "LOCK",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:3000/api/units/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"units",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes",
+			"description": "",
+			"item": [
+				{
+					"name": "POST",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/recipes/",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"My 4th Recipe\",\r\n\t\"description\": \"This is my recipe description\",\r\n\t\"estimatedTime\": \"30\",\r\n\t\"level\": \"5ac6ebf32303413084121f3d\",\r\n\t\"mealType\": \"5ac8a90e97c9bf375c2fff3e\",\r\n\t\"ingredients\": [\r\n\t\t{\r\n\t\t\t\"ingredient\": \"5ac27c982b7d8b42887ab37b\",\r\n\t\t\t\"amount\": \"3\",\r\n\t\t\t\"unit\": \"5a1b55d8ee211d57141ec4fb\"\r\n\t\t}\r\n\t\t],\r\n\t\"directions\" : [\"4th Primero hacer esto.\", \"4th Luego hacer lo otro.\", \"4th Y al final lastrarlo.\"]\r\n} "
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ {Test to create on the fly Mealtype",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"TEST 202\",\r\n\t\"description\": \"This is my recipe test\",\r\n\t\"estimatedTime\": \"30\",\r\n\t\"level\": \"5aae9bf7d096af48709a21dd\",\r\n\t\"mealType\": {\"name\": \"On The fly 202\", \"description\": \"On the fly meal type test\"},\r\n\t\"ingredients\": [\r\n\t\t{\r\n\t\t\t\"ingredient\": \"5ac27c982b7d8b42887ab37b\",\r\n\t\t\t\"amount\": \"202\",\r\n\t\t\t\"unit\": \"5a1b572526fa5818f8a82536\"\r\n\t\t}\r\n\t\t],\r\n\t\"directions\" : [\"Primero hacer esto.\", \"Luego hacer lo otro.\", \"Y al final lastrarlo.\"]\r\n} "
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/recipes/",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ Latest",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/?top=3&sort=-lastUpdateOn -createdOn&pop=true",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									],
+									"query": [
+										{
+											"key": "top",
+											"value": "3"
+										},
+										{
+											"key": "sort",
+											"value": "-lastUpdateOn -createdOn"
+										},
+										{
+											"key": "pop",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ Search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/?pop=false&filter={\"$text\":{\"$search\":\"\\\"receta\\\"\"}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "false"
+										},
+										{
+											"key": "filter",
+											"value": "{\"$text\":{\"$search\":\"\\\"receta\\\"\"}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "PUT",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/recipes/{Valid id}",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"My 2nd Recipe\",\r\n\t\"description\": \"This is my recipe description UPD\",\r\n\t\"estimatedTime\": \"30\",\r\n\t\"level\": \"5aae9bf7d096af48709a21dd\",\r\n\t\"mealType\": \"5ac8a94097c9bf375c2fff40\",\r\n\t\"ingredients\": [\r\n\t\t{\r\n\t\t\t\"ingredient\": \"5acc343e71d8618538bfa242\",\r\n\t\t\t\"amount\": \"3\",\r\n\t\t\t\"unit\": \"5a43f45f9ff96867941dfde5\"\r\n\t\t}\r\n\t\t],\r\n\t\"directions\" : [\"2nd Primero hacer esto.\", \"2nd Luego hacer lo otro.\", \"2nd Y al final lastrarlo.\"]\r\n} \r\n"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/5af1f1c761dcee739c575d92",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										"5af1f1c761dcee739c575d92"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/{Valid id} Adding Ingredient",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"TEST 201\",\r\n\t\"description\": \"This is my recipe test UPDATED\",\r\n\t\"estimatedTime\": \"30\",\r\n\t\"level\": \"5aae9bf7d096af48709a21dd\",\r\n\t\"mealType\": \"5ae44f01e8c1e217f88b4b09\",\r\n\t\"ingredients\": [\r\n\t\t\"5ae44f03e8c1e217f88b4b0a\",\r\n\t\t{\r\n\t\t\t\"ingredient\": \"5aae9717cadcc74b1455a4da\",\r\n\t\t\t\"amount\": \"43\",\r\n\t\t\t\"unit\": \"5a1b572526fa5818f8a82536\"\r\n\t\t}\r\n\t\t],\r\n\t\"directions\" : [\"Primero hacer esto.\", \"Luego hacer lo otro.\", \"Y al final lastrarlo.\"]\r\n} "
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/5ae44ef7e8c1e217f88b4b08",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										"5ae44ef7e8c1e217f88b4b08"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "RecipeIngredients",
+			"description": "",
+			"item": [
+				{
+					"name": "POST",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/recipeingredients/",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"recipe\": \"5ad95d7fd55d674cf0a91576\",\r\n\t\"ingredient\": \"5ac27c982b7d8b42887ab37b\",\r\n\t\"amount\": \"1\",\r\n\t\"unit\": \"5a1b572526fa5818f8a82536\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/recipeingredients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipeingredients",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "GET",
+					"description": "",
+					"item": [
+						{
+							"name": "/api/recipeingredients/",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipeingredients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipeingredients",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}

@@ -82,7 +82,7 @@ describe("Service", () => {
     it("Should complete with no parameters", () => {
 
       stubModelFind = setStub();
-      svc.find("", setQuery(), () => { });
+      svc.find("", null, setQuery(), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -90,7 +90,7 @@ describe("Service", () => {
     it("Should complete with all valid parameters", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("100", "0", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "0", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -98,7 +98,7 @@ describe("Service", () => {
     it("Should complete with valid parameters and empty query object", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery(), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery(), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -106,7 +106,7 @@ describe("Service", () => {
     it("Shouldn't complete with valid parameters and a null query object", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, null, () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -115,7 +115,7 @@ describe("Service", () => {
 
       stubModelFind = setStub();
       assert.throws(() => {
-        svc.find("5a387f92ccbd71477022ea65", setQuery("100", "0", "my sort", ""), "invalid callback parameter");
+        svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "0", "my sort", ""), "invalid callback parameter");
       })
       stubModelFind.restore();
 
@@ -125,7 +125,7 @@ describe("Service", () => {
 
       stubModelFind = setStub();
       //assert.throws(() => {
-      svc.find("invalid conditions", setQuery("100", "0", "my sort", ""), () => { });
+      svc.find("invalid conditions", null, setQuery("100", "0", "my sort", ""), () => { });
       //})
       stubModelFind.restore();
 
@@ -134,7 +134,7 @@ describe("Service", () => {
     it("Shouldn't complete with a non string or number 'skip' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("100", new Object(), "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", new Object(), "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -142,7 +142,7 @@ describe("Service", () => {
     it("Shouldn't complete with a non string or number 'top' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery(new Object(), "0", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery(new Object(), "0", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -150,7 +150,7 @@ describe("Service", () => {
     it("Shouldn't complete with a string 'skip' parameter that is not a number", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("0", "not a number", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "not a number", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -158,7 +158,7 @@ describe("Service", () => {
     it("Shouldn't complete with a string 'top' parameter that is not a number", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("not a number", "0", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("not a number", "0", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -166,7 +166,7 @@ describe("Service", () => {
     it("Shouldn't complete with a negative 'skip' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("100", "-1", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "-1", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -174,7 +174,7 @@ describe("Service", () => {
     it("Shouldn't complete with a negative string 'top' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("-1", "0", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("-1", "0", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -182,7 +182,7 @@ describe("Service", () => {
     it("Shouldn't complete with a string 'top' parameter with value 0", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("0", "0", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -190,7 +190,7 @@ describe("Service", () => {
     it("Shouldn't complete with a not string type 'sort' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("0", "0", new Object(), ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", new Object(), ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -198,7 +198,7 @@ describe("Service", () => {
     it("Should complete with an empty string top and skip parameters", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("", "", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("", "", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -206,7 +206,7 @@ describe("Service", () => {
     it("Should complete with an empty string 'top' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("", "0", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("", "0", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -214,7 +214,7 @@ describe("Service", () => {
     it("Should complete with an empty string 'skip' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("100", "", "my sort", ""), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "", "my sort", ""), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -222,7 +222,7 @@ describe("Service", () => {
     it("Shouldn't complete with a not string type 'pop' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("0", "0", new Object(), 1), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", new Object(), 1), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -230,7 +230,7 @@ describe("Service", () => {
     it("Shouldn't complete with a 'pop' parameter that is not 'true', 'false' or an empty string", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("0", "0", new Object(), "invalid parameter value"), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", new Object(), "invalid parameter value"), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -238,7 +238,7 @@ describe("Service", () => {
     it("Should complete with a valid 'pop' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", setQuery("100", "", "my sort", "true"), () => { });
+      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "", "my sort", "true"), () => { });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);

@@ -47,7 +47,7 @@ export class RecipeViewComponent implements OnInit {
     this.helper = new Helper();
     this.svc = this.svcFac.getService("Recipe");
 
-    this.svc.getById(this.route.snapshot.paramMap.get("id"))
+    this.svc.get(this.route.snapshot.paramMap.get("id"), null)
       .subscribe(
         data => {
           let response: APIResponseParser = new APIResponseParser(data);

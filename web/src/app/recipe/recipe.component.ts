@@ -86,7 +86,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     this.isCompleted = false;
 
     if (!this.isNewRecipe) {
-      this.svcRecipe.getById(this.route.snapshot.paramMap.get("id"), new EntityServiceQueryParams("true"))
+      this.svcRecipe.get(this.route.snapshot.paramMap.get("id"), new EntityServiceQueryParams("true"))
         .subscribe(
           data => {
             let response: APIResponseParser = new APIResponseParser(data);
