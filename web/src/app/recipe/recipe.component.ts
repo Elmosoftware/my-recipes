@@ -321,8 +321,8 @@ export class RecipeComponent implements OnInit, AfterViewInit {
       let unit = this.getUnitFromCache(this.model.ingredients[i].unit)
       let unitAbbrev: string = (unit) ? (unit as any).abbrev : "";
 
-      direction = this.wordAnalyzer.searchAndReplaceWord(direction, ingredient,
-        `<abbr title="Utilizando ${amount}${unitAbbrev} en esta preparación.">${ingredient}</abbr>`);
+      direction = this.wordAnalyzer.searchAndReplaceWord(direction, 
+        new Map([[ingredient, `<abbr title="Utilizando ${amount}${unitAbbrev} en esta preparación.">${ingredient}</abbr>`]]));
     })
 
     return direction;

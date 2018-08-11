@@ -14,8 +14,13 @@ export class APIResponseParser {
         let e: Error = null;
 
         try {
-            this.error = JSON.parse(responseData.error);
-            this.entities = JSON.parse(responseData.payload);
+            this.error = responseData.error;
+            this.entities = responseData.payload;
+            this.headers = {};
+
+            if (responseData.headers) {
+                this.headers = responseData.headers;
+            }
         } catch (error) {
             e = new Error(`There was an error parsing the API response data.\n${error}`)
             e.stack = error.stack
@@ -36,4 +41,9 @@ export class APIResponseParser {
      * API call payload.
      */
     entities: Entity[];
+
+    /**
+     * Special Headers sent by the API. An easy way to get them ;-)
+     */
+    headers: any;
 }

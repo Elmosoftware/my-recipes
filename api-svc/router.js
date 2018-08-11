@@ -21,14 +21,14 @@ router.use(function (req, res, next) {
     //Check if the request is for a valid entity:
     if (!req["context"].entity) {
         handleResponse(res, new Error(`The requested URI is invalid: "${encodeURI(req["context"].url)}"`),
-            {}, HttpStatus.BAD_REQUEST);
+            {}, null, HttpStatus.BAD_REQUEST);
         return;
     }
 
     //Check if the method is supported:
     if (!req["context"].isMethodAllowed) {
         handleResponse(res, new Error(`The requested method is not supported by this API. Method: "${encodeURI(req["context"].method)}"`),
-            {}, req["context"].getStatusCode(null));
+            {}, null, req["context"].getStatusCode(null));
         return;
     }
 
@@ -37,7 +37,7 @@ router.use(function (req, res, next) {
             next();
         }, Number(process.env.REQUESTS_ADDED_DELAY));
     }
-    else{
+    else {
         next();
     }
 });
@@ -47,6 +47,8 @@ router.get("/*", function (req, res) {
     const svc = new Service(req["context"].entity);
     var condition = ""; //This is the search condition. Could be an Object Id or a JSON filter.
     var projection = null;
+    var promises = [];
+    var isCounting = (req["context"].query.count.toLowerCase() == "true")
 
     /*
         The first element in the "params" collections is an Object ID, (e.g: "5a319f76f45778387c6835f7"), a 
@@ -56,24 +58,47 @@ router.get("/*", function (req, res) {
     if (req["context"].params.length > 0) {
         condition = req["context"].params[0];
     }
-    else if(req["context"].query.filter) { //If the condition is not an Object ID, we look at the filter querystring parameter:
+    else if (req["context"].query.filter) { //If the condition is not an Object ID, we look at the filter querystring parameter:
 
         condition = req["context"].query.filter
 
         //If the filter condition is a FULL test search condition:
         if (req["context"].filterIsTextSearch) {
             //We add the projections and sort conditions so we can return the results sorted by relevance:
-            projection = { score: { $meta: "textScore" }};
+            projection = { score: { $meta: "textScore" } };
 
             if (!req["context"].query.sort) {
-                req["context"].query.sort = { score: { $meta:"textScore" }};
+                req["context"].query.sort = { score: { $meta: "textScore" } };
             }
         }
-    }   
+    }
 
-    svc.find(condition, projection, req["context"].query, (err, data) => {
-        handleResponse(res, err, data, req["context"].getStatusCode(err));
-    });
+    //If we are counting records:
+    if (isCounting) {
+        promises.push(svc.count(condition));
+    }
+
+    promises.push(svc.find(condition, projection, req["context"].query));
+
+    Promise.all(promises)
+        .then((results) => {
+            try {
+                let headers = null;
+
+                if (isCounting) {
+                    res.setHeader("X-Total-Count", results[0]);
+                    headers = { XTotalCount : results[0] };
+                }
+                
+                handleResponse(res, null, results[results.length-1], headers, req["context"].getStatusCode(null));
+
+            } catch (err) {
+                handleResponse(res, err, {}, null, req["context"].getStatusCode(null));
+            }
+        })
+        .catch((err) => {
+            handleResponse(res, err, {}, null, req["context"].getStatusCode(null));
+        });
 });
 
 router.post("/*", function (req, res) {
@@ -81,7 +106,7 @@ router.post("/*", function (req, res) {
     const svc = new Service(req["context"].entity);
 
     svc.add(req.body, (err, data) => {
-        handleResponse(res, err, data, req["context"].getStatusCode(err));
+        handleResponse(res, err, data, null, req["context"].getStatusCode(err));
     });
 });
 
@@ -91,13 +116,13 @@ router.put("/*", function (req, res) {
 
     if (req["context"].params.length > 0) {
         svc.update(req["context"].params[0], req.body, (err, data) => {
-            handleResponse(res, err, data, req["context"].getStatusCode(err));
+            handleResponse(res, err, data, null, req["context"].getStatusCode(err));
         });
     }
     else {
         handleResponse(res, new Error(`You need to specify the "_id" of the target document to update. Massive updates are forbidden.
             Following context Details:
-            Req URL: "${encodeURI(req["context"].url)}"`), {}, HttpStatus.BAD_REQUEST);
+            Req URL: "${encodeURI(req["context"].url)}"`), {}, null, HttpStatus.BAD_REQUEST);
     }
 });
 
@@ -107,18 +132,18 @@ router.delete("/*", function (req, res) {
 
     if (req["context"].params.length > 0) {
         svc.delete(req["context"].params[0], (err, data) => {
-            handleResponse(res, err, data, req["context"].getStatusCode(err));
+            handleResponse(res, err, data, null, req["context"].getStatusCode(err));
         });
     }
     else {
         handleResponse(res, new Error(`You need to specify the "_id" of the target document to delete. Massive deletions are forbidden.
         Following context Details:
-        Req URL: "${encodeURI(req["context"].url)}"`), {}, HttpStatus.BAD_REQUEST);
+        Req URL: "${encodeURI(req["context"].url)}"`), {}, null, HttpStatus.BAD_REQUEST);
     }
 });
 
-function handleResponse(res, err, data, statusCode) {
-    res.status(statusCode).json(new ResponseBody(err, data));
+function handleResponse(res, err, data, headers, statusCode) {
+    res.status(statusCode).json(new ResponseBody(err, data, headers));
 }
 
 module.exports = router;

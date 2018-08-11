@@ -13,10 +13,12 @@ export const enum CACHE_MEMBERS {
     Units = "UNITS",
     LatestRecipes = "LATEST_RECIPES"
 };
+export const DEFAULT_API_RESULT = { error: null, payload: [] };
 
 @Injectable()
 export class Cache extends CacheRepository {
 
+    private 
     private svcIngredient: EntityService;
     private svcLevel: EntityService;
     private svcMealType: EntityService;
@@ -74,7 +76,7 @@ export class Cache extends CacheRepository {
 
     //#region Levels
     private createCacheLevels(): CacheItem {
-        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Levels, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Levels, this.DEFAULT_DURATION, DEFAULT_API_RESULT);
         item.setRefreshCallback(this, this.refreshCacheLevels);
         return item;
     }
@@ -92,7 +94,7 @@ export class Cache extends CacheRepository {
 
     //#region MealTypes
     private createCacheMealTypes(): CacheItem {
-        let item: CacheItem = new CacheItem(CACHE_MEMBERS.MealTypes, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.MealTypes, this.DEFAULT_DURATION, DEFAULT_API_RESULT);
         item.setRefreshCallback(this, this.refreshCacheMealTypes);
         return item;
     }
@@ -110,7 +112,7 @@ export class Cache extends CacheRepository {
     
     //#region Units
     private createCacheUnits(): CacheItem {
-        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Units, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Units, this.DEFAULT_DURATION, DEFAULT_API_RESULT);
         item.setRefreshCallback(this, this.refreshCacheUnits);
         return item;
     }
@@ -128,7 +130,7 @@ export class Cache extends CacheRepository {
 
     //#region Ingredients
     private createCacheIngredients(): CacheItem {
-        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Ingredients, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.Ingredients, this.DEFAULT_DURATION, DEFAULT_API_RESULT);
         item.setRefreshCallback(this, this.refreshCacheIngredients);
         return item;
     }
@@ -146,13 +148,16 @@ export class Cache extends CacheRepository {
 
     //#region Latest Recipes
     private createCacheLatestRecipes(): CacheItem {
-        let item: CacheItem = new CacheItem(CACHE_MEMBERS.LatestRecipes, this.DEFAULT_DURATION, { error: "null", payload: "[]" });
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.LatestRecipes, this.DEFAULT_DURATION, DEFAULT_API_RESULT);
         item.setRefreshCallback(this, this.refreshCacheLatestRecipes);
         return item;
     }
 
     private refreshCacheLatestRecipes(): Promise<Object> {
-        let q = new EntityServiceQueryParams("false", "", "3", "", "-createdOn");
+        let q = new EntityServiceQueryParams();
+        q.pop = "true";
+        q.top = "3";
+        q.sort = "-createdOn";
         return this.svcRecipe.get("", q).toPromise();
     }
 

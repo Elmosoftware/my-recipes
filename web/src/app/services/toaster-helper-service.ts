@@ -1,5 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Title } from '@angular/platform-browser';
 
 /**
  * Helper class for the ngx-toastr component.
@@ -17,10 +18,9 @@ export class ToasterHelperService {
      * Shows an error message in a toaster.
      * @param message Message to show in the toaster.
      */
-    showError(message) {
+    showError(message, title = 'Ooops!, algo no anduvo bien... :-(') {
         this.zone.run(() => {
-            this.toastr.error(message, 
-                'Ooops!, algo no anduvo bien... :-(');
+            this.toastr.error(message, title);
         });
     }
 
@@ -28,10 +28,9 @@ export class ToasterHelperService {
      * Shows a success message in a toaster.
      * @param message Message to show in the toaster.
      */
-    showSuccess(message) {
+    showSuccess(message, title = 'Ok!') {
         this.zone.run(() => {
-            this.toastr.success(message, 
-                'Ok!');
+            this.toastr.success(message, title);
         });
     }
 
@@ -39,10 +38,9 @@ export class ToasterHelperService {
      * Shows an informational message message in a toaster.
      * @param message Message to show in the toaster.
      */
-    showInformation(message) {
+    showInformation(message, title ='Info...') {
         this.zone.run(() => {
-            this.toastr.info(message, 
-                'Info...');
+            this.toastr.info(message, title);
         });
     }
 
@@ -50,10 +48,9 @@ export class ToasterHelperService {
      * Shows a warning message in a toaster.
      * @param message Message to show in the toaster.
      */
-    showWarning(message) {
+    showWarning(message, title = 'Atención!') {
         this.zone.run(() => {
-            this.toastr.warning(message,
-                'Atención!');
+            this.toastr.warning(message, title);
           });
     }
 }

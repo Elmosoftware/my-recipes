@@ -111,12 +111,15 @@ export class EntityService {
 
 export class EntityServiceQueryParams {
 
-  constructor(pop: string = "", filter: string = "", top: string = "", skip: string = "", sort: string = "") {
+  constructor(pop: string = "", filter: string = "", top: string = "", skip: string = "", 
+    sort: string = "", count: string = "", fields: string = "") {
     this.pop = pop;
     this.top = top;
     this.skip = skip;
     this.sort = sort;
     this.filter = filter;
+    this.count = count;
+    this.fields = fields;
   }
   
   top: string;
@@ -124,6 +127,8 @@ export class EntityServiceQueryParams {
   sort: string;
   pop: string;
   filter: string;
+  count: string;
+  fields: string;
 
   getQueryString(): string {
 

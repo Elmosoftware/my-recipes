@@ -66,6 +66,12 @@ class ServiceValidator extends ValidatorBase {
         else if (query.pop) {
             this._validatePopulateReferences(query.pop);
         }
+        else if (query.count) {
+            this._validateCount(query.count);
+        }
+        else if (query.fields) {
+            this._validateFields(query.field);
+        }
 
         if (ret) {
             super._addError(ret);
@@ -137,12 +143,46 @@ class ServiceValidator extends ValidatorBase {
         var ret = "";
 
         if (!(typeof pop === "string")) {
-            ret = `We expected a String or Number for the "populate references" query parameter "pop".
+            ret = `We expected a String for the "populate references" query parameter "pop".
                         Current type: "pop" is "${typeof pop}".`;
         }
         else if (!(pop == "" || pop == "true" || pop == "false")) {
             ret = `The "populate references" parameter "pop" can accept only the following values: "true", "false" or empty, (which by default will turn to "true").
                         Current value: "pop"=${pop}.`;
+        }
+
+        if (ret) {
+            super._addError(ret);
+        }
+
+        return this;
+    }
+
+    _validateCount(value) {
+        var ret = "";
+
+        if (!(typeof value === "string")) {
+            ret = `We expected a String for the "Count records" query parameter "count".
+                        Current type: "count" is "${typeof value}".`;
+        }
+        else if (!(value == "" || value == "true" || value == "false")) {
+            ret = `The "Count Records" parameter "count" can accept only the following values: "true", "false" or empty, (which by default will turn to "false").
+                        Current value: "count"=${value}.`;
+        }
+
+        if (ret) {
+            super._addError(ret);
+        }
+
+        return this;
+    }
+
+    _validateFields(value) {
+        var ret = "";
+
+        if (!(typeof value === "string")) {
+            ret = `We expected a String for the "Fields selection" query parameter "fields".
+                        Current type: "fields" is "${typeof value}".`;
         }
 
         if (ret) {

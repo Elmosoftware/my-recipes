@@ -12,8 +12,9 @@ import { NgxSelectModule } from "ngx-select-ex";
 import { NgxPageScrollModule } from 'ngx-page-scroll';
 import { NgProgressModule, NgProgressInterceptor } from 'ngx-progressbar';
 
-//Support Classes
+//Support Classes and Modules
 import { CustomErrorHandler } from "./custom-error-handler";
+import { InfiniteScrollingModule } from "./shared/infinite-scrolling/infinite-scrolling-module";
 
 //Components
 import { AppComponent } from './app.component';
@@ -57,7 +58,7 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     LatestRecipesComponent,
     RecipeComponent,
     NavigationBarComponent,
-    RecipeViewComponent    
+    RecipeViewComponent
   ],
   imports: [
     FormsModule,
@@ -77,7 +78,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     NgxPageScrollModule,
     WizardModule,
     HttpClientModule,
-    NgProgressModule
+    NgProgressModule,
+    InfiniteScrollingModule
   ],
   entryComponents: [
     ConfirmDialogComponent,

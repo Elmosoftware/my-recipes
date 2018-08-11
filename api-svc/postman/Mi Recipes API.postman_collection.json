@@ -431,7 +431,7 @@
 							"response": []
 						},
 						{
-							"name": "/api/units/ {pagination}",
+							"name": "/api/units/ {pagination and Count}",
 							"request": {
 								"method": "GET",
 								"header": [
@@ -446,7 +446,7 @@
 									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
 								},
 								"url": {
-									"raw": "http://localhost:3000/api/units/?top=3",
+									"raw": "http://localhost:3000/api/units/?top=3&count=true",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -461,6 +461,10 @@
 										{
 											"key": "top",
 											"value": "3"
+										},
+										{
+											"key": "count",
+											"value": "true"
 										}
 									]
 								}
@@ -1578,7 +1582,7 @@
 								"header": [],
 								"body": {},
 								"url": {
-									"raw": "http://localhost:3000/api/recipes/?top=3&sort=-lastUpdateOn -createdOn&pop=true",
+									"raw": "http://localhost:3000/api/recipes/?top=3&sort=-lastUpdateOn -createdOn&pop=false&fields=name description",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1600,7 +1604,11 @@
 										},
 										{
 											"key": "pop",
-											"value": "true"
+											"value": "false"
+										},
+										{
+											"key": "fields",
+											"value": "name description"
 										}
 									]
 								}

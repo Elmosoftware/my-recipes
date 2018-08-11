@@ -158,19 +158,34 @@ class Service {
             });
     }
 
-    find(conditions, projection, query, callback) {
+    count(conditions) {
+        var val = new ServiceValidator();
+
+        if (!val.validateConditions(conditions, false)
+            .isValid) {
+            return Promise.reject(val.getErrors());
+        }
+
+        return this._entity.model.count(this._parseConditions(conditions))
+            .exec();
+    }
+
+    find(conditions, projection, query) {
         var val = new ServiceValidator();
         var cursor = null;
         
-        if (!val.validateCallback(callback)
-            .validateConditions(conditions, false)
+        if (!val.validateConditions(conditions, false)
             .validateQuery(query)
             .isValid) {
-            return (callback(val.getErrors(), {}));
+            return Promise.reject(val.getErrors());
         }
 
         cursor = this._entity.model.find(this._parseConditions(conditions), projection)
             .skip(Number(query.skip));
+
+        if (query.fields) {
+            cursor.select(query.fields);
+        }
 
         if (query.top) {
             cursor.limit(Number(query.top));
@@ -293,7 +308,7 @@ class Service {
             })
         }
 
-        cursor.exec(callback);
+        return cursor.exec();
     }
 
     delete(conditions, callback) {

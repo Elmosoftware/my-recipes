@@ -13,7 +13,7 @@ class RequestContext {
         this._method = "";
         this._entity = null;
         this._params = new Array();
-        this._query = { top: "", skip: "", sort: "", pop: "", filter: "" };
+        this._query = { top: "", skip: "", sort: "", pop: "", filter: "", count: "", fields: "" };
         this._hasQueryParameters = false;
         this._url = "";
         this._setContext(req);
@@ -162,15 +162,6 @@ class RequestContext {
                 this._entity = entities.getEntity(parsedURL.entity);
             }
         }
-
-        // if (parsedURL.IDOrFilter) {
-        //     this._params.push(parsedURL.IDOrFilter);
-        //     // this._paramIsFilter = parsedURL.IDOrFilter.startsWith("{");
-
-        //     // if (this._paramIsFilter) {
-        //     //     this._paramIsTextSearch = (parsedURL.IDOrFilter.indexOf(`"$text":`) != -1) ? true : false;
-        //     // }
-        // }
 
         this._params = parsedURL.params;
 

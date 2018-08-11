@@ -2,32 +2,49 @@
 <app-navigation-bar></app-navigation-bar>
 
 <!-- Search Component -->
-<div class="container formPositioning col-lg-8 col-sm">
-  <div class="row my-2">
-    <div class="col-12">
-      <div class="input-group input-group-md">
-        <input type="text" class="form-control" aria-label="Search" [(ngModel)]="params.term">
-        <div class="input-group-append">
-          <button [disabled]="!modelIsReady" class="btn btn-default" (click)="search()">
-            <i class="fa fa-search"></i>
-          </button>
+<a id="topSearch"></a>
+<div class="row sticky-top formPositioning align-items-center">
+  <div class="col-12 alert alert-info">
+    <div class="input-group input-group-md">
+      <input #txtSearch type="text" class="form-control" aria-label="Search" autofocus [(ngModel)]="params.term" (keyup.enter)="search()">
+      <div class="input-group-append">
+        <button [disabled]="!params.termIsValid" class="btn btn-default" (click)="search()">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container col-lg-8 col-sm">
+  <div infinite-scrolling [scrollWindow]="true" (scrollEnd)="onScrollEndHandler($event)">
+    <div class="row my-5" *ngIf="svcInfScroll.model && svcInfScroll.model.length > 0">
+      <div class="col-12" *ngFor="let recipe of svcInfScroll.model">
+        <a routerLink="/recipe-view/{{recipe._id}}" role="button">
+          <h4 [innerHTML]="recipe.name"></h4>
+        </a>
+        <p [innerHTML]="recipe.description"></p>
+        <div class="mb-2" *ngFor="let dir of recipe.directions; let i = index">
+          <small *ngIf="dir">
+            <button class="btn btn-secondary rounded-circle text-center roundedList" type="button">{{ i + 1 }}</button>
+            <span [innerHTML]="dir"></span>
+          </small>
         </div>
+        <hr>
       </div>
     </div>
   </div>
-  <div class="row my-5" *ngIf="modelIsReady">
-    <div class="col-12" *ngFor="let recipe of model">
-      <a routerLink="/recipe-view/{{recipe._id}}" role="button">
-        <h4 [innerHTML]="recipe.name"></h4>
-      </a>
-      <p [innerHTML]="recipe.description"></p>
-      <div class="mb-2" *ngFor="let dir of recipe.directions; let i = index">
-        <small *ngIf="dir">
-          <button class="btn btn-secondary rounded-circle text-center roundedList" type="button">{{ i + 1 }}</button>
-          <span [innerHTML]="dir"></span>
-        </small>
-      </div>
-      <hr>
-    </div>
+</div>
+<a id="bottomSearch"></a>
+<div *ngIf="svcInfScroll.model && svcInfScroll.model.length > 0" class="row align-items-center alert alert-info fixed-bottom">
+  <div class="col align-self-start">
+    Mostrando {{ svcInfScroll.count }} resultados de un total de {{ svcInfScroll.totalCount }} coincidencias.
   </div>
+  <button type="button" pageScroll href="#topSearch" class="btn btn-primary btn-sm" [disabled]="asyncInProgress" (click)="fullScrollUp()"
+    data-toggle="tooltip" data-placement="top" title="Ir al primer resultado de la búsqueda.">
+    <i class="fa fa-chevron-up fa-1x"></i>
+  </button>
+  <button type="button" pageScroll href="#bottomSearch" class="btn btn-primary btn-sm ml-2" [disabled]="asyncInProgress" (click)="fullScrollDown()"
+    data-toggle="tooltip" data-placement="top" title="Ir al final o buscar más resultados.">
+    <i class="fa fa-chevron-down fa-1x"></i>
+  </button>
 </div>

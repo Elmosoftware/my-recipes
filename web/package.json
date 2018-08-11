@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "core-js": "^2.4.1",
+    "ngx-infinite-scroll": "^0.9.0",
     "ngx-page-scroll": "^4.0.2",
     "ngx-progressbar": "^2.1.1",
     "ngx-select-ex": "^3.5.4",
