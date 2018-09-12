@@ -5,18 +5,11 @@
 <a id="topSearch"></a>
 <div class="row sticky-top formPositioning align-items-center">
   <div class="col-12 alert alert-info">
-    <div class="input-group input-group-md">
-      <input #txtSearch type="text" class="form-control" aria-label="Search" autofocus [(ngModel)]="params.term" (keyup.enter)="search()">
-      <div class="input-group-append">
-        <button [disabled]="!params.termIsValid" class="btn btn-default" (click)="search()">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-    </div>
+    <search-box [searchType]="svcSearch.searchType" [initialTerm]="initialValues.term" [initialId]="initialValues.id" (search)="onSearchHandler($event)"></search-box>
   </div>
 </div>
 <div class="container col-lg-8 col-sm">
-  <div infinite-scrolling [scrollWindow]="true" (scrollEnd)="onScrollEndHandler($event)">
+  <div *ngIf="svcInfScroll.model && svcInfScroll.model.length > 0" infinite-scrolling [scrollWindow]="true" (scrollEnd)="onScrollEndHandler($event)">
     <div class="row my-5" *ngIf="svcInfScroll.model && svcInfScroll.model.length > 0">
       <div class="col-12" *ngFor="let recipe of svcInfScroll.model">
         <a routerLink="/recipe-view/{{recipe._id}}" role="button">
@@ -29,7 +22,31 @@
             <span [innerHTML]="dir"></span>
           </small>
         </div>
+        <div *ngIf="recipe.ingredients" class="mb-2">
+          <ul>
+            <li *ngFor="let ing of recipe.ingredients">
+              {{ ing.ingredient.name + ", " + ing.amount.toString() + ing.unit.abbrev }}
+            </li>
+          </ul>
+        </div>
         <hr>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="svcInfScroll.model && svcInfScroll.model.length == 0" class="alert alert-warning formPositioning" role="alert">
+    <div class="row">
+      <div class="col-3 align-self-center text-center">
+        <i class="fa fa-chain-broken fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="col-9 align-self-start">
+        <h3>Oops!</h3>
+        <p>
+          <strong>La búsqueda que realizaste no devolvió ningún resultado!.</strong>
+        </p>
+        <p>Verificá si escribiste correctamente el términó a buscar.
+        </p>
+        <p>Para tener resultados más precisos, podés encerrar entre comillas dobles la palabra o frase específica a buscar.
+        </p>
       </div>
     </div>
   </div>

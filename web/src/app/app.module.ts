@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatDialogRef } from '@angular/material';
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatDialogModule, MatDialogRef, MatAutocompleteModule, MatInputModule} from '@angular/material';
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandler } from '@angular/core';
@@ -27,6 +28,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 import { WizardModule } from "./shared/wizard/wizard.module";
 import { RecipeViewComponent } from './recipe-view/recipe-view.component';
 import { SearchComponent } from './search/search.component';
+import { SearchBoxComponent } from './search-box/search-box.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -58,15 +60,19 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     LatestRecipesComponent,
     RecipeComponent,
     NavigationBarComponent,
-    RecipeViewComponent
+    RecipeViewComponent,
+    SearchBoxComponent
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     MatDialogModule,
     MatSlideToggleModule,
+    MatInputModule,
+    MatAutocompleteModule,
     HttpClientModule,
     ToastrModule.forRoot({
       maxOpened: 5,

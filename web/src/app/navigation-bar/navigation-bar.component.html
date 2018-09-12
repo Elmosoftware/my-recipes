@@ -39,12 +39,7 @@
     </ul>
     <div class="navbar-form" role="search">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="La receta que buscás..." [(ngModel)]="searchTerm">
-        <div class="input-group-append">
-          <button class="btn btn-default" (click)="search()">
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
+        <search-box searchType="text" placeHolder="La receta que buscás..." (search)="onSearchHandler($event)"></search-box>
       </div>
     </div>
   </div>

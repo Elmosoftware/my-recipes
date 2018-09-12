@@ -50,14 +50,7 @@
     </div>
     <div class="row">
       <div class="col-md-12 my-lg-5 my-sm-2">
-        <div class="input-group input-group-md">
-          <input type="text" class="form-control" placeholder="Busca recetas con él!" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-default" type="submit">
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-        </div>
+        <search-box searchType="ingredient" (search)="onSearchHandler($event)"></search-box>
       </div>
     </div>
   </div>

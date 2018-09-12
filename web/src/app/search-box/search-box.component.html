@@ -1,0 +1,14 @@
+<div class="input-group input-group-md">
+  <input matInput [matAutocomplete]="auto" [formControl]="searchTextBox" type="text" class="form-control" 
+    [placeholder]="placeHolder" aria-label="Search" (keyup.enter)="startSearching()">
+  <div class="input-group-append">
+    <button [disabled]="!(selectedValue && selectedValue.termIsValid)" class="btn btn-default" (click)="startSearching()">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+</div>
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="optionSelected($event)">
+  <mat-option *ngFor="let item of suggestions" [value]="item.id">
+    {{ item.text }}
+  </mat-option>
+</mat-autocomplete>

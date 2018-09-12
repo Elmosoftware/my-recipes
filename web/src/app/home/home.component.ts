@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
+import { SearchService, SEARCH_TYPE } from "../services/search-service";
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -20,6 +22,11 @@ export class HomeComponent implements OnInit {
     try {
       document.querySelector('#' + this.fragment).scrollIntoView();
     } catch (e) { }
+  }
+
+  onSearchHandler($event: SearchService){
+    console.log(`SEARCH! type:"${$event.searchType}", term:"${$event.term}", id:"${$event.id}"`);
+    $event.search();
   }
 
 }

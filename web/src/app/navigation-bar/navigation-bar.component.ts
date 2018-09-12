@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SearchService, SEARCH_TYPE } from "../services/search-service";
 
 @Component({
   selector: 'app-navigation-bar',
@@ -8,16 +9,14 @@ import { Router } from '@angular/router';
 })
 export class NavigationBarComponent implements OnInit {
 
-  searchTerm: string;
-
   constructor(private router: Router) {
   }
 
   ngOnInit() {
-    this.searchTerm = "";
   }
 
-  search(){
-    this.router.navigate(["/search"], { queryParams: { term: this.searchTerm } } )
+  onSearchHandler($event: SearchService){
+    console.log(`SEARCH! type:"${$event.searchType}", term:"${$event.term}", id:"${$event.id}"`);
+    $event.search();
   }
 }
