@@ -1,23 +1,25 @@
 <ng-progress [showSpinner]="false"></ng-progress>
-<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light home-page-section navbar-section">
-  <img class="navbar-logo-small mx-4" src="../assets/images/logo.svg" alt="My Recipes Website">
-  <a class="navbar-brand" routerLink="/home">Mis Recetas</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarMain">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a pageScroll class="nav-link" href="#recently-added">Nuevas</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/recipe">Agregar</a>
-      </li>
-      <li class="nav-item active">
-        <a pageScroll class="nav-link" href="#search-by-ingredient">Hoy quiero con ...</a>
-      </li>
-      <li class="nav-item dropdown">
+
+<div infinite-scrolling [scrollWindow]="true" (scroll)="onScrollHandler($event)">
+  <nav [@isVisibleChanged]="isVisible" class="navbar navbar-expand-md navbar-light fixed-top bg-light home-page-section navbar-section">
+    <img class="navbar-logo-small mx-4" src="../assets/images/logo.svg" alt="My Recipes Website">
+    <a class="navbar-brand" routerLink="/home">Mis Recetas</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-controls="navbarMain"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav mr-auto">
+        <li *ngIf="homePageFeaturesEnabled" class="nav-item active">
+          <a pageScroll class="nav-link" href="#recently-added">Nuevas</a>
+        </li>
+        <li *ngIf="homePageFeaturesEnabled" class="nav-item active">
+          <a class="nav-link" routerLink="/recipe">Agregar</a>
+        </li>
+        <li *ngIf="homePageFeaturesEnabled" class="nav-item active">
+          <a pageScroll class="nav-link" href="#search-by-ingredient">Hoy quiero con ...</a>
+        </li>
+        <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">Categorias</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -25,22 +27,25 @@
           <a class="dropdown-item" href="#">Categoria 2</a>
           <a class="dropdown-item" href="#">Categoria 3</a>
         </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">Administradores</a>
-        <div class="dropdown-menu" aria-labelledby="dropdown01">
-          <a class="dropdown-item" routerLink="/mealtypes">Platos</a>
-          <a class="dropdown-item" routerLink="/levels">Niveles de dificultad</a>
-          <a class="dropdown-item" routerLink="/units">Unidades de medida</a>
-          <a class="dropdown-item" routerLink="/ingredients">Ingredientes</a>
+      </li> -->
+        <div *ngIf="adminMenuEnabled">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">Administradores</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+              <a class="dropdown-item" routerLink="/mealtypes">Platos</a>
+              <a class="dropdown-item" routerLink="/levels">Niveles de dificultad</a>
+              <a class="dropdown-item" routerLink="/units">Unidades de medida</a>
+              <a class="dropdown-item" routerLink="/ingredients">Ingredientes</a>
+            </div>
+          </li>
         </div>
-      </li>
-    </ul>
-    <div class="navbar-form" role="search">
-      <div class="input-group">
-        <search-box searchType="text" placeHolder="La receta que buscás..." (search)="onSearchHandler($event)"></search-box>
+      </ul>
+      <div *ngIf="searchBoxEnabled" class="navbar-form" role="search">
+        <div class="input-group">
+          <search-box searchType="text" placeHolder="La receta que buscás..." (search)="onSearchHandler($event)"></search-box>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>

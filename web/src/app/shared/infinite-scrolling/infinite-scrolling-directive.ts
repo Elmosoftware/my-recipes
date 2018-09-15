@@ -37,6 +37,11 @@ export class InfiniteScrollingDirective {
   @Input() scrollDownTrigger: number = 85;
 
   /**
+   * This event will be triggered every time the user scrolls. The Event will return a number that indicate the scrolling percentage. 
+   */
+  @Output() scroll = new EventEmitter<number>(); 
+
+  /**
    * This event will be triggered when the user scrolls and reach the top or bottom limit.
    */
   @Output() scrollEnd = new EventEmitter<SCROLL_POSITION>(); 
@@ -77,6 +82,11 @@ export class InfiniteScrollingDirective {
       else if (this._perc >= this.scrollDownTrigger && this._prevPerc < this.scrollDownTrigger) {
         //console.log("TRIGGERING BOTTOM!!!")
         this.scrollEnd.emit(SCROLL_POSITION.Bottom)
+      }
+
+      //If there was an effective scroll:
+      if (this._perc != this._prevPerc) {
+        this.scroll.emit(this._perc); 
       }
     }
     catch (error) {

@@ -19,3 +19,20 @@ PENDING - Paginacion y filtros en el backend para las distintas entidades.
 PENDING - Persistir Error log en la DB.
 
 This file is deprecated. From now on, backlog will be in the GitHub repository project (5/5/2018).
+
+Nav Bar changes:
+
+Navigation Bar in:
+
+Eliminar "Categorias" del Nav bar
+
+	\home\home.component.html
+		todo habilitado
+	\entities\entities.component.html
+		Deshabilitar: Nuevas, Agregar, Hoy Quiero con...
+	\recipe-view\recipe-view.component.html
+		Deshabilitar: Nuevas, Agregar, Hoy Quiero con..., Administradores
+	\recipe\recipe.component.html
+		Deshabilitar: Nuevas, Agregar, Hoy Quiero con..., Administradores
+	\search\search.component.html
+		Deshabilitar: Nuevas, Agregar, Hoy Quiero con..., Administradores, Search box
