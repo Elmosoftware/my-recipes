@@ -9,3 +9,22 @@
 .navbar-logo-small{
     width: 4%;
 }
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+
+.dropdown-user {
+    right: 0;
+    left: auto;
+}
+
+.dropdown-menu > span:hover {
+    background-color: rgb(170, 170, 170);
+    background-image: none;
+}
+
+.profile-picture {
+    height: 32px;
+    width: 32px;
+}

@@ -7,6 +7,7 @@ var bodyParser = require("body-parser");
 const app = express();
 var mongoose = require("mongoose");
 var router = require("./router");
+var routerManagement = require("./router-management");
 const ConfigValidator = require("./config-validator");
 const cfgVal = new ConfigValidator();
 
@@ -43,6 +44,7 @@ mongoose.Promise = global.Promise; // Using native promises.
 
 app.use(bodyParser.json()); // to support JSON-encoded bodies.
 app.use(bodyParser.urlencoded({ extended: true })); // to support URL-encoded bodies.
+app.use("/api/management", routerManagement);
 app.use("/api", router);
 
 mongoose.connect(process.env.DB_ENDPOINT, { useMongoClient: true }, function (err) {

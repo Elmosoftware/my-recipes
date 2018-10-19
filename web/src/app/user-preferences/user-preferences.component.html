@@ -1,0 +1,61 @@
+<!-- Navigation Bar -->
+<app-navigation-bar searchBoxEnabled="true"></app-navigation-bar>
+
+<!-- User preferences form -->
+<div class="container formPositioning col-lg-8 col-sm">
+  <h3>Información de su cuenta</h3>
+  <form class="my-4" #userPrefForm="ngForm">
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (name.valid && name.dirty), 'validatorInvalid': (name.invalid && name.dirty)}"
+          data-toggle="tooltip" data-placement="right" title="Esta información es requerida.">Nombre completo</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Ingrese aqui su nombre completo" [(ngModel)]="model.name"
+        name="name" required maxlength="50" autocomplete="off" #name="ngModel">
+    </div>
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (email.valid && email.dirty), 'validatorInvalid': (email.invalid && email.dirty)}"
+          data-toggle="tooltip" data-placement="right" title="Esta información es requerida.">Correo electrónico</span>
+      </div>
+      <input type="email" class="form-control" placeholder="Ingrese aqui su correo electrónico" [(ngModel)]="model.email"
+        name="email" required #email="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+    </div>
+    <div class="form-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (emailConf.valid && emailConf.dirty), 'validatorInvalid': (emailConf.invalid && emailConf.dirty)}"
+          data-toggle="tooltip" data-placement="right" title="Esta información es requerida, (solo si modifica su dirección de correo).">Confirmación de correo
+          electrónico</span>
+      </div>
+      <input [disabled]="email.pristine" type="email" class="form-control" placeholder="Confirme por favor su dirección de correo"
+        name="emailConf" [(ngModel)]="emailConfirmation" #emailConf="ngModel" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+        validate>
+    </div>
+    <div *ngIf="email.dirty && emailConf.dirty && emailConf.value != email.value" class="alert alert-warning" role="alert">
+      Revisa la confirmación de tu correo electrónico, no parece ser el mismo...
+    </div>
+    <div class="col-12 mt-5 text-right">
+      <button class="btn btn-primary" type="button" [disabled]="!(userPrefForm.valid && userPrefForm.dirty && (email.pristine || (email.dirty && emailConf.value == email.value)))"
+        (click)="save()">Guardar</button>
+    </div>
+    <!-- <div>valid:{{ userPrefForm.valid }}</div>
+          <div>invalid:{{ userPrefForm.invalid }}</div>
+          <div>pristine:{{ userPrefForm.pristine }}</div>
+          <div>dirty:{{ userPrefForm.dirty }}</div>
+          <div>touched:{{ userPrefForm.touched }}</div>
+          <div>untouched:{{ userPrefForm.untouched }}</div>
+          <hr>
+          <div>email.valid:{{ email.valid }}</div>
+          <div>email.invalid:{{ email.invalid }}</div>
+          <div>email.pristine:{{ email.pristine }}</div>
+          <div>email.dirty:{{ email.dirty }}</div>
+          <div>email.touched:{{ email.touched }}</div>
+          <div>email.untouched:{{ email.untouched }}</div>
+          <hr>
+
+          <div>email: {{ email.value }}</div>
+          <div>emailConf: {{ emailConf.value }}</div>
+          <div>val: {{ emailConf.value == email.value }}</div> -->
+
+  </form>
+</div>

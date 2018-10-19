@@ -31,6 +31,25 @@ class ConfigValidator extends ValidatorBase {
                 Number(process.env.REQUESTS_ADDED_DELAY) >= 2147483647)){
                     super._addError("REQUESTS_ADDED_DELAY is not a number or is out of the range of valid delay time in milliseconds, (0 to Max 32bit integer value)");
         }
+
+        //AUTHMANAGEMENT_DOMAIN is required and can't be null or empty:
+        if(!process.env.AUTHMANAGEMENT_DOMAIN){
+            super._addError("AUTHMANAGEMENT_DOMAIN is required and can't be null or empty.");
+        }
+
+        //AUTHMANAGEMENT_CLIENT_ID is required and can't be null or empty:
+        if(!process.env.AUTHMANAGEMENT_CLIENT_ID){
+            super._addError("AUTHMANAGEMENT_CLIENT_ID is required and can't be null or empty.");
+        }
+
+        //AUTHMANAGEMENT_CLIENT_SECRET is required and can't be null or empty:
+        if(!process.env.AUTHMANAGEMENT_CLIENT_SECRET){
+            super._addError("AUTHMANAGEMENT_CLIENT_SECRET is required and can't be null or empty.");
+        }
+        //AUTHMANAGEMENT_SCOPE is required and can't be null or empty:
+        if(!process.env.AUTHMANAGEMENT_SCOPE){
+            super._addError("AUTHMANAGEMENT_SCOPE is required and can't be null or empty.");
+        }
         
         return this;
     }

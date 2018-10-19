@@ -29,6 +29,9 @@ import { WizardModule } from "./shared/wizard/wizard.module";
 import { RecipeViewComponent } from './recipe-view/recipe-view.component';
 import { SearchComponent } from './search/search.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
+import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
+import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
+import { UnauthorizedErrorPageComponent } from './error-pages/unauthorized/unauthorized.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -36,6 +39,8 @@ import { EntityServiceFactory } from "./services/entity-service-factory";
 import { StandardDialogService } from "./standard-dialogs/standard-dialog.service";
 import { Cache } from "./shared/cache/cache";
 import { ToasterHelperService } from "./services/toaster-helper-service";
+import { AuthService } from "./services/auth-service";
+import { AuthGuard } from './services/auth-guard';
 
 //Dialogs
 import { ConfirmDialogComponent } from './standard-dialogs/confirm-dialog/confirm-dialog.component'
@@ -61,7 +66,10 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     RecipeComponent,
     NavigationBarComponent,
     RecipeViewComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    AuthCallbackComponent,
+    UserPreferencesComponent,
+    UnauthorizedErrorPageComponent
   ],
   imports: [
     FormsModule,
@@ -96,6 +104,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     EditRecipeDirectionDialog
   ],
   providers: [
+    AuthService,
+    AuthGuard,
     { provide: ErrorHandler, useClass: CustomErrorHandler },
     EntityServiceFactory,
     SubscriptionService,
