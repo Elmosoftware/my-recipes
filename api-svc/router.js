@@ -1,48 +1,26 @@
 // @ts-check
 
 var express = require("express");
-var router = express.Router();
+var routerData = express.Router();
 var HttpStatus = require("http-status-codes");
-var RequestContext = require("./request-context");
-const ResponseBody = require("./response-body");
+var Context = require("./request-context");
 const Service = require("./service");
 
 //Middleware function specific to this route:
-router.use(function (req, res, next) {
+routerData.use(function (req, res, next) {
+
     //Do anything required here like logging, etc...
 
-    req["context"] = new RequestContext(req);
-
-    //Setting CORS Headers:
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", req["context"].getAllowedHTTPMethods().join(", "));
-    res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
-
-    //Check if the request is for a valid entity:
-    if (!req["context"].entity) {
-        handleResponse(res, new Error(`The requested URI is invalid: "${encodeURI(req["context"].url)}"`),
-            {}, null, HttpStatus.BAD_REQUEST);
-        return;
-    }
-
-    //Check if the method is supported:
-    if (!req["context"].isMethodAllowed) {
-        handleResponse(res, new Error(`The requested method is not supported by this API. Method: "${encodeURI(req["context"].method)}"`),
-            {}, null, req["context"].getStatusCode(null));
-        return;
-    }
-
-    if (process.env.REQUESTS_ADDED_DELAY && !isNaN(Number(process.env.REQUESTS_ADDED_DELAY))) {
-        setTimeout(() => {
-            next();
-        }, Number(process.env.REQUESTS_ADDED_DELAY));
-    }
-    else {
+    req["context"] = new Context.RequestContext(req, res);
+    
+    //If the request is not valid, the RequestContext class already sent the response with the error
+    //details, so no need to call next middleware:
+    if (req["context"].isValidRequest) {
         next();
     }
 });
 
-router.get("/*", function (req, res) {
+routerData.get("/*", function (req, res) {
 
     const svc = new Service(req["context"].entity);
     var condition = ""; //This is the search condition. Could be an Object Id or a JSON filter.
@@ -86,64 +64,59 @@ router.get("/*", function (req, res) {
                 let headers = null;
 
                 if (isCounting) {
-                    res.setHeader("X-Total-Count", results[0]);
-                    headers = { XTotalCount : results[0] };
+                    req["context"].addResponseHeader("X-Total-Count", results[0], true);
                 }
                 
-                handleResponse(res, null, results[results.length-1], headers, req["context"].getStatusCode(null));
+                req["context"].sendResponse(null, results[results.length-1]);
 
             } catch (err) {
-                handleResponse(res, err, {}, null, req["context"].getStatusCode(null));
+                req["context"].sendResponse(err, {});
             }
         })
         .catch((err) => {
-            handleResponse(res, err, {}, null, req["context"].getStatusCode(null));
+            req["context"].sendResponse(err, {});
         });
 });
 
-router.post("/*", function (req, res) {
+routerData.post("/*", function (req, res) {
 
     const svc = new Service(req["context"].entity);
 
-    svc.add(req.body, (err, data) => {
-        handleResponse(res, err, data, null, req["context"].getStatusCode(err));
+    svc.add(req.body, req["context"].user, (err, data) => {
+        req["context"].sendResponse(err, data);
     });
 });
 
-router.put("/*", function (req, res) {
+routerData.put("/*", function (req, res) {
 
     const svc = new Service(req["context"].entity);
 
     if (req["context"].params.length > 0) {
-        svc.update(req["context"].params[0], req.body, (err, data) => {
-            handleResponse(res, err, data, null, req["context"].getStatusCode(err));
+        svc.update(req["context"].params[0], req.body, req["context"].user, (err, data) => {
+            req["context"].sendResponse(err, data);
         });
     }
     else {
-        handleResponse(res, new Error(`You need to specify the "_id" of the target document to update. Massive updates are forbidden.
+        req["context"].sendResponse(new Error(`You need to specify the "_id" of the target document to update. Massive updates are forbidden.
             Following context Details:
-            Req URL: "${encodeURI(req["context"].url)}"`), {}, null, HttpStatus.BAD_REQUEST);
+            Req URL: "${encodeURI(req["context"].url)}"`), {}, HttpStatus.BAD_REQUEST);
     }
 });
 
-router.delete("/*", function (req, res) {
+routerData.delete("/*", function (req, res) {
 
     const svc = new Service(req["context"].entity);
 
     if (req["context"].params.length > 0) {
         svc.delete(req["context"].params[0], (err, data) => {
-            handleResponse(res, err, data, null, req["context"].getStatusCode(err));
+            req["context"].sendResponse(err, data);
         });
     }
     else {
-        handleResponse(res, new Error(`You need to specify the "_id" of the target document to delete. Massive deletions are forbidden.
+        req["context"].sendResponse(new Error(`You need to specify the "_id" of the target document to delete. Massive deletions are forbidden.
         Following context Details:
-        Req URL: "${encodeURI(req["context"].url)}"`), {}, null, HttpStatus.BAD_REQUEST);
+        Req URL: "${encodeURI(req["context"].url)}"`), {}, HttpStatus.BAD_REQUEST);
     }
 });
 
-function handleResponse(res, err, data, headers, statusCode) {
-    res.status(statusCode).json(new ResponseBody(err, data, headers));
-}
-
-module.exports = router;
+module.exports = routerData;

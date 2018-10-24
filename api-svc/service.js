@@ -13,7 +13,7 @@ class Service {
         return mongoose.Types.ObjectId();
     }
 
-    add(document, callback) {
+    add(document, user, callback) {
         var val = new ServiceValidator();
         var promises = [];
 
@@ -103,10 +103,12 @@ class Service {
                 try {
                     let model = results.pop(); //The last promise always holds a reference to the parent document model.
                     let obj = model.hydrate(document);
+
                     obj.isNew = true;
                     obj.createdOn = new Date();
-                    obj.createdBy = "anonymous";
+                    obj.createdBy = (user && user.id) ? user.id : "anonymous";
                     obj.save(callback);
+
                 } catch (err) {
                     callback(err, {});
                 }
@@ -117,7 +119,7 @@ class Service {
             });
     }
 
-    update(id, document, callback) {
+    update(id, document, user, callback) {
         var val = new ServiceValidator();
         var promises = [];
 
@@ -139,7 +141,7 @@ class Service {
                     let model = results.pop();
 
                     document.lastUpdateOn = new Date();
-                    document.lastUpdateBy = "anonymous";
+                    document.lastUpdateBy = (user && user.id) ? user.id : "anonymous";
 
                     model.update({ _id: id }, document, (err, data) => {
                         //The attempt to update a non existent document by Id is not reported as error by Mongoose:
@@ -173,7 +175,7 @@ class Service {
     find(conditions, projection, query) {
         var val = new ServiceValidator();
         var cursor = null;
-        
+
         if (!val.validateConditions(conditions, false)
             .validateQuery(query)
             .isValid) {

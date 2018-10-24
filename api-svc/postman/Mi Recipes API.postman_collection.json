@@ -326,6 +326,37 @@
 							"response": []
 						},
 						{
+							"name": "/api/units/ Invalid method",
+							"request": {
+								"method": "UNLINK",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/units/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"units",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "/api/units/?",
 							"request": {
 								"method": "GET",
@@ -580,11 +611,16 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EQXhSVFUyTlVZNU5UUTFSVVpGUkRBNFJEUkRPVUV3TVRreU56UkdOamN4UWpaRFFqSTJOQSJ9.eyJpc3MiOiJodHRwczovL2VsbW9zb2Z0d2FyZS5hdXRoMC5jb20vIiwic3ViIjoiMENuN3JwN3B2OU5FOWsyS05aMmg1ZGJiZ1VkNzB5ZnNAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vZWxtb3NvZnR3YXJlLmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTQwNDE1ODY3LCJleHAiOjE1NDA1MDIyNjcsImF6cCI6IjBDbjdycDdwdjlORTlrMktOWjJoNWRiYmdVZDcweWZzIiwic2NvcGUiOiJyZWFkOnVzZXJzIHVwZGF0ZTp1c2VycyByZWFkOnVzZXJzX2FwcF9tZXRhZGF0YSB1cGRhdGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.2yKYLWPdmtq5sB5pR7pBiDuuWtdtb38JOVx7b9rSD8Nz8GKtTMVnlYmFx9NDcMNCoPRXyHcL4T5zynMJtGm4CPo_dx2BfR6wnuw3OODZod9WagXusCsAZEyHNMCSxwrsf8CxlrgnYhb2eyWbQ_RxTPhNF09qinc44s-gSQixeTyLTDC7dcOZqJK0bL5fpMLX3W1qajHwYkcN6K5AGutsnDPx94IurDTMTDwbWG0w6AWWbZ7lKQY4pk99poZCO7QMxmHOTmaQp1E4OkiRf4-Cn7YIPRpbj39ktR3mTLoe8q6WyIMFwtXyhnuGME3-pes8J7Xk3CInEaWukE06OzPh7A",
+										"disabled": true
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\"name\": \"Level 03\",\n\"description\": \"This is Level 03\"\n}"
+									"raw": "{\n\"name\": \"Level TEST02\",\n\"description\": \"This is a test Level\"\n}"
 								},
 								"url": {
 									"raw": "http://localhost:3000/api/levels/",
@@ -647,14 +683,18 @@
 									{
 										"key": "Content-Type",
 										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EQXhSVFUyTlVZNU5UUTFSVVpGUkRBNFJEUkRPVUV3TVRreU56UkdOamN4UWpaRFFqSTJOQSJ9.eyJpc3MiOiJodHRwczovL2VsbW9zb2Z0d2FyZS5hdXRoMC5jb20vIiwic3ViIjoiMENuN3JwN3B2OU5FOWsyS05aMmg1ZGJiZ1VkNzB5ZnNAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vZWxtb3NvZnR3YXJlLmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTQwNDE1ODY3LCJleHAiOjE1NDA1MDIyNjcsImF6cCI6IjBDbjdycDdwdjlORTlrMktOWjJoNWRiYmdVZDcweWZzIiwic2NvcGUiOiJyZWFkOnVzZXJzIHVwZGF0ZTp1c2VycyByZWFkOnVzZXJzX2FwcF9tZXRhZGF0YSB1cGRhdGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.2yKYLWPdmtq5sB5pR7pBiDuuWtdtb38JOVx7b9rSD8Nz8GKtTMVnlYmFx9NDcMNCoPRXyHcL4T5zynMJtGm4CPo_dx2BfR6wnuw3OODZod9WagXusCsAZEyHNMCSxwrsf8CxlrgnYhb2eyWbQ_RxTPhNF09qinc44s-gSQixeTyLTDC7dcOZqJK0bL5fpMLX3W1qajHwYkcN6K5AGutsnDPx94IurDTMTDwbWG0w6AWWbZ7lKQY4pk99poZCO7QMxmHOTmaQp1E4OkiRf4-Cn7YIPRpbj39ktR3mTLoe8q6WyIMFwtXyhnuGME3-pes8J7Xk3CInEaWukE06OzPh7A"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\"name\": \"Level 01\",\n\"description\": \"This is Level 01 UPDATED\"\n}"
+									"raw": "{\n\"name\": \"Level TEST02 UPD\",\n\"description\": \"This is a test Level\"\n}"
 								},
 								"url": {
-									"raw": "http://localhost:3000/api/levels/5aae9bf7d096af48709a21dd",
+									"raw": "http://localhost:3000/api/levels/5af1fa1252bf1d8be0edd3ff",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -663,7 +703,7 @@
 									"path": [
 										"api",
 										"levels",
-										"5aae9bf7d096af48709a21dd"
+										"5af1fa1252bf1d8be0edd3ff"
 									]
 								}
 							},
@@ -740,10 +780,15 @@
 							"name": "/api/levels/Valid id",
 							"request": {
 								"method": "DELETE",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EQXhSVFUyTlVZNU5UUTFSVVpGUkRBNFJEUkRPVUV3TVRreU56UkdOamN4UWpaRFFqSTJOQSJ9.eyJpc3MiOiJodHRwczovL2VsbW9zb2Z0d2FyZS5hdXRoMC5jb20vIiwic3ViIjoiMENuN3JwN3B2OU5FOWsyS05aMmg1ZGJiZ1VkNzB5ZnNAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vZWxtb3NvZnR3YXJlLmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTQwNDE1ODY3LCJleHAiOjE1NDA1MDIyNjcsImF6cCI6IjBDbjdycDdwdjlORTlrMktOWjJoNWRiYmdVZDcweWZzIiwic2NvcGUiOiJyZWFkOnVzZXJzIHVwZGF0ZTp1c2VycyByZWFkOnVzZXJzX2FwcF9tZXRhZGF0YSB1cGRhdGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.2yKYLWPdmtq5sB5pR7pBiDuuWtdtb38JOVx7b9rSD8Nz8GKtTMVnlYmFx9NDcMNCoPRXyHcL4T5zynMJtGm4CPo_dx2BfR6wnuw3OODZod9WagXusCsAZEyHNMCSxwrsf8CxlrgnYhb2eyWbQ_RxTPhNF09qinc44s-gSQixeTyLTDC7dcOZqJK0bL5fpMLX3W1qajHwYkcN6K5AGutsnDPx94IurDTMTDwbWG0w6AWWbZ7lKQY4pk99poZCO7QMxmHOTmaQp1E4OkiRf4-Cn7YIPRpbj39ktR3mTLoe8q6WyIMFwtXyhnuGME3-pes8J7Xk3CInEaWukE06OzPh7A"
+									}
+								],
 								"body": {},
 								"url": {
-									"raw": "http://localhost:3000/api/levels/5ac5807bb024698bf804acc4",
+									"raw": "http://localhost:3000/api/levels/5af1fa1252bf1d8be0edd3ff",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -752,7 +797,7 @@
 									"path": [
 										"api",
 										"levels",
-										"5ac5807bb024698bf804acc4"
+										"5af1fa1252bf1d8be0edd3ff"
 									]
 								}
 							},
@@ -1325,6 +1370,38 @@
 								"description": "Return an ingredient ginding by id"
 							},
 							"response": []
+						},
+						{
+							"name": "/api/ingredients/ Search by name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/ingredients/?pop=true&filter={\"name\":{\"$regex\" : \"har\", \"$options\" : \"i\"}}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"ingredients",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "true"
+										},
+										{
+											"key": "filter",
+											"value": "{\"name\":{\"$regex\" : \"har\", \"$options\" : \"i\"}}"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
@@ -1582,7 +1659,7 @@
 								"header": [],
 								"body": {},
 								"url": {
-									"raw": "http://localhost:3000/api/recipes/?top=3&sort=-lastUpdateOn -createdOn&pop=false&fields=name description",
+									"raw": "http://localhost:3000/api/recipes/?pop=true&top=3&sort=-lastUpdateOn -createdOn&pop=false&fields=name description ingredients",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1594,6 +1671,10 @@
 										""
 									],
 									"query": [
+										{
+											"key": "pop",
+											"value": "true"
+										},
 										{
 											"key": "top",
 											"value": "3"
@@ -1608,7 +1689,7 @@
 										},
 										{
 											"key": "fields",
-											"value": "name description"
+											"value": "name description ingredients"
 										}
 									]
 								}
@@ -1622,7 +1703,7 @@
 								"header": [],
 								"body": {},
 								"url": {
-									"raw": "http://localhost:3000/api/recipes/?pop=false&filter={\"$text\":{\"$search\":\"\\\"receta\\\"\"}}",
+									"raw": "http://localhost:3000/api/recipes/?pop=false&fields=name description directions&filter={\"$text\":{\"$search\":\"\\\"receta\\\"\"}}",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1639,8 +1720,48 @@
 											"value": "false"
 										},
 										{
+											"key": "fields",
+											"value": "name description directions"
+										},
+										{
 											"key": "filter",
 											"value": "{\"$text\":{\"$search\":\"\\\"receta\\\"\"}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ Search Ingredient",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/?pop=true&fields=-level -mealType -directions&filter={\"ingredients.ingredient._id\": \"5af2005152bf1d8be0edd40b\"}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "true"
+										},
+										{
+											"key": "fields",
+											"value": "-level -mealType -directions"
+										},
+										{
+											"key": "filter",
+											"value": "{\"ingredients.ingredient._id\": \"5af2005152bf1d8be0edd40b\"}"
 										}
 									]
 								}
@@ -1785,9 +1906,210 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "/api/recipeingredients/ Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipeingredients/?pop=true&top=50&skip=0&filter={\"ingredient\":{\"$eq\":\"5af2005152bf1d8be0edd40b\"}}&count=true",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipeingredients",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "true"
+										},
+										{
+											"key": "top",
+											"value": "50"
+										},
+										{
+											"key": "skip",
+											"value": "0"
+										},
+										{
+											"key": "filter",
+											"value": "{\"ingredient\":{\"$eq\":\"5af2005152bf1d8be0edd40b\"}}"
+										},
+										{
+											"key": "count",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Management",
+			"description": "",
+			"item": [
+				{
+					"name": "User",
+					"description": "",
+					"item": [
+						{
+							"name": "/management/user/Valid Id",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EQXhSVFUyTlVZNU5UUTFSVVpGUkRBNFJEUkRPVUV3TVRreU56UkdOamN4UWpaRFFqSTJOQSJ9.eyJpc3MiOiJodHRwczovL2VsbW9zb2Z0d2FyZS5hdXRoMC5jb20vIiwic3ViIjoiMENuN3JwN3B2OU5FOWsyS05aMmg1ZGJiZ1VkNzB5ZnNAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vZWxtb3NvZnR3YXJlLmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTQwNDE1ODY3LCJleHAiOjE1NDA1MDIyNjcsImF6cCI6IjBDbjdycDdwdjlORTlrMktOWjJoNWRiYmdVZDcweWZzIiwic2NvcGUiOiJyZWFkOnVzZXJzIHVwZGF0ZTp1c2VycyByZWFkOnVzZXJzX2FwcF9tZXRhZGF0YSB1cGRhdGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.2yKYLWPdmtq5sB5pR7pBiDuuWtdtb38JOVx7b9rSD8Nz8GKtTMVnlYmFx9NDcMNCoPRXyHcL4T5zynMJtGm4CPo_dx2BfR6wnuw3OODZod9WagXusCsAZEyHNMCSxwrsf8CxlrgnYhb2eyWbQ_RxTPhNF09qinc44s-gSQixeTyLTDC7dcOZqJK0bL5fpMLX3W1qajHwYkcN6K5AGutsnDPx94IurDTMTDwbWG0w6AWWbZ7lKQY4pk99poZCO7QMxmHOTmaQp1E4OkiRf4-Cn7YIPRpbj39ktR3mTLoe8q6WyIMFwtXyhnuGME3-pes8J7Xk3CInEaWukE06OzPh7A"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/management/user/auth0|5bad1851654f067ba2541111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"management",
+										"user",
+										"auth0|5bad1851654f067ba2541111"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/management/user/Valid Id",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"user_metadata\": {\n    \t\"fullName\": \"Test User 02 UPD2\"\n    }\n}"
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/management/user/auth0|5bad1851654f067ba2541111",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"management",
+										"user",
+										"auth0|5bad1851654f067ba2541111"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/management/user/",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EQXhSVFUyTlVZNU5UUTFSVVpGUkRBNFJEUkRPVUV3TVRreU56UkdOamN4UWpaRFFqSTJOQSJ9.eyJpc3MiOiJodHRwczovL2VsbW9zb2Z0d2FyZS5hdXRoMC5jb20vIiwic3ViIjoiMENuN3JwN3B2OU5FOWsyS05aMmg1ZGJiZ1VkNzB5ZnNAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vZWxtb3NvZnR3YXJlLmF1dGgwLmNvbS9hcGkvdjIvIiwiaWF0IjoxNTQwMjYyMzI4LCJleHAiOjE1NDAzNDg3MjgsImF6cCI6IjBDbjdycDdwdjlORTlrMktOWjJoNWRiYmdVZDcweWZzIiwic2NvcGUiOiJyZWFkOnVzZXJzIHVwZGF0ZTp1c2VycyByZWFkOnVzZXJzX2FwcF9tZXRhZGF0YSB1cGRhdGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.DVhi4H5unQoDH0WdDobhiivsvGAszrMaC5DS_8KYcwmKpcapZD0gyBdsZq_ICMa4hjbyIeg7l4CnfE0DfkdmFsQ-8HFfTdl9uvmsmqyjk8aE4Y5PncXarU6XKY6b5_34hiwj-AxhxOh4s4oSi9pJDBrxPg6owCcW2GnOPe5_yStKRPrqbXLhfDt6r0s3YXFQZSegmUSnvSJ4-5gnIsAWOtqUvYt798o1T_a-X6D1LCeR4YFIAzypC2nCdpY21AJO7xTEphp4-DtypSaWLj_E4XSOJ4bqrYSi-wkB-WtiG3xcZyJJoj_yJnqsNPqhEvpqnxH8TFA-sdcCKVVJnlF-1w"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/management/user/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"management",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/management/user/",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/management/user/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"management",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Request access token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"grant_type\": \"client_credentials\",\r\n   \"client_id\": \"0Cn7rp7pv9NE9k2KNZ2h5dbbgUd70yfs\",\r\n   \"client_secret\": \"b7JXQTQa75JdrEQviKb8jpsU4Id_LOOXDKZHLl3ZDywXbxJFs_gHGB0w1q4_36sD\",\r\n   \"audience\": \"https://elmosoftware.auth0.com/api/v2/\"\r\n}"
+						},
+						"url": {
+							"raw": "https://elmosoftware.auth0.com/oauth/token",
+							"protocol": "https",
+							"host": [
+								"elmosoftware",
+								"auth0",
+								"com"
+							],
+							"path": [
+								"oauth",
+								"token"
+							]
+						},
+						"description": "Request an access token for testing purposes."
+					},
+					"response": []
 				}
 			]
 		}

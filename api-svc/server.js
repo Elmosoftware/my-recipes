@@ -1,15 +1,39 @@
 // @ts-check
 
-const DEV_PORT = 3000;
+const DEV_PORT = 3000; //TCP port, (this is used only for dev environment).
+
+//App configuration:
 const result = require('dotenv').config({ path: __dirname + '/.env' })
-const express = require("express");
-var bodyParser = require("body-parser");
-const app = express();
-var mongoose = require("mongoose");
-var router = require("./router");
-var routerManagement = require("./router-management");
 const ConfigValidator = require("./config-validator");
 const cfgVal = new ConfigValidator();
+
+//Express setup:
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+
+//DB setup:
+const mongoose = require("mongoose");
+
+//Auth settings:
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
+const jwksOptions = {
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${process.env.AUTHMANAGEMENT_DOMAIN}/.well-known/jwks.json`
+}
+const authCheckMiddleware = jwt({
+    secret: jwks.expressJwtSecret(jwksOptions),
+    audience: `https://${process.env.AUTHMANAGEMENT_DOMAIN}/api/v2/`,
+    issuer: `https://${process.env.AUTHMANAGEMENT_DOMAIN}/`,
+    algorithms: ['RS256']
+}); //This is the middeware function that will check the token in the Auuthorization header
+
+//Main routes:
+const router = require("./router"); //API Data route.
+const routerManagement = require("./router-management"); //API Management route.
 
 console.log("\n -----  MY RECIPES API  -----\n");
 console.log("APP Configuration:");
@@ -28,6 +52,7 @@ if (!cfgVal.validateConfig().isValid) {
 console.log(JSON.stringify(result.parsed) + "\n");
 
 //As a safe-guard, we modify specific environment related settings:
+
 //We must not add delay to request in PROD env:
 if (process.env.NODE_ENV == "prod" && Number(process.env.REQUESTS_ADDED_DELAY) >= 0) {
     process.env.REQUESTS_ADDED_DELAY = "0"
@@ -44,8 +69,8 @@ mongoose.Promise = global.Promise; // Using native promises.
 
 app.use(bodyParser.json()); // to support JSON-encoded bodies.
 app.use(bodyParser.urlencoded({ extended: true })); // to support URL-encoded bodies.
-app.use("/api/management", routerManagement);
-app.use("/api", router);
+app.use("/api/management", authCheckMiddleware, routerManagement);
+app.use("/api", authCheckMiddleware.unless({ method: ['OPTIONS', 'GET'] }), router);
 
 mongoose.connect(process.env.DB_ENDPOINT, { useMongoClient: true }, function (err) {
     if (err) {
