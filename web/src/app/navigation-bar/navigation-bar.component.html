@@ -21,7 +21,7 @@
             </div>
           </li>
         </div>
-        <div *ngIf="adminMenuEnabled" class="ml-auto ml-lg-5">
+        <div *ngIf="adminMenuEnabled && isAdminUser" class="ml-auto ml-lg-5">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Administración</a>

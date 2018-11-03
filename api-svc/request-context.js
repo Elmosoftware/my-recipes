@@ -285,7 +285,7 @@ class RequestContext {
             //Setting CORS Headers:
             this._res.setHeader("Access-Control-Allow-Origin", "*");
             this._res.setHeader("Access-Control-Allow-Methods", this.getAllowedHTTPMethods().join(", "));
-            this._res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token");
+            this._res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, X-Auth-Token, Authorization");
         }
 
         if (!(this._options && this._options.disableEntityCheck)) {

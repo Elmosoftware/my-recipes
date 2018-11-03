@@ -3,8 +3,9 @@ import { Observable } from 'rxjs/Observable';
 import { environment } from "../../environments/environment";
 
 import { Entity } from "../model/entity";
-import { EntityFactory, EntityDef } from "../model/entity-factory";
+import { EntityDef } from "../model/entity-factory";
 import { Cache, CACHE_MEMBERS } from "../shared/cache/cache";
+import { AuthService } from './auth-service';
 
 /**
  * Entities Data Service
@@ -12,13 +13,10 @@ import { Cache, CACHE_MEMBERS } from "../shared/cache/cache";
  */
 export class EntityService {
 
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
   constructor(private entityDef: EntityDef, 
     private http: HttpClient,
-    private cache: Cache) { }
+    private cache: Cache,
+    private auth: AuthService) { }
 
   /**
    * Invalidates any cache related to this Entity. 
@@ -56,7 +54,7 @@ export class EntityService {
    * @param query Query parameters for the API like top, sort, filter and others. 
    */
   get(id: string = "", query: EntityServiceQueryParams) : Observable<Object>{
-    return this.http.get(this.getUrl(id, query), this.httpOptions);
+    return this.http.get(this.getUrl(id, query),  { headers: this.buildAPIHeaders() });
   }
 
   /**
@@ -69,10 +67,10 @@ export class EntityService {
     
     //If it's an update:
     if (entity._id) {
-      return this.http.put(this.getUrl(entity._id), entity, this.httpOptions);
+      return this.http.put(this.getUrl(entity._id), entity, { headers: this.buildAPIHeaders() });
     }
     else { //If it's a new element:
-      return this.http.post(this.getUrl(), entity, this.httpOptions);
+      return this.http.post(this.getUrl(), entity, { headers: this.buildAPIHeaders() });
     }
   }
 
@@ -84,7 +82,7 @@ export class EntityService {
 
     this.invalidateCache()
 
-    return this.http.delete(this.getUrl(id), this.httpOptions);
+    return this.http.delete(this.getUrl(id), { headers: this.buildAPIHeaders() });
   }
 
   /**
@@ -106,6 +104,18 @@ export class EntityService {
     }
 
     return `${environment.apiURL}${this.entityDef.apiFunction}/${param}?${queryText}`;
+  }
+
+  private buildAPIHeaders(): HttpHeaders {
+
+    let ret: HttpHeaders = new HttpHeaders()
+      .set("Content-Type", "application/json");
+      
+    if (this.auth.isAuthenticated) {
+      ret = ret.append("Authorization", "Bearer " + this.auth.userProfile.accessToken);
+    }
+    
+    return ret;
   }
 }
 

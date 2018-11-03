@@ -17,11 +17,6 @@ const REFERRER_URL_KEY: string = "AUTH-LOGIN-REFERRER-URL";
 @Injectable()
 export class AuthService {
 
-  private _managementAPIHTTPOptions = {
-    headers: new HttpHeaders()
-      .set('Content-Type', 'application/json')
-  };
-
   constructor(public router: Router, private http: HttpClient) {
     this._getAccessToken();
   }
@@ -81,7 +76,6 @@ export class AuthService {
       this._getUserInfo(authResult, () => {
         this.router.navigate([redirectTo]);
       });
-
     });
   }
 
@@ -131,7 +125,7 @@ export class AuthService {
   public getUserPreferences(): UserPreferences {
 
     if (!this.isAuthenticated) {
-      throw this._getNotAuthenticatedError("logout");
+      throw this._getNotAuthenticatedError("get user preferences");
     }
 
     return new UserPreferences(this._userProfileData.name, this._userProfileData.email);
@@ -172,13 +166,14 @@ export class AuthService {
       dataChanged = true;
     }
 
-    //TODO: This feature to change the user role need to be build as a separate feature.
+    //TODO: This feature, (to change the user role), need to be build as a separate feature.
     // if (pref.isAdmin != this._userProfileData.isAdmin) {
     //   userObj.app_metadata = { role: (pref.isAdmin) ? "ADMIN" : "USER" };
     // }
 
     if (dataChanged) {
-      this.http.put(this._buildManagementAPIURL("user", this._userProfileData.userId), userObj, this._managementAPIHTTPOptions)
+      this.http.put(this._buildManagementAPIURL("user", this._userProfileData.userId), userObj,
+        { headers: this._buildManagementAPIHeaders(this._userProfileData.accessToken) })
         .subscribe((data) => {
           let response: APIResponseParser = new APIResponseParser(data); //If there is an API error, this will throw.  
 
@@ -224,7 +219,8 @@ export class AuthService {
     if (authResult && authResult.idTokenPayload && authResult.idTokenPayload.sub) {
 
       //Use access token to retrieve user's profile and set session:
-      this.http.get(this._buildManagementAPIURL("user", authResult.idTokenPayload.sub), this._managementAPIHTTPOptions)
+      this.http.get(this._buildManagementAPIURL("user", authResult.idTokenPayload.sub),
+        { headers: this._buildManagementAPIHeaders(authResult.accessToken) })
         .subscribe((data) => {
           let response: APIResponseParser = new APIResponseParser(data); //This will throw if there is an API error
 
@@ -232,7 +228,7 @@ export class AuthService {
           //already set. So, we check before to re-create the session twice :-)
           if (!this.isAuthenticated) {
             this._setSession(authResult, response.entities);
-          }          
+          }
 
           if (cb) {
             cb();
@@ -242,7 +238,7 @@ export class AuthService {
             throw err
           });
     }
-    else{
+    else {
       throw new Error(`The authentication process results provided doesn't contain the user identification data in the ID Token payload.`)
     }
   }
@@ -324,6 +320,21 @@ export class AuthService {
     return `${environment.apiURL}management/${functionName}/${param}`;
   }
 
+  private _buildManagementAPIHeaders(accessToken: string): HttpHeaders {
+
+    let ret: HttpHeaders;
+
+    if (!accessToken) {
+      throw new Error(`The parameter "accessToken" can't be a null reference.`)
+    }
+
+    ret = new HttpHeaders()
+      .set("Content-Type", "application/json")
+      .set("Authorization", "Bearer " + accessToken);
+
+    return ret;
+  }
+
   /**
    * Returns a customized Error object with an error message indicating that the operation will be aborted because there is not an 
    * active user session.
@@ -369,4 +380,3 @@ export class UserPreferences {
   name: string;
   email: string;
 }
-

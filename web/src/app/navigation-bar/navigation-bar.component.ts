@@ -34,13 +34,15 @@ export class NavigationBarComponent implements OnInit {
 
   ngOnInit() {
     this.isVisible = true;
-    //Enabling the Administrators menu requires an ADMIN user logged in:
-    this.adminMenuEnabled = this.adminMenuEnabled && this.authSvc.isAuthenticated && this.authSvc.userProfile.isAdmin;
   }
 
   onScrollHandler($event: number) {
     // console.log(`onScroll: ${$event} isVisible:${this.isVisible}`);
     this.isVisible = (isNaN($event) || $event < 5);
+  }
+
+  get isAdminUser() : boolean {
+    return this.authSvc.isAuthenticated && this.authSvc.userProfile.isAdmin;
   }
 
   onSearchHandler($event: SearchService) {
