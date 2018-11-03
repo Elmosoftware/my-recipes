@@ -12,7 +12,7 @@ export class EntityServiceFactory {
   private cache: Cache;
 
   constructor(private http: HttpClient, private auth: AuthService) {
-    console.log("EntityServiceFactory Created")
+    console.log("EntityServiceFactory Created");
    }
 
   setCache(cache: Cache){
@@ -23,6 +23,6 @@ export class EntityServiceFactory {
     let entityFactory = new EntityFactory();
     let entityDef = entityFactory.getEntityDef(entityName);
 
-    return new EntityService(entityDef, this.http, this.cache, this.auth);
+    return new EntityService(entityDef, this.http, this.cache, this.auth); 
   }
 }

@@ -13,7 +13,7 @@ const allowedHTTPMethods = {
 /**
  * @class This class acts as a context for each individual request providing:
  * - Request validations.
- * - Simplifies access to request, URL, parameters, user data, etc.
+ * - Simplifies access to request, URL, parameters, (both URL & query), user data, etc.
  * - Provides methods to work with the response.  
  */
 class RequestContext {

@@ -168,8 +168,8 @@ export class AuthService {
 
     //TODO: This feature, (to change the user role), need to be build as a separate feature.
     // if (pref.isAdmin != this._userProfileData.isAdmin) {
-    //   userObj.app_metadata = { role: (pref.isAdmin) ? "ADMIN" : "USER" };
-    // }
+    //   userObj.app_metadata = { role: (pref.isAdmin) ? "ADMIN" : "USER" }; 
+    // } tes
 
     if (dataChanged) {
       this.http.put(this._buildManagementAPIURL("user", this._userProfileData.userId), userObj,

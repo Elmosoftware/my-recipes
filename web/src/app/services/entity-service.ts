@@ -75,7 +75,7 @@ export class EntityService {
   }
 
   /**
-   * Deletes the provided Document.
+   * Deletes the provided Document by id.
    * @param id Object Id of the document to delete.
    */
   delete(id: string): Observable<Object> {

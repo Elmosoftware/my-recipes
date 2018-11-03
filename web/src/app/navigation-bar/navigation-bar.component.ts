@@ -37,7 +37,6 @@ export class NavigationBarComponent implements OnInit {
   }
 
   onScrollHandler($event: number) {
-    // console.log(`onScroll: ${$event} isVisible:${this.isVisible}`);
     this.isVisible = (isNaN($event) || $event < 5);
   }
 
@@ -46,7 +45,6 @@ export class NavigationBarComponent implements OnInit {
   }
 
   onSearchHandler($event: SearchService) {
-    // console.log(`SEARCH! type:"${$event.searchType}", term:"${$event.term}", id:"${$event.id}"`);
     $event.search();
   }
 
