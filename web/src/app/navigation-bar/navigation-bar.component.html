@@ -15,9 +15,16 @@
             <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Recetario</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
-              <div class="dropdown-item"><a pageScroll class="nav-link" href="#recently-added">Recientes</a></div>
-              <div *ngIf="authSvc.isAuthenticated" class="dropdown-item"><a class="nav-link" routerLink="/recipe">Crear una receta</a></div>
-              <div class="dropdown-item"><a pageScroll class="nav-link" href="#search-by-ingredient">Hoy quiero con ...</a></div>
+              <div *ngIf="authSvc.isAuthenticated" class="dropdown-item">
+                <a class="nav-link" routerLink="/my-recipes">Mis Recetas!</a>
+                <li class="dropdown-divider"></li>
+              </div>
+              <div class="dropdown-item">
+                <a pageScroll class="nav-link" href="#recently-added">Recientes</a></div>
+              <div *ngIf="authSvc.isAuthenticated" class="dropdown-item">
+                <a class="nav-link" routerLink="/recipe">Crear una receta</a></div>
+              <div class="dropdown-item">
+                <a pageScroll class="nav-link" href="#search-by-ingredient">Hoy quiero con ...</a></div>
             </div>
           </li>
         </div>

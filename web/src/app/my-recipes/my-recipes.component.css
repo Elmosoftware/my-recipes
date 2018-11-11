@@ -1,0 +1,26 @@
+/* These are the CSS style overrides for Angular Material components */
+@import "../../assets/css/ang-mat-overrides.css";
+
+.formPositioning{
+    margin-top: 100px; 
+}
+
+.cardWidth{
+    min-width: 18rem; 
+    max-width: 18rem;
+}
+
+.recipeTitle{
+    font-family: 'Bellefair';
+    font-size: 1.5em;
+}
+
+.recipeDescription{
+    font-family: 'Bellefair';
+    font-size: 1.1em;
+    font-style: italic;
+}
+
+.large-icon {
+    font-size: 9em;
+}

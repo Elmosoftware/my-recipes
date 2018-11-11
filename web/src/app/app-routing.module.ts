@@ -10,6 +10,7 @@ import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { AuthGuard } from "./services/auth-guard";
 import { UnauthorizedErrorPageComponent } from './error-pages/unauthorized/unauthorized.component';
+import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -24,8 +25,8 @@ const routes: Routes = [
   { path: 'mealtypes', component: EntitiesComponent, data: { type: "MealType", title: "Platos", authGuard: { adminOnly: true }}, canActivate: [ AuthGuard ] },
   { path: 'units', component: EntitiesComponent, data: { type: "Unit", title: "Unidades de medida", authGuard: { adminOnly: true }}, canActivate: [ AuthGuard ] },
   { path: 'ingredients', component: EntitiesComponent, data: { type: "Ingredient", title: "Ingredientes", authGuard: { adminOnly: true }}, canActivate: [ AuthGuard ] },
-  { path: 'user-preferences', component: UserPreferencesComponent, data: { authGuard: { adminOnly: true }}, canActivate: [ AuthGuard ] }
-  // { path: 'user-preferences', component: UserPreferencesComponent, data: { authGuard: { adminOnly: true }}, canActivate: [ AuthGuard ] }
+  { path: 'user-preferences', component: UserPreferencesComponent, data: { authGuard: { adminOnly: false }}, canActivate: [ AuthGuard ] },
+  { path: 'my-recipes', component: MyRecipesComponent, data: { authGuard: { adminOnly: false }}, canActivate: [ AuthGuard ] }
 ];
 
 @NgModule({

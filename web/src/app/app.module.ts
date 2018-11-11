@@ -32,6 +32,7 @@ import { SearchBoxComponent } from './search-box/search-box.component';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { UnauthorizedErrorPageComponent } from './error-pages/unauthorized/unauthorized.component';
+import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -49,6 +50,7 @@ import { EditLevelDialog } from './standard-dialogs/edit-level-dialog/edit-level
 import { EditUnitDialog } from './standard-dialogs/edit-unit-dialog/edit-unit-dialog';
 import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/edit-ingredient-dialog";
 import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direction-dialog/edit-recipe-direction-dialog";
+
 
 @NgModule({
   declarations: [
@@ -69,7 +71,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     SearchBoxComponent,
     AuthCallbackComponent,
     UserPreferencesComponent,
-    UnauthorizedErrorPageComponent
+    UnauthorizedErrorPageComponent,
+    MyRecipesComponent
   ],
   imports: [
     FormsModule,

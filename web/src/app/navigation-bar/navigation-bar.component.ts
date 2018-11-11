@@ -37,7 +37,7 @@ export class NavigationBarComponent implements OnInit {
   }
 
   onScrollHandler($event: number) {
-    this.isVisible = (isNaN($event) || $event < 5);
+    this.isVisible = (isNaN($event) || $event < 1);
   }
 
   get isAdminUser() : boolean {
