@@ -13,7 +13,10 @@ export class AuthGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
     let adminOnly: boolean = (next.data && next.data.authGuard && next.data.authGuard.adminOnly);
-    let ret: boolean = false;
+    let allowSocialUsers: boolean = (next.data && next.data.authGuard && next.data.authGuard.allowSocialUsers);
+
+    let ret: boolean = true;
+    let msg: string = "";
 
     //This guard requires an authenticated user, if not we will redirect to the login page:
     if (!this.authSvc.isAuthenticated) {
@@ -21,15 +24,22 @@ export class AuthGuard implements CanActivate {
       this.authSvc.login(state.url);
     }
     else {
-      ret = true;
 
-      if(adminOnly){
-        ret = this.authSvc.userProfile.isAdmin;
-        
-        if (!ret) {
-          console.info(`Administrator privileges are required to navigate to ${state.url}`);
-          this.router.navigate(["/error-unauthorized"]) 
-        }
+      //If the user is already logged in, we will check for other constraints:
+
+      if (adminOnly && !this.authSvc.userProfile.isAdmin) {
+        ret = false;
+        msg = `Administrator privileges are required to navigate to ${state.url}`;
+      }
+
+      if (allowSocialUsers == false && this.authSvc.userProfile.isSocial) {
+        ret = false;
+        msg = `Social users are not allowed to navigate to ${state.url}`;
+      }
+
+      if (!ret) {
+        console.info(msg);
+        this.router.navigate(["/error-unauthorized"])
       }
     }
 
