@@ -1,22 +1,38 @@
 <div class="container">
-  <div class="input-group my-2">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Nombre</span>
+  <form #dialogForm="ngForm">
+    <div class="input-group my-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (name.valid && name.dirty), 'validatorInvalid': (name.invalid && name.dirty)}"
+          data-toggle="tooltip" data-placement="left" title="Esta información es requerida.">Nombre</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Nombre del nivel de dificultad de la receta." [(ngModel)]="model.name"
+        name="name" required maxlength="50" autocomplete="off" #name="ngModel">
     </div>
-    <input [(ngModel)]="data.name" class="form-control" placeholder="Nombre del nivel de dificultad de la receta." type="text">
-  </div>
-  <div class="input-group my-2">
-    <div class="input-group-prepend">
-      <span class="input-group-text">Descripción</span>
+    <div class="input-group my-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (description.valid && description.dirty), 'validatorInvalid': (description.invalid && description.dirty)}"
+          data-toggle="tooltip" data-placement="left" title="Esta información es requerida.">Descripción</span>
+      </div>
+      <input type="text" class="form-control" placeholder="Descripción del nivel de dificultad." [(ngModel)]="model.description"
+        name="description" required maxlength="100" autocomplete="off" #description="ngModel">
     </div>
-    <input [(ngModel)]="data.description" class="form-control" placeholder="Descripción del nivel de dificultad." type="text">
-  </div>
+    <div *ngIf="!autoPublish" class="input-group my-2">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Publicar</span>
+      </div>
+      <div class="form-control">
+        <mat-slide-toggle color="primary" [(ngModel)]="isPublished" name="published" #published="ngModel">
+          {{ friendlyPublishDate }}
+        </mat-slide-toggle>
+      </div>
+    </div>
+  </form>
 </div>
 <mat-dialog-actions>
   <div class="container">
     <div class="row">
       <div class="col-12 text-right">
-        <button class="btn btn-secondary mx-1" (click)="closeDlg(data)">Aceptar</button>
+        <button class="btn btn-secondary mx-1" (click)="closeDlg()" [disabled]="!dialogForm.form.valid">Aceptar</button>
         <button class="btn btn-secondary mx-1" mat-dialog-close="false">Cancelar</button>
       </div>
     </div>

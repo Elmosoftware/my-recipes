@@ -22,7 +22,7 @@ class RequestContext {
         this._method = "";
         this._entity = null;
         this._params = new Array();
-        this._query = { top: "", skip: "", sort: "", pop: "", filter: "", count: "", fields: "" };
+        this._query = { top: "", skip: "", sort: "", pop: "", filter: "", count: "", fields: "", pub: "" };
         this._hasQueryParameters = false;
         this._url = "";
         this._user = { rawData: null, id: "", isAdmin: false };

@@ -11,57 +11,71 @@
             <thead>
                 <tr [ngSwitch]="type">
                     <th>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openDialog('')">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openDialog('')"
+                            data-toggle="tooltip" data-placement="top" title="Crear uno nuevo">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </button>
                     </th>
                     <ng-template [ngSwitchCase]="'Level'">
+                        <th style="width:1em" data-toggle="tooltip" data-placement="top" title="Estado de publicación">
+                            <i class="fa fa-flag" aria-hidden="true"></i></th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                     </ng-template>
                     <ng-template [ngSwitchCase]="'MealType'">
+                        <th style="width:1em" data-toggle="tooltip" data-placement="top" title="Estado de publicación">
+                            <i class="fa fa-flag" aria-hidden="true"></i></th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                     </ng-template>
                     <ng-template [ngSwitchCase]="'Unit'">
+                        <th style="width:1em" data-toggle="tooltip" data-placement="top" title="Estado de publicación">
+                            <i class="fa fa-flag" aria-hidden="true"></i></th>
                         <th>Abreviación</th>
                         <th>Nombre completo</th>
                     </ng-template>
                     <ng-template [ngSwitchCase]="'Ingredient'">
+                        <th style="width:1em" data-toggle="tooltip" data-placement="top" title="Estado de publicación">
+                            <i class="fa fa-flag" aria-hidden="true"></i></th>
                         <th>Nombre</th>
                         <th>Unidades de medida compatibles</th>
                     </ng-template>
-                    <!-- <ng-template ngSwitchDefault>
-                        <th>def1</th>
-                        <th>Def2</th>
-                    </ng-template> -->
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let entity of model" [ngSwitch]="type">
                     <td>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="delete(entity._id)">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="delete(entity._id)"
+                            data-toggle="tooltip" data-placement="top" title="Eliminar">
                             <i class="fa fa-times" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openDialog(entity._id)">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="openDialog(entity._id)"
+                            data-toggle="tooltip" data-placement="top" title="Editar">
                             <i class="fa fa-pencil" aria-hidden="true"></i>
                         </button>
                     </td>
                     <ng-template [ngSwitchCase]="'Level'">
+                        <td><i class="fa" [ngClass]="{'fa-square-o': !entity.publishedOn, 'fa-check-square-o': entity.publishedOn}"
+                                aria-hidden="true"></i></td>
                         <td>{{entity.name}}</td>
                         <td>{{entity.description}}</td>
                     </ng-template>
                     <ng-template [ngSwitchCase]="'MealType'">
+                        <td><i class="fa" [ngClass]="{'fa-square-o': !entity.publishedOn, 'fa-check-square-o': entity.publishedOn}"
+                                aria-hidden="true"></i></td>
                         <td>{{entity.name}}</td>
                         <td>{{entity.description}}</td>
                     </ng-template>
                     <ng-template [ngSwitchCase]="'Unit'">
+                        <td><i class="fa" [ngClass]="{'fa-square-o': !entity.publishedOn, 'fa-check-square-o': entity.publishedOn}"
+                                aria-hidden="true"></i></td>
                         <td>{{entity.abbrev}}</td>
                         <td>{{entity.name}}</td>
                     </ng-template>
                     <ng-template [ngSwitchCase]="'Ingredient'">
+                        <td><i class="fa" [ngClass]="{'fa-square-o': !entity.publishedOn, 'fa-check-square-o': entity.publishedOn}"
+                                aria-hidden="true"></i></td>
                         <td>{{entity.name}}</td>
-                        <!-- <td>{{entity.compatibleUnits}}</td> -->
                         <td>
                             <ul>
                                 <li *ngFor="let unit of entity.compatibleUnits">

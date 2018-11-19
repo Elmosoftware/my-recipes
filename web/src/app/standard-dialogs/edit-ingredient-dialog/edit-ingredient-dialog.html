@@ -3,26 +3,37 @@
     <div class="form-group">
       <div class="input-group-prepend">
         <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (name.valid && name.dirty), 'validatorInvalid': (name.invalid && name.dirty)}"
-          data-toggle="tooltip" data-placement="right" title="Esta información es requerida.">Nombre</span>
+          data-toggle="tooltip" data-placement="left" title="Esta información es requerida.">Nombre</span>
       </div>
-      <input type="text" class="form-control" placeholder="Ingrese aqui el nombre del ingrediente." [(ngModel)]="data.name" name="name"
-        required maxlength="50" autocomplete="off" #name="ngModel">
+      <input type="text" class="form-control" placeholder="Ingrese aqui el nombre del ingrediente." [(ngModel)]="model.name"
+        name="name" required maxlength="50" autocomplete="off" #name="ngModel">
     </div>
     <div class="form-group">
       <div class="input-group-prepend">
         <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (unit.valid && unit.dirty), 'validatorInvalid': (unit.invalid && unit.dirty)}"
-          data-toggle="tooltip" data-placement="right" title="Esta información es requerida.">Nombre</span>
+          data-toggle="tooltip" data-placement="left" title="Esta información es requerida.">Unidades de medida</span>
       </div>
-      <ngx-select [multiple]="true" [items]="cache.units" [(ngModel)]="data.compatibleUnits" name="unit" #unit="ngModel" 
-        optionTextField="name" optionValueField="_id" placeholder="Seleccione al menos una Unidad de medida.">
+      <ngx-select [multiple]="true" [items]="cache.units" [(ngModel)]="model.compatibleUnits" name="unit" #unit="ngModel"
+        optionTextField="name" optionValueField="_id" placeholder="Seleccione al menos una Unidad de medida." required>
       </ngx-select>
     </div>
   </form>
+  <div *ngIf="!autoPublish" class="input-group my-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Publicar</span>
+    </div>
+    <div class="form-control">
+      <mat-slide-toggle color="primary" [(ngModel)]="isPublished">
+        {{ friendlyPublishDate }}
+      </mat-slide-toggle>
+    </div>
+  </div>
   <mat-dialog-actions>
     <div class="container">
       <div class="row">
         <div class="col-12 text-right">
-          <button class="btn btn-secondary mx-1" (click)="closeDlg(data)">Aceptar</button>
+          <button class="btn btn-secondary mx-1" (click)="closeDlg()" 
+          [disabled]="!(dialogForm.form.valid && model.compatibleUnits && model.compatibleUnits.length > 0)">Aceptar</button>
           <button class="btn btn-secondary mx-1" mat-dialog-close="false">Cancelar</button>
         </div>
       </div>

@@ -157,7 +157,7 @@ export class Cache extends CacheRepository {
         let q = new EntityServiceQueryParams();
         q.pop = "true";
         q.top = "3";
-        q.sort = "-createdOn";
+        q.sort = "-publishedOn";
         return this.svcRecipe.get("", q).toPromise();
     }
 

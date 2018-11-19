@@ -69,8 +69,20 @@ mongoose.Promise = global.Promise; // Using native promises.
 
 app.use(bodyParser.json()); // to support JSON-encoded bodies.
 app.use(bodyParser.urlencoded({ extended: true })); // to support URL-encoded bodies.
+
 app.use("/api/management", authCheckMiddleware, routerManagement);
-app.use("/api", authCheckMiddleware.unless({ method: ['OPTIONS', 'GET'] }), router);
+
+// app.use("/api", authCheckMiddleware.unless({ method: ['OPTIONS', 'GET'] }), router);
+// @ts-ignore
+app.use("/api", authCheckMiddleware.unless((req) => {
+
+    //OPTIONS Method is always excluded from authenticationchecj. 
+    //GET requests will be allowed always, but, if they carry the AUTHORIZATION header, we will run the middleware 
+    //to process the authentication data:
+    let ret = req.method.toLowerCase() == "options" || (req.method.toLowerCase() == "get" && !req.headers.authorization);
+
+    return ret;
+}), router);
 
 mongoose.connect(process.env.DB_ENDPOINT, { useMongoClient: true }, function (err) {
     if (err) {

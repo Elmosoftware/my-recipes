@@ -12,8 +12,8 @@
               <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (name.valid && name.dirty), 'validatorInvalid': (name.invalid && name.dirty)}"
                 data-toggle="tooltip" data-placement="right" title="Esta información es requerida.">Nombre de la receta</span>
             </div>
-            <input type="text" class="form-control" placeholder="Ingrese aqui el nombre de la receta" [(ngModel)]="model.name" name="name"
-              required maxlength="50" autocomplete="off" #name="ngModel">
+            <input type="text" class="form-control" placeholder="Ingrese aqui el nombre de la receta" [(ngModel)]="model.name"
+              name="name" required maxlength="50" autocomplete="off" #name="ngModel">
           </div>
           <div class="form-group">
             <div class="input-group-prepend">
@@ -25,18 +25,19 @@
           <div class="form-group">
             <div class="input-group-prepend">
               <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (estimatedTime.valid && estimatedTime.value > 0 && estimatedTime.dirty), 'validatorInvalid': ((estimatedTime.invalid || estimatedTime.value == 0) && estimatedTime.dirty)}"
-                data-toggle="tooltip" data-placement="right" title="Seleccione el tiempo estimado de esta preparación.">Tiempo estimado</span>
+                data-toggle="tooltip" data-placement="right" title="Seleccione el tiempo estimado de esta preparación.">Tiempo
+                estimado</span>
             </div>
             <div class="input-group form-control">
               <input type="range" min="0" max="180" step="10" list="ticks" required class="form-control" [(ngModel)]="model.estimatedTime"
                 name="estimatedTime" #estimatedTime="ngModel">
               <datalist id="ticks">
                 <option value="30">
-                  <option value="60">
-                    <option value="90">
-                      <option value="120">
-                        <option value="150">
-                          <option value="180">
+                <option value="60">
+                <option value="90">
+                <option value="120">
+                <option value="150">
+                <option value="180">
               </datalist>
               <div class="input-group align-items-center">
                 <small>{{ helper.estimatedFriendlyTime(model.estimatedTime) }}</small>
@@ -46,11 +47,12 @@
           <div class="form-group">
             <div class="input-group-prepend">
               <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (level.valid && level.dirty), 'validatorInvalid': (level.invalid && level.dirty)}"
-                data-toggle="tooltip" data-placement="right" title="Debe seleccionar un nivel de dificultad de la lista.">Nivel de dificultad</span>
+                data-toggle="tooltip" data-placement="right" title="Debe seleccionar un nivel de dificultad de la lista.">Nivel
+                de dificultad</span>
             </div>
-            <ngx-select required [multiple]="false" [items]="cache.levels" [(ngModel)]="model.level" name="level" optionTextField="name"
-              [defaultValue]="(model._id) ? model.level._id : ''" optionValueField="_id" placeholder="Seleccione el nivel de dificultad de esta receta."
-              #level="ngModel">
+            <ngx-select required [multiple]="false" [items]="cache.levels" [(ngModel)]="model.level" name="level"
+              optionTextField="name" [defaultValue]="(model._id) ? model.level._id : ''" optionValueField="_id"
+              placeholder="Seleccione el nivel de dificultad de esta receta." #level="ngModel">
             </ngx-select>
           </div>
           <div class="form-group">
@@ -58,9 +60,9 @@
               <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (mealType.valid && mealType.dirty), 'validatorInvalid': (mealType.invalid && mealType.dirty)}"
                 data-toggle="tooltip" data-placement="right" title="Seleccione un plato de la lista.">Plato</span>
             </div>
-            <ngx-select required [multiple]="false" [items]="cache.mealTypes" [(ngModel)]="model.mealType" name="mealType" optionTextField="name"
-              [defaultValue]="(model._id) ? model.mealType._id : ''" optionValueField="_id" placeholder="Seleccione el tipo de plato al que corresponde esta receta."
-              #mealType="ngModel"></ngx-select>
+            <ngx-select required [multiple]="false" [items]="cache.mealTypes" [(ngModel)]="model.mealType" name="mealType"
+              optionTextField="name" [defaultValue]="(model._id) ? model.mealType._id : ''" optionValueField="_id"
+              placeholder="Seleccione el tipo de plato al que corresponde esta receta." #mealType="ngModel"></ngx-select>
           </div>
         </form>
       </wizard-step>
@@ -69,12 +71,12 @@
           <div class="form-group">
             <div class="input-group-prepend">
               <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (ingredient.valid && ingredient.dirty), 'validatorInvalid': (ingredient.invalid && ingredient.dirty)}"
-                data-toggle="tooltip" data-placement="right" 
-                title="Si el ingrediente no está en la lista, puede agregarlo!">Ingrediente</span>
+                data-toggle="tooltip" data-placement="right" title="Si el ingrediente no está en la lista, puede agregarlo!">Ingrediente</span>
             </div>
             <div class="form-inline">
-              <ngx-select required [multiple]="false" [items]="cache.ingredients" [(ngModel)]="newRecipeIngredient.ingredient" (select)="ingredientSelected()"
-                optionTextField="name" optionValueField="_id" name="ingredient" #ingredient="ngModel" placeholder="Seleccione el ingrediente.">
+              <ngx-select required [multiple]="false" [items]="cache.ingredients" [(ngModel)]="newRecipeIngredient.ingredient"
+                (select)="ingredientSelected()" optionTextField="name" optionValueField="_id" name="ingredient"
+                #ingredient="ngModel" placeholder="Seleccione el ingrediente.">
               </ngx-select>
               <button type="button" class="btn btn-primary ml-2" (click)="newIngredient()">
                 <i class="fa fa-plus" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="¿El ingrediente no está en la lista?, Agregalo haciendo click acá!"></i>
@@ -83,22 +85,20 @@
           </div>
           <div class="form-group">
             <div class="input-group-prepend">
-              <span class="input-group-text text-primary" 
-                [ngClass]="{'validatorValid': (amount.valid && amount.dirty && amount.value > 0 && amount.value <= 9999 && unit.valid && unit.dirty), 'validatorInvalid': ((amount.invalid || amount.value == 0 || amount.value > 9999 || unit.invalid) && amount.dirty && unit.dirty)}"
-                data-toggle="tooltip" data-placement="right" 
-                title="Ingrese la cantidad a utilizar del ingrediente en la unidad de medida seleccionada.">Cantidad</span>
+              <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (amount.valid && amount.dirty && amount.value > 0 && amount.value <= 9999 && unit.valid && unit.dirty), 'validatorInvalid': ((amount.invalid || amount.value == 0 || amount.value > 9999 || unit.invalid) && amount.dirty && unit.dirty)}"
+                data-toggle="tooltip" data-placement="right" title="Ingrese la cantidad a utilizar del ingrediente en la unidad de medida seleccionada.">Cantidad</span>
             </div>
             <div class="form-inline">
-              <input type="number" min="0" max="9999" class="form-control" placeholder="Cantidad a utilizar" [(ngModel)]="newRecipeIngredient.amount"
-                name="amount" required #amount="ngModel">
-              <ngx-select class="ml-2" required [multiple]="false" [items]="compatibleUnits" [(ngModel)]="newRecipeIngredient.unit" 
-                optionTextField="name" optionValueField="_id" name="unit" #unit="ngModel" 
-                placeholder="Seleccione la unidad de medida.">
+              <input type="number" min="0" max="9999" class="form-control" placeholder="Cantidad a utilizar"
+                [(ngModel)]="newRecipeIngredient.amount" name="amount" required #amount="ngModel">
+              <ngx-select class="ml-2" required [multiple]="false" [items]="compatibleUnits" [(ngModel)]="newRecipeIngredient.unit"
+                optionTextField="name" optionValueField="_id" name="unit" #unit="ngModel" placeholder="Seleccione la unidad de medida.">
               </ngx-select>
             </div>
             <div class="form-group">
               <div class="d-flex justify-content-end">
-                <button class="btn btn-primary my-2 " type="button" [disabled]="!(ingredientsForm.form.valid && amount.value > 0)" (click)="addIngredient();ingredientsForm.form.reset()">Agregar a la lista
+                <button class="btn btn-primary my-2 " type="button" [disabled]="!(ingredientsForm.form.valid && amount.value > 0)"
+                  (click)="addIngredient();ingredientsForm.form.reset()">Agregar a la lista
                   <i class="fa fa-caret-down fa-lg ml-2" aria-hidden="true"></i>
                 </button>
               </div>
@@ -111,8 +111,8 @@
         <ng-template #ingredientsList>
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let ing of model.ingredients">
-              <button class="btn btn-light" type="button" (click)="removeIngredient(ing.ingredient)" data-toggle="tooltip" data-placement="top"
-                title="Eliminar este ingrediente de la lista.">
+              <button class="btn btn-light" type="button" (click)="removeIngredient(ing.ingredient)" data-toggle="tooltip"
+                data-placement="top" title="Eliminar este ingrediente de la lista.">
                 <i class="fa fa-times"></i>
               </button>
               {{ parseRecipeIngredient(ing) }}
@@ -125,22 +125,24 @@
           <div class="form-group">
             <div class="input-group-prepend">
               <span class="input-group-text text-primary" [ngClass]="{'validatorValid': (direction.valid && direction.dirty), 'validatorInvalid': (direction.invalid && direction.dirty)}"
-                data-toggle="tooltip" data-placement="right" title="Toda receta debe poseer al menos un paso de preparación">Paso de la Preparación</span>
+                data-toggle="tooltip" data-placement="right" title="Toda receta debe poseer al menos un paso de preparación">Paso
+                de la Preparación</span>
             </div>
-            <textarea required class="form-control" placeholder="Ingrese aqui en forma detallada un paso de la preparación." [(ngModel)]="newDirection"
-              name="direction" #direction="ngModel" rows="3" maxlength="1024"></textarea>
+            <textarea required class="form-control" placeholder="Ingrese aqui en forma detallada un paso de la preparación."
+              [(ngModel)]="newDirection" name="direction" #direction="ngModel" rows="3" maxlength="1024"></textarea>
           </div>
           <div class="form-group">
             <div class="d-flex justify-content-end">
-              <button class="btn btn-primary my-2 " type="button" [disabled]="!(directionsForm.form.valid)" (click)="addDirection();directionsForm.form.reset()">Agregar a la lista
+              <button class="btn btn-primary my-2 " type="button" [disabled]="!(directionsForm.form.valid)" (click)="addDirection();directionsForm.form.reset()">Agregar
+                a la lista
                 <i class="fa fa-caret-down fa-lg ml-2" aria-hidden="true"></i>
               </button>
             </div>
           </div>
         </form>
         <div class="alert alert-warning" role="alert" *ngIf="!model.directions || model.directions.length == 0; else directionsList">
-          <strong>Aún no agregaste los pasos de la preparación!</strong> Completalos en forma detallada, indicando de que forma debe
-          incorporarse cada ingrediente.
+          <strong>¡Aún no agregaste los pasos de la preparación!</strong> Completalos en forma detallada, indicando de
+          que forma debe incorporarse cada ingrediente.
         </div>
         <ng-template #directionsList>
           <div class="alert alert-warning" role="alert" *ngIf="missingIngredients && missingIngredients.length > 0">
@@ -149,11 +151,12 @@
           </div>
           <div class="list-group-item" *ngFor="let dir of model.directions; let i = index">
             <div class="input-group-prepend">
-              <button class="btn btn-secondary" type="button" (click)="removeDirection(i)" data-toggle="tooltip" data-placement="top" title="Eliminar este paso de la preparación.">
+              <button class="btn btn-secondary" type="button" (click)="removeDirection(i)" data-toggle="tooltip"
+                data-placement="top" title="Eliminar este paso de la preparación.">
                 <i class="fa fa-times"></i>
               </button>
-              <button class="btn btn-secondary mx-1" type="button" (click)="editDirection(i)" data-toggle="tooltip" data-placement="top"
-                title="Editar este paso de la preparación.">
+              <button class="btn btn-secondary mx-1" type="button" (click)="editDirection(i)" data-toggle="tooltip"
+                data-placement="top" title="Editar este paso de la preparación.">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </button>
               <span class="input-group-text mx-3">Paso {{ i + 1 }}</span>
@@ -161,14 +164,44 @@
                 data-toggle="tooltip" data-placement="top" [title]="(i==(model.directions.length-1)) ? 'No es posible mover este paso hacia abajo ahora.' : 'Convertir en Paso ' + (i+2)">
                 <i class="fa fa-chevron-down"></i>
               </button>
-              <button class="btn btn-secondary mx-1" type="button" (click)="moveDirectionUp(i)" [disabled]="i==0" data-toggle="tooltip"
-                data-placement="top" [title]="(i==0) ? 'No es posible mover este paso hacia arriba ahora.' : 'Convertir en Paso ' + i">
+              <button class="btn btn-secondary mx-1" type="button" (click)="moveDirectionUp(i)" [disabled]="i==0"
+                data-toggle="tooltip" data-placement="top" [title]="(i==0) ? 'No es posible mover este paso hacia arriba ahora.' : 'Convertir en Paso ' + i">
                 <i class="fa fa-chevron-up"></i>
               </button>
             </div>
             <div [innerHTML]="parseIngredientsInDirection(dir)"></div>
           </div>
         </ng-template>
+      </wizard-step>
+      <wizard-step [title]="'Publicación'">
+        <div class="container my-4">
+          <div class="row justify-content-center">
+            <div class="align-self-center form-inline">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Publicar</span>
+              </div>            
+              <div class="form-control">
+                <mat-slide-toggle color="primary" [(ngModel)]="isPublished">
+                  {{ friendlyPublishDate }}
+                </mat-slide-toggle>
+              </div>
+            </div>
+            <div class="align-self-center">
+                <div class="alert alert-info my-3" role="alert">
+                    <h4 class="alert-heading my-4">¿Que significa "Publicar" una receta?</h4>
+                    <p>
+                      Las recetas que crees, por defecto serán visibles solo para ti. Ningún otro usuario podrá verlas o interactuar con ellas.
+                    </p>
+                    <p>
+                      Para que esto suceda deberás publicar la receta. Al hacerlo, será incluida en las búsquedas relevantes de cualquier usuario y todos podrán disfrutar de la delicia culinaria que has creado.
+                    </p>
+                    <p>
+                      Podrás cambiar este estado de tu receta en todo momento y las veces que desees. 
+                    </p>
+                  </div>
+            </div>
+          </div>        
+        </div>
       </wizard-step>
       <wizard-step [title]="'Finalizar!'" (onComplete)="onComplete($event)">
         <div class="container my-5" *ngIf="isCompleted; else recipePreview">
@@ -182,12 +215,23 @@
           </div>
         </div>
         <ng-template #recipePreview>
-          <div class="container my-5">
+          <div class="container my-4">
             <div class="row justify-content-center">
-              <h3>Perfecto, ya podes guardar tu receta!</h3>
-            </div>
-            <div class="row justify-content-center my-3">
-              <h4>Haz click en el botón para finalizar.</h4>
+              <div class="align-self-center py-3">
+                <div class="alert alert-info px-5 my-3" role="alert">
+                  <div class="row justify-content-center">
+                    <h3 class="alert-heading my-4">¡Perfecto, ya podes guardar tu receta!</h3>
+                  </div>
+                  <p *ngIf="isNewRecipe; else updatedRecipe">
+                    Haz click en el botón finalizar y guardaremos tu nueva receta.
+                  </p>
+                  <ng-template #updatedRecipe>
+                    <p>
+                      Haz click en el botón finalizar y actualizaremos tu receta con los cambios que realizaste.
+                    </p>
+                  </ng-template>
+                </div>
+              </div>
             </div>
           </div>
         </ng-template>

@@ -53,10 +53,10 @@ routerData.get("/*", function (req, res) {
 
     //If we are counting records:
     if (isCounting) {
-        promises.push(svc.count(condition));
+        promises.push(svc.count(condition, req["context"].user, req["context"].query));
     }
 
-    promises.push(svc.find(condition, projection, req["context"].query));
+    promises.push(svc.find(condition, projection, req["context"].user, req["context"].query));
 
     Promise.all(promises)
         .then((results) => {
@@ -108,7 +108,7 @@ routerData.delete("/*", function (req, res) {
     const svc = new Service(req["context"].entity);
 
     if (req["context"].params.length > 0) {
-        svc.delete(req["context"].params[0], (err, data) => {
+        svc.delete(req["context"].params[0], req["context"].user, req["context"].query, (err, data) => {
             req["context"].sendResponse(err, data);
         });
     }

@@ -27,5 +27,6 @@ module.exports = mongoose.model("MealType",
         createdOn: { type: Date, required: true},
         createdBy: { type: String, required: true},
         lastUpdateOn: { type: Date, required: false},
-        lastUpdateBy: { type: String, required: false}
+        lastUpdateBy: { type: String, required: false},
+        publishedOn: { type: Date, required: false }
     }));

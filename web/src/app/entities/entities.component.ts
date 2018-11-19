@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, NgZone } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
 import { ToasterHelperService } from "../services/toaster-helper-service";
@@ -6,13 +6,14 @@ import { Router, ActivatedRoute, Params, Data } from "@angular/router";
 import { CommonModule, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 
 import { EntityServiceFactory } from "../services/entity-service-factory";
-import { EntityService, EntityServiceQueryParams } from "../services/entity-service";
+import { EntityService, EntityServiceQueryParams, QUERY_PARAM_PUB } from "../services/entity-service";
 import { Entity } from "../model/entity";
 import { ErrorLog } from '../model/error-log';
 import { APIResponseParser } from "../services/api-response-parser";
 import { SubscriptionService } from "../services/subscription.service";
 import { StandardDialogService, ConfirmDialogConfiguration } from "../standard-dialogs/standard-dialog.service";
 import { Cache, CACHE_MEMBERS } from "../shared/cache/cache";
+import { Helper } from '../shared/helper';
 
 @Component({
   selector: 'app-backend-entities',
@@ -21,6 +22,7 @@ import { Cache, CACHE_MEMBERS } from "../shared/cache/cache";
 })
 export class EntitiesComponent implements OnInit {
 
+  helper: Helper
   model: Entity[];
   globalErrorSubscription: any;
   type: string;
@@ -28,6 +30,7 @@ export class EntitiesComponent implements OnInit {
   svc: EntityService;
 
   constructor(
+    private zone: NgZone,
     private svcFactory: EntityServiceFactory,
     public dialog: MatDialog,
     private subs: SubscriptionService,
@@ -38,6 +41,7 @@ export class EntitiesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.helper = new Helper();
     this.globalErrorSubscription = this.subs.getGlobalErrorEmitter().subscribe(item => this.localErrorHandler(item))
 
     this.type = this.route.snapshot.data['type'];
@@ -52,7 +56,11 @@ export class EntitiesComponent implements OnInit {
   }
 
   dataRefresh() {
-    this.svc.get("", null)
+
+    let q = new EntityServiceQueryParams();
+    q.pub = QUERY_PARAM_PUB.all; //We would like to see all the entities, regardless if they are published or not.
+
+    this.svc.get("", q)
       .subscribe(
         data => {
           this.model = new APIResponseParser(data).entities;
@@ -72,6 +80,7 @@ export class EntitiesComponent implements OnInit {
 
   openDialog(entityId: string): void {
 
+    this.helper.removeTooltips(this.zone);
     console.log(`Received Entity ID: "${entityId}"`);
 
     if (entityId) {
@@ -125,6 +134,7 @@ export class EntitiesComponent implements OnInit {
 
   delete(entityId: string): void {
 
+    this.helper.removeTooltips(this.zone);
     this.dlgSvc.showConfirmDialog(new ConfirmDialogConfiguration("Confirmación de borrado",
       "¿Confirma la eliminación de la Unidad de medida?")).subscribe(result => {
 

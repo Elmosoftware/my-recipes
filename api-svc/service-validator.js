@@ -51,7 +51,7 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
-    validateQuery(query) {
+    validateQuery(query, user) {
         var ret = "";
 
         if (!query) {
@@ -60,17 +60,22 @@ class ServiceValidator extends ValidatorBase {
         if (!(query === Object(query))) {
             ret = `We expected an Object for parameter "query" and we get a type of '${typeof query}'.`;
         }
-        else if (query.skip || query.top) {
-            this._validatePagination(query.skip, query.top);
-        }
-        else if (query.pop) {
-            this._validatePopulateReferences(query.pop);
-        }
-        else if (query.count) {
-            this._validateCount(query.count);
-        }
-        else if (query.fields) {
-            this._validateFields(query.field);
+        else {
+            if (query.skip || query.top) {
+                this._validatePagination(query.skip, query.top);
+            }
+            if (query.pop) {
+                this._validatePopulateReferences(query.pop);
+            }
+            if (query.count) {
+                this._validateCount(query.count);
+            }
+            if (query.fields) {
+                this._validateFields(query.fields);
+            }
+            if (query.pub) {
+                this._validatePub(query.pub, user);
+            }
         }
 
         if (ret) {
@@ -191,6 +196,38 @@ class ServiceValidator extends ValidatorBase {
 
         return this;
     }
+
+    _validatePub(value, user) {
+        var ret = "";
+        /*
+            "pub" query parameter valid values and meaning:
+            ======================================
+            "default" or missing argument, ("") -> Only include Published entities in the results.
+            "all" -> include both published and not published entities in the results.
+            "notpub" -> Only include Not Published entities in the results. 
+        */
+        let validValues = ["", "default", "all", "notpub"];
+
+        if (!(typeof value === "string")) {
+            ret = `We expected a String for the "Fields selection" query parameter "fields".
+                        Current type: "fields" is "${typeof value}".`;
+        }
+        else if (!validValues.includes(value.toLowerCase())) {
+            ret = `The query parameter "pub" has an invalid value.
+            Current value is: "${value}".
+            Possible  values are: ${validValues.join(", ")}.`;
+        }
+        else if (!user && (value.toLowerCase() == "all" || value.toLowerCase() == "notpub")) {
+            ret = `The query option "pub" was specified with value '${value}' but there is no authenticated user for this request`;
+        }
+
+        if (ret) {
+            super._addError(ret);
+        }
+
+        return this;
+    }
+
 }
 
 module.exports = ServiceValidator;

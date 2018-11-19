@@ -6,7 +6,7 @@ import { Helper } from "../shared/helper";
 import { SubscriptionService } from "../services/subscription.service";
 import { ErrorLog } from '../model/error-log';
 import { EntityServiceFactory } from "../services/entity-service-factory";
-import { EntityService, EntityServiceQueryParams } from "../services/entity-service";
+import { EntityService, EntityServiceQueryParams, QUERY_PARAM_PUB } from "../services/entity-service";
 import { APIResponseParser } from "../services/api-response-parser";
 import { Recipe } from "../model/recipe";
 import { InfiniteScrollingService, SCROLL_POSITION, PagingHelper } from "../shared/infinite-scrolling/infinite-scrolling-module";
@@ -33,6 +33,7 @@ export class MyRecipesComponent implements OnInit {
   svcInfScroll: InfiniteScrollingService<Recipe>;
   onDataFeed: EventEmitter<PagingHelper>;
   mealTypesFilter: number[];
+  notPublishedOnlyFilter: boolean;
 
   constructor(private zone: NgZone,
     private router: Router,
@@ -93,6 +94,12 @@ export class MyRecipesComponent implements OnInit {
     this.reset();
   }
 
+  toggleNotPublishedOnly() {
+    this.notPublishedOnlyFilter = !this.notPublishedOnlyFilter;
+    console.log("STARTING NEW SEARCH!");
+    this.reset();
+  }
+
   get isAnyFilterSet() : boolean {
     return Object.keys(this.mealTypesFilter).length > 0;
   }
@@ -141,6 +148,16 @@ export class MyRecipesComponent implements OnInit {
 
     return ret;
   }
+
+  getFooterPublishingData(r: Recipe): string{
+    let ret: string = "Aún no publicada";
+
+    if(r.publishedOn){
+      ret = this.helper.friendlyTimeFromNow(r.publishedOn);
+    }
+
+    return ret;
+  }
   
   private getRecipes(top: number = 0, skip: number = 0) {
 
@@ -161,6 +178,7 @@ export class MyRecipesComponent implements OnInit {
         $or: [ { "lastUpdateBy": this.authSvc.userProfile.userId}, {"createdBy": this.authSvc.userProfile.userId}] 
       }]
     });
+    q.pub = (this.notPublishedOnlyFilter) ? QUERY_PARAM_PUB.notpub : QUERY_PARAM_PUB.all;
 
     this.asyncInProgress = true;
 

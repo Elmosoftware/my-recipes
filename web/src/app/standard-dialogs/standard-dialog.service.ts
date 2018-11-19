@@ -33,10 +33,13 @@ export class StandardDialogService {
     return dialogRef.afterClosed();
   }
 
-  showEditEntityDialog(entityName: any, entityData: Entity): Observable<any> {
+  showEditEntityDialog(entityName: any, entityData: Entity, autoPublishEntity: boolean = false): Observable<any> {
 
     if (this.entityDialogDefs[entityName]) {
-      return this.dialog.open(this.entityDialogDefs[entityName], { data: entityData })
+      return this.dialog.open(this.entityDialogDefs[entityName], 
+        { 
+          data: { entity: entityData, autoPublish: autoPublishEntity }
+        })
         .afterClosed();
     }
     else{

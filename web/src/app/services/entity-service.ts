@@ -119,10 +119,25 @@ export class EntityService {
   }
 }
 
-export class EntityServiceQueryParams {
+export const enum QUERY_PARAM_PUB {
+  /**
+   * Only include Published entities in the results.
+   */
+  default = "default",
+  /**
+   * Include both, published and not published entities in the results.
+   */
+  all = "all",
+  /**
+   *  Only include Not Published entities in the results.
+   */
+  notpub = "notpub"
+};
 
+export class EntityServiceQueryParams {
+  
   constructor(pop: string = "", filter: string = "", top: string = "", skip: string = "", 
-    sort: string = "", count: string = "", fields: string = "") {
+    sort: string = "", count: string = "", fields: string = "", pub: QUERY_PARAM_PUB = QUERY_PARAM_PUB.default) {
     this.pop = pop;
     this.top = top;
     this.skip = skip;
@@ -130,6 +145,7 @@ export class EntityServiceQueryParams {
     this.filter = filter;
     this.count = count;
     this.fields = fields;
+    this.pub = pub;
   }
   
   top: string;
@@ -139,6 +155,7 @@ export class EntityServiceQueryParams {
   filter: string;
   count: string;
   fields: string;
+  pub: QUERY_PARAM_PUB
 
   getQueryString(): string {
 

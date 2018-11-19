@@ -107,6 +107,8 @@ class Service {
                     obj.isNew = true;
                     obj.createdOn = new Date();
                     obj.createdBy = (user && user.id) ? user.id : "anonymous";
+                    obj.lastUpdateOn = null;
+                    obj.lastUpdateBy = null;
                     obj.save(callback);
 
                 } catch (err) {
@@ -160,29 +162,30 @@ class Service {
             });
     }
 
-    count(conditions) {
+    count(conditions, user, query) {
         var val = new ServiceValidator();
 
         if (!val.validateConditions(conditions, false)
+            .validateQuery(query, user)
             .isValid) {
             return Promise.reject(val.getErrors());
         }
 
-        return this._entity.model.count(this._parseConditions(conditions))
+        return this._entity.model.count(this._parseConditions(conditions, user, query))
             .exec();
     }
 
-    find(conditions, projection, query) {
+    find(conditions, projection, user, query) {
         var val = new ServiceValidator();
         var cursor = null;
 
         if (!val.validateConditions(conditions, false)
-            .validateQuery(query)
+            .validateQuery(query, user)
             .isValid) {
             return Promise.reject(val.getErrors());
         }
 
-        cursor = this._entity.model.find(this._parseConditions(conditions), projection)
+        cursor = this._entity.model.find(this._parseConditions(conditions, user, query), projection)
             .skip(Number(query.skip));
 
         if (query.fields) {
@@ -313,16 +316,16 @@ class Service {
         return cursor.exec();
     }
 
-    delete(conditions, callback) {
+    delete(conditions, user, query, callback) {
         var val = new ServiceValidator();
 
         if (!val.validateCallback(callback)
-            .validateConditions(conditions, true)
+            .validateConditions(conditions, true) //We will admit only an Object Id here as condition.
             .isValid) {
             return (callback(val.getErrors(), {}));
         }
 
-        this._entity.model.remove(this._parseConditions(conditions), (err, data) => {
+        this._entity.model.remove(this._parseConditions(conditions, user, query), (err, data) => {
 
             //The attempt to remove a non existent document by Id is not reported as error by Mongoose:
             if (!err && data.result.n == 0) {
@@ -421,17 +424,32 @@ class Service {
         return ret;
     }
 
-    _parseConditions(conditions) {
+    _parseConditions(conditions, user, query) {
         var val = new ServiceValidator();
+        let ret = {};
 
         if (!conditions) {
-            return {};
-        } else if (val.isValidObjectId(conditions)) {
-            return { _id: conditions };
+            conditions = "{}";     
+        }
+        
+        if (val.isValidObjectId(conditions)) {
+            ret._id = conditions;
         }
         else {
-            return JSON.parse(decodeURIComponent(conditions));
+            ret = JSON.parse(decodeURIComponent(conditions));
+
+            //Adding conditions for "pub" query value:
+            //Default behaviour is to include only published entities:
+            if (query.pub == "" || query.pub.toLowerCase() == "default") {
+                ret.publishedOn = { $ne: null };
+            }
+            //If was request to include not published entities only:
+            else if (query.pub == "notpub") {
+                ret.publishedOn = { $eq: null };
+            }
         }
+
+        return ret;
     }
 }
 

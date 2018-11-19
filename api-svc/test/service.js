@@ -15,7 +15,7 @@ describe("Service", () => {
     it("Should complete with a valid callback as parameter", (done) => {
 
       stubModelUpdate = sinon.stub(e.model, "update");
-      svc.update(svc.getNewobjectId(), {}, () => { });
+      svc.update(svc.getNewobjectId(), {}, null, () => { });
 
       setTimeout(() => { //Because we are testing over a promise:
         stubModelUpdate.restore();
@@ -28,7 +28,7 @@ describe("Service", () => {
       stubModelUpdate = sinon.stub(e.model, "update");
 
       assert.throws(() => {
-        svc.update("", {}, "invalid callback parameter");
+        svc.update("", {}, null, "invalid callback parameter");
       })
 
       stubModelUpdate.restore();
@@ -53,7 +53,7 @@ describe("Service", () => {
         });
     }
 
-    function setQuery(top, skip, sort, pop, count, filter, fields) {
+    function setQuery(top, skip, sort, pop, count, filter, fields, pub) {
       const ret = {
         top: "",
         skip: "",
@@ -61,7 +61,8 @@ describe("Service", () => {
         pop: "",
         count: "",
         filter: "",
-        fields: ""
+        fields: "",
+        pub: ""
       };
 
       if (top) {
@@ -92,13 +93,25 @@ describe("Service", () => {
         ret.fields = fields;
       }
 
+      if (pub) {
+        ret.pub = pub;
+      }
+
       return ret;
+    }
+
+    function setUser(id, isAdmin){
+      return { 
+        rawData: {}, 
+        id: id, 
+        isAdmin: isAdmin 
+      };
     }
 
     it("Should complete with no parameters", () => {
 
       stubModelFind = setStub();
-      svc.find("", null, setQuery());
+      svc.find("", null,  null, setQuery());
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -106,7 +119,7 @@ describe("Service", () => {
     it("Should complete with all valid parameters", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "0", "my sort", ""));
+      svc.find("5a387f92ccbd71477022ea65", null,  null, setQuery("100", "0", "my sort", ""));
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -114,7 +127,7 @@ describe("Service", () => {
     it("Should complete with valid parameters and empty query object", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery());
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery());
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -132,7 +145,7 @@ describe("Service", () => {
     it("Shouldn't complete with a nor JSON or null conditions", () => {
 
       stubModelFind = setStub();
-      svc.find("invalid conditions", null, setQuery("100", "0", "my sort", ""))
+      svc.find("invalid conditions", null, null, setQuery("100", "0", "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -142,7 +155,7 @@ describe("Service", () => {
     it("Shouldn't complete with a non string or number 'skip' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", new Object(), "my sort", ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("100", new Object(), "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -152,7 +165,7 @@ describe("Service", () => {
     it("Shouldn't complete with a non string or number 'top' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery(new Object(), "0", "my sort", ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery(new Object(), "0", "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -162,7 +175,7 @@ describe("Service", () => {
     it("Shouldn't complete with a string 'skip' parameter that is not a number", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "not a number", "my sort", ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "not a number", "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -172,7 +185,7 @@ describe("Service", () => {
     it("Shouldn't complete with a string 'top' parameter that is not a number", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("not a number", "0", "my sort", ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("not a number", "0", "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -182,7 +195,7 @@ describe("Service", () => {
     it("Shouldn't complete with a negative 'skip' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "-1", "my sort", ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("100", "-1", "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -192,7 +205,7 @@ describe("Service", () => {
     it("Shouldn't complete with a negative string 'top' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("-1", "0", "my sort", ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("-1", "0", "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -202,7 +215,7 @@ describe("Service", () => {
     it("Shouldn't complete with a string 'top' parameter with value 0", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", "my sort", ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "0", "my sort", ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -212,7 +225,7 @@ describe("Service", () => {
     it("Shouldn't complete with a not string type 'sort' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", new Object(), ""))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "0", new Object(), ""))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -222,7 +235,7 @@ describe("Service", () => {
     it("Should complete with an empty string top and skip parameters", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("", "", "my sort", ""));
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "", "my sort", ""));
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -230,7 +243,7 @@ describe("Service", () => {
     it("Should complete with an empty string 'top' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("", "0", "my sort", ""));
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "0", "my sort", ""));
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -238,7 +251,7 @@ describe("Service", () => {
     it("Should complete with an empty string 'skip' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "", "my sort", ""));
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("100", "", "my sort", ""));
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -246,7 +259,7 @@ describe("Service", () => {
     it("Shouldn't complete with a not string type 'pop' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", new Object(), 1))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "0", new Object(), 1))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -256,7 +269,7 @@ describe("Service", () => {
     it("Shouldn't complete with a 'pop' parameter that is not 'true', 'false' or an empty string", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", new Object(), "invalid parameter value"))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "0", new Object(), "invalid parameter value"))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -266,7 +279,7 @@ describe("Service", () => {
     it("Should complete with a valid 'pop' parameter", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("100", "", "my sort", "true"));
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("100", "", "my sort", "true"));
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
@@ -274,7 +287,7 @@ describe("Service", () => {
     it("Shouldn't complete with a 'count' parameter that is not 'true', 'false' or an empty string", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", "", "", new Object()))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "0", "", "", new Object()))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -284,7 +297,7 @@ describe("Service", () => {
     it("Shouldn't complete with a 'filter' parameter that is not a JSON Filter and neither an Object Id", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", "", "", "",  new Object()))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "0", "", "", "",  new Object()))
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -294,12 +307,111 @@ describe("Service", () => {
     it("Shouldn't complete with a 'fields' parameter that is not a string", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, setQuery("0", "0", "", "", "", "", new Object()))
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("0", "0", "", "", "", "", new Object()))
         .catch((err) => {
         });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
+    });
+    it("Should complete with a valid 'pub' parameter (parameter value: '')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Should complete with a valid 'pub' parameter (parameter value: 'default')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "default"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Should complete with a valid 'pub' parameter (parameter value: 'all')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "all"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Should complete with a valid 'pub' parameter (parameter value: 'notpub')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "notpub"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Shouldn't complete with a 'pub' parameter that is not a string", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", 34))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Shouldn't complete with a 'pub' parameter with value 'all' when no user is logged", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "", "", "", "", "", "", "all"))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Shouldn't complete with a 'pub' parameter with value 'notpub' when no user is logged", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "", "", "", "", "", "", "notpub"))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Should complete with a JSON filter, a user logged in and 'pub'='notpub'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          $and: [ 
+            { mealType: { $in: ["1", "2", "3"] },
+            $or: [ { createdBy: "USER1"}, { estimatedTime: 30} ] 
+          }]
+        }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "notpub"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"createdBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$eq":null}}`)
+    });
+    it("Should complete with a JSON filter, no user logged in and 'pub'=''", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          $and: [ 
+            { mealType: { $in: ["1", "2", "3"] },
+            $or: [ { createdBy: "USER1"}, { estimatedTime: 30} ] 
+          }]
+        }), null, null, setQuery("", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"createdBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$ne":null}}`)
+    });
+    it("Should complete with an Object ID as condition, no user logged in and 'pub'=''", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"_id":"5a387f92ccbd71477022ea65"}`);
     });
   });
   describe("delete()", () => {
@@ -315,7 +427,7 @@ describe("Service", () => {
     it("Should complete with all valid parameters", () => {
 
       stubModelRemove = setStub();
-      svc.delete("5a387f92ccbd71477022ea65", () => { });
+      svc.delete("5a387f92ccbd71477022ea65", null, null, () => { });
       stubModelRemove.restore();
 
       assert.ok(stubModelRemove.called);
@@ -324,7 +436,7 @@ describe("Service", () => {
 
       stubModelRemove = setStub();
       assert.throws(() => {
-        svc.delete("5a387f92ccbd71477022ea65", "invalid callback parameter");
+        svc.delete("5a387f92ccbd71477022ea65", null, null, "invalid callback parameter");
       })
       stubModelRemove.restore();
 
@@ -333,9 +445,7 @@ describe("Service", () => {
     it("Shouldn't complete with a nor JSON or null conditions", () => {
 
       stubModelRemove = setStub();
-      //assert.throws(() => {
-      svc.delete("invalid conditions", () => { });
-      //})
+      svc.delete("invalid conditions", null, null, () => { });
       stubModelRemove.restore();
 
       assert.ok(stubModelRemove.notCalled);
@@ -359,7 +469,7 @@ describe("Service", () => {
     it("Should complete with all valid parameters", (done) => {
 
       stubModelAdd = setStub();
-      svc.add({ _id: "5a387f92ccbd71477022ea65" }, () => { });
+      svc.add({ _id: "5a387f92ccbd71477022ea65" }, null, () => { });
 
       setTimeout(() => { //Because we are testing over a promise:
         stubModelAdd.restore();
@@ -371,7 +481,7 @@ describe("Service", () => {
 
       stubModelAdd = setStub();
       assert.throws(() => {
-        svc.add({ _id: "5a387f92ccbd71477022ea65" }, "invalid callback parameter");
+        svc.add({ _id: "5a387f92ccbd71477022ea65" }, null, "invalid callback parameter");
       })
       stubModelAdd.restore();
 

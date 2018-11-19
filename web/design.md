@@ -110,5 +110,58 @@ isValid -> _isValid
 value: any -> 
 refreshCallback function() ->
 
+------------------------------------------------------------
+
+"Published" attribute
+=============================
+
+Changes in Backend
+===================
+
+- Change the model to include the new attribute:
+    publishedOn: { type: Date, required: false }
+    Done
+
+Changes in Frontend
+===================
+
+- Change the Entity model to include the new attribute.
+    publishedOn: Date
+    Done
+
+- Change "Cache" class, method "refreshCacheLatestRecipes" to filter only published recipes and to get only the top 3 recently published recipes. Ideally must show also already published recipes but recently updated, (is a nice to have for now).
+    Done
+
+
+- The following pages that consume Recipes in any way must be affected:
+
+  - */entities* Must have the chance to publish or unpublish each entity.
+    Done
+
+  - */recipe*, */recipe/:id* and */recipe-view* Implement the "publishedOn" attribute. Also when creating or updating recipes, the collection of RecipeIngredients must match the "publishedOn" attribute with the one of the recipe.
+    Done
+  
+  - */home* -> Latest Recipes must show only "Published" recipes and returns latest 3 published recipes.
+    Done
+
+  - */my-recipes* Must have the chance to filter only non published recipes.
+    Done
+
+  - */search* -> must show only published recipes. (When the feature to add the ability to show only his own recipes for authenticated user is applied, the filter to not show non published recipes will not be effective).
+    Done
+
+------------------------------------------------------------
+
+Security improvements
+=============================
+
+-No puede consultarse o editarse un Recipe si:
+    -No hay usuario autenticado.
+    -Si es un recipe: El usuario debe ser el Owner.
+    -Para cualquier otra Entity, el usuario debe ser admin.
+
+
+
+
 
 

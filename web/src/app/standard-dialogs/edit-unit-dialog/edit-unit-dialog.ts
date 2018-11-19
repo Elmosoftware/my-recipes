@@ -1,23 +1,17 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { EditEntity } from '../edit-entity';
 
 @Component({
   selector: 'edit-unit-dialog',
   templateUrl: 'edit-unit-dialog.html',
   styleUrls: ['./edit-unit-dialog.css']
 })
-export class EditUnitDialog {
+export class EditUnitDialog extends EditEntity {
 
   constructor(
-    public dialogRef: MatDialogRef<EditUnitDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
-
-  closeDlg(d): void {
-    this.dialogRef.close(d);
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close(false);
+    private ref: MatDialogRef<EditUnitDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    super(data.entity, data.autoPublish, ref);
   }
 }

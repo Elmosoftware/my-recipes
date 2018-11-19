@@ -30,6 +30,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   isNewRecipe: boolean;
   isCompleted: boolean;
+  isPublished: boolean;
   modelIsReady: boolean;
   model: Recipe;
   globalErrorSubscription: any;
@@ -48,7 +49,8 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     private dlgSvc: StandardDialogService,
     private svcFactory: EntityServiceFactory,
     private toast: ToasterHelperService,
-    private cache: Cache) { }
+    private cache: Cache) {
+    }
 
   precaching() {
     //When editing a recipe seems like the dropdowns are not binding correctly the values if the list of items is not ready.
@@ -62,6 +64,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     //Initializing:
     this.precaching();
     this.isCompleted = false;
+    this.isPublished = false;
     this.modelIsReady = false; //This acts like a flag to know when data retrieval process is ready or not.
     this.wordAnalyzer = new WordAnalyzerService();
     this.helper = new Helper();
@@ -93,9 +96,11 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
             if (response.entities.length == 0) {
               this.model = null;
+              this.isPublished = false;
             }
             else {
               this.model = (response.entities[0] as Recipe);
+              this.isPublished = (this.model.publishedOn) ? true : false;
             }
 
             this.modelIsReady = true;
@@ -106,6 +111,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
     }
     else {
       this.model = new Recipe();
+      this.isPublished = false;
       this.modelIsReady = true;
     }
 
@@ -166,7 +172,7 @@ export class RecipeComponent implements OnInit, AfterViewInit {
 
   newIngredient() {
 
-    this.dlgSvc.showEditEntityDialog("Ingredient", this.svcIngredient.getNew()).subscribe(result => {
+    this.dlgSvc.showEditEntityDialog("Ingredient", this.svcIngredient.getNew(), true).subscribe(result => {
 
       console.log(`Dialog closed. Result: "${result}" `);
 
@@ -370,8 +376,33 @@ export class RecipeComponent implements OnInit, AfterViewInit {
   }
   //#endregion
 
+  get friendlyPublishDate(): string {
+    let ret: string = "";
+
+    if (this.isPublished && !this.model.publishedOn) {
+      ret = this.helper.friendlyCalendarTime(new Date());
+    }
+    else if (this.model.publishedOn) {
+      ret = this.helper.friendlyCalendarTime(this.model.publishedOn);
+    }
+
+    return ret;
+  }
+
   onComplete(event) {
 
+    //First we must update the publishedOn attribute either is a new Recipe, or is an updated one in 
+    //which we changed the published indicator:
+    if (this.isNewRecipe || this.isPublished != ((this.model.publishedOn) ? true : false)) {
+      this.model.publishedOn = (this.isPublished) ? new Date() : null;
+    }
+
+    //We need to keep in sync the published attribute of the Recipe with the ones in the RecipeIngredients:
+    this.model.ingredients.forEach( ing => {
+      ing.publishedOn = this.model.publishedOn;
+    })
+
+    //Saving the Recipe:
     this.svcRecipe.save(this.model)
       .subscribe(data => {
 

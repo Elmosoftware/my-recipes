@@ -5,6 +5,12 @@
 <div class="container formPositioning">
   <div *ngIf="model">
     <div class="row align-items-center">
+      <div class="alert alert-warning" role="alert" *ngIf="!model.publishedOn">
+        <strong>¡Aún no publicaste esta receta!</strong> Por el momento solo vos podés verla.
+        Si querés compartirla con nuestra comunidad de cocineros, podés publicarla desde el formulario de edición.
+      </div>
+    </div>
+    <div class="row align-items-center">
       <div class="col-11 text-center recipeTitle">
         {{ model.name }}
       </div>
@@ -17,9 +23,7 @@
     <div class="row mt-3">
       <div class="col-sm-6 col-md-4 col-lg-2">
         <i id="tooltip1" class="fa fa-cutlery" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Plato."></i>
-        <span data-toggle="tooltip" data-placement="top" title="Tipo de plato a servir.">
-          <!-- [title]="model.mealType.description"> -->
-          {{ model.mealType.name }}</span>
+        <span>{{ model.mealType.name }}</span>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
         <i class="fa fa-clock-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Tiempo de preparación."></i>
@@ -28,7 +32,6 @@
       <div class="col-sm-6 col-md-4 col-lg-2">
         <i class="fa fa-signal" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Nivel de dificultad."></i>
         <span data-toggle="tooltip" data-placement="top" title="Nivel de dificultad.">
-          <!-- [title]="model.level.description" -->
           {{ model.level.name }}</span>
       </div>
       <div class="col-sm-6 col-md-4 col-lg-2">
@@ -58,7 +61,8 @@
           <li *ngFor="let ing of model.ingredients">
             {{ ing.ingredient.name + ", " + ing.amount.toString() + ing.unit.abbrev }}
             <mat-slide-toggle class="ml-1" color="primary" checked="false" [hidden]="!preparationMode" (change)="toggleShoppingListItem(ing.ingredient.name + ', ' + ing.amount.toString() + ing.unit.abbrev)">
-              <i class="ml-1 fa fa-cart-arrow-down fa-2x" aria-hidden="true" data-toggle="tooltip" data-placement="top" title='Agrega este ingrediente a tu lista de compras.'></i>
+              <i class="ml-1 fa fa-cart-arrow-down fa-2x" aria-hidden="true" data-toggle="tooltip" data-placement="top"
+                title='Agrega este ingrediente a tu lista de compras.'></i>
             </mat-slide-toggle>
           </li>
         </ul>
@@ -77,8 +81,8 @@
           <span class="col-3 offset-3 col-md-3 offset-md-3">Preparación</span>
         </div>
         <div class="mb-2 recipeList" *ngFor="let dir of model.directions; let i = index">
-          <button [disabled]="!preparationMode" class="btn btn-primary rounded-circle text-center roundedList" type="button" (click)="stepDone(i+1)"
-            [ngClass]="{'stepMarkedAsDone': lastStepDone >= (i+1)}">{{ i + 1 }}</button>
+          <button [disabled]="!preparationMode" class="btn btn-primary rounded-circle text-center roundedList" type="button"
+            (click)="stepDone(i+1)" [ngClass]="{'stepMarkedAsDone': lastStepDone >= (i+1)}">{{ i + 1 }}</button>
           {{ dir }}
         </div>
       </div>
