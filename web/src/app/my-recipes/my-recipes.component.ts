@@ -6,7 +6,7 @@ import { Helper } from "../shared/helper";
 import { SubscriptionService } from "../services/subscription.service";
 import { ErrorLog } from '../model/error-log';
 import { EntityServiceFactory } from "../services/entity-service-factory";
-import { EntityService, EntityServiceQueryParams, QUERY_PARAM_PUB } from "../services/entity-service";
+import { EntityService, EntityServiceQueryParams, QUERY_PARAM_PUB, QUERY_PARAM_OWNER } from "../services/entity-service";
 import { APIResponseParser } from "../services/api-response-parser";
 import { Recipe } from "../model/recipe";
 import { InfiniteScrollingService, SCROLL_POSITION, PagingHelper } from "../shared/infinite-scrolling/infinite-scrolling-module";
@@ -173,12 +173,10 @@ export class MyRecipesComponent implements OnInit {
     q.skip = String(skip);
     q.fields = "-ingredients -directions";
     q.filter = JSON.stringify({
-      $and: [ 
-        { mealType: { $in: this.getMealTypesFilter() },
-        $or: [ { "lastUpdateBy": this.authSvc.userProfile.userId}, {"createdBy": this.authSvc.userProfile.userId}] 
-      }]
-    });
+      mealType: { $in: this.getMealTypesFilter() }
+      });
     q.pub = (this.notPublishedOnlyFilter) ? QUERY_PARAM_PUB.notpub : QUERY_PARAM_PUB.all;
+    q.owner = QUERY_PARAM_OWNER.me;
 
     this.asyncInProgress = true;
 

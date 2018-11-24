@@ -44,7 +44,7 @@ function getReq(url, method, query, user) {
   const ret = {
     url: "",
     method: "",
-    query: { top: "", skip: "", sort: "", pop: "", filter: "", pub: "" },
+    query: { top: "", skip: "", sort: "", pop: "", filter: "", pub: "", owner:"" },
     user: { rawData: null, id: "", isAdmin: false }
   }
 

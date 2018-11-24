@@ -61,8 +61,6 @@ routerData.get("/*", function (req, res) {
     Promise.all(promises)
         .then((results) => {
             try {
-                let headers = null;
-
                 if (isCounting) {
                     req["context"].addResponseHeader("X-Total-Count", results[0], true);
                 }

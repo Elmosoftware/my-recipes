@@ -9,7 +9,7 @@ class ServiceValidator extends ValidatorBase {
     }
 
     validateCallback(callback) {
-        var ret = "";
+        let ret = "";
 
         if (typeof callback !== "function") {
             ret = `We expected a callback function in parameter "callback" and we get a type of '${(!callback) ? "null|undefined" : (typeof callback)}'.`;
@@ -23,7 +23,10 @@ class ServiceValidator extends ValidatorBase {
     }
 
     validateConditions(conditions, onlyAllowObjectId) {
-        var ret = "";
+        let invalidAttr = ["publishedOn", "createdBy", "lastUpdateBy"];
+        let invalidAttrFound = false;
+        let ret = "";
+
         onlyAllowObjectId = (onlyAllowObjectId) ? true : false;
 
         if (!(typeof conditions === "string")) {
@@ -42,6 +45,19 @@ class ServiceValidator extends ValidatorBase {
             if (!isJSONFilter && conditions && !this.isValidObjectId(conditions.toString())) {
                 ret = `The Object Id '${conditions}' is not a valid object Id.`;
             }
+            
+            if (!ret && isJSONFilter) {
+                invalidAttr.forEach((attr) => {
+                    if (!invalidAttrFound && conditions.indexOf(`"${attr}":`) != -1 ) {
+                        invalidAttrFound = true;
+                    }
+                });
+
+                if (invalidAttrFound) {
+                    ret = `At least one of the following invalid attributes were found in the JSON filter: ${invalidAttr.join(", ")}
+                        Please use the query parameters "pub" and "owner" to get specific sets of data involving those attributes.`   
+                }                
+            }
         }
 
         if (ret) {
@@ -52,7 +68,7 @@ class ServiceValidator extends ValidatorBase {
     }
 
     validateQuery(query, user) {
-        var ret = "";
+        let ret = "";
 
         if (!query) {
             ret = `The parameter "query" can't be null or empty. Parameter value: '${query}'.`;
@@ -75,6 +91,9 @@ class ServiceValidator extends ValidatorBase {
             }
             if (query.pub) {
                 this._validatePub(query.pub, user);
+            }
+            if (query.owner) {
+                this._validateOwner(query.owner, user)
             }
         }
 
@@ -110,7 +129,7 @@ class ServiceValidator extends ValidatorBase {
     }
 
     _validatePagination(skip, top) {
-        var ret = "";
+        let ret = "";
 
         if (!((typeof skip === "string") || (typeof skip === "number"))) {
             ret = `We expected a String or Number for the pagination parameter "skip".
@@ -145,7 +164,7 @@ class ServiceValidator extends ValidatorBase {
     }
 
     _validatePopulateReferences(pop) {
-        var ret = "";
+        let ret = "";
 
         if (!(typeof pop === "string")) {
             ret = `We expected a String for the "populate references" query parameter "pop".
@@ -164,7 +183,7 @@ class ServiceValidator extends ValidatorBase {
     }
 
     _validateCount(value) {
-        var ret = "";
+        let ret = "";
 
         if (!(typeof value === "string")) {
             ret = `We expected a String for the "Count records" query parameter "count".
@@ -183,7 +202,7 @@ class ServiceValidator extends ValidatorBase {
     }
 
     _validateFields(value) {
-        var ret = "";
+        let ret = "";
 
         if (!(typeof value === "string")) {
             ret = `We expected a String for the "Fields selection" query parameter "fields".
@@ -198,7 +217,7 @@ class ServiceValidator extends ValidatorBase {
     }
 
     _validatePub(value, user) {
-        var ret = "";
+        let ret = "";
         /*
             "pub" query parameter valid values and meaning:
             ======================================
@@ -209,16 +228,48 @@ class ServiceValidator extends ValidatorBase {
         let validValues = ["", "default", "all", "notpub"];
 
         if (!(typeof value === "string")) {
-            ret = `We expected a String for the "Fields selection" query parameter "fields".
-                        Current type: "fields" is "${typeof value}".`;
+            ret = `We expected a String for the "Published indicator" query parameter "pub".
+                        Current type: "pub" is "${typeof value}".`;
         }
         else if (!validValues.includes(value.toLowerCase())) {
             ret = `The query parameter "pub" has an invalid value.
             Current value is: "${value}".
-            Possible  values are: ${validValues.join(", ")}.`;
+            Possible values are: ${validValues.join(", ")}.`;
         }
         else if (!user && (value.toLowerCase() == "all" || value.toLowerCase() == "notpub")) {
             ret = `The query option "pub" was specified with value '${value}' but there is no authenticated user for this request`;
+        }
+
+        if (ret) {
+            super._addError(ret);
+        }
+
+        return this;
+    }
+
+    _validateOwner(value, user) {
+        let ret = "";
+        /*
+            "owner" query parameter valid values and meaning:
+            ==================================================
+
+            "any" or missing argument, ("") -> Will retrieve any entity regardless of which user is the owner.
+            "me" -> Will retrieve only entities owned by the authenticated user.
+            "others" -> Will retrieve only entities owned by other users different than the current authenticated user.
+        */
+        let validValues = ["", "any", "me", "others"];
+
+        if (!(typeof value === "string")) {
+            ret = `We expected a String for the "Ownership" query parameter "owner".
+                        Current type: "owner" is "${typeof value}".`;
+        }
+        else if (!validValues.includes(value.toLowerCase())) {
+            ret = `The query parameter "owner" has an invalid value.
+            Current value is: "${value}".
+            Possible values are: ${validValues.join(", ")}.`;
+        }
+        else if (!user && (value.toLowerCase() == "me" || value.toLowerCase() == "others")) {
+            ret = `The query option "owner" was specified with value '${value}' but there is no authenticated user for this request`;
         }
 
         if (ret) {

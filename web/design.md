@@ -151,17 +151,3 @@ Changes in Frontend
     Done
 
 ------------------------------------------------------------
-
-Security improvements
-=============================
-
--No puede consultarse o editarse un Recipe si:
-    -No hay usuario autenticado.
-    -Si es un recipe: El usuario debe ser el Owner.
-    -Para cualquier otra Entity, el usuario debe ser admin.
-
-
-
-
-
-

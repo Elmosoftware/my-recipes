@@ -157,6 +157,39 @@ sort: String with the list of fields separated by spaces and adding a hyphen as 
 
 -------------------------------------------------------------------------------------------------------------
 
-Where to add default filter to exclude Non Published Recipes?
-=================================================================
+**API Security improvements I**
 
+- Filter review: The following attributes can't be part of any JSON filters submitted by a client app:
+    - "publishedOn"
+    - "createdBy"
+    - "lastUpdateBy"
+DONE
+- New query parameter "owner" with the following possible values:
+    "me" -> Will retrieve all the entities of the requested kind owned by the user.
+    "others" -> Will retrieve only entities owned by other users.
+    "any" -> Will retrieve any entity regardless of which user is the owner.
+DONE
+- Change the "my-recipes" component to use this new query parameter instead of include user details in the JSON filter.
+DONE
+
+**API Security improvements II**
+We need to implement the following server side security features.
+
+ - For any Requests with GET method:
+  + **(POST VALIDATION)** Only Owners can request a Recipe or RecipeIngredient by his Object ID that is not published.
+  + **(PRE  VALIDATION NO DB ACCESS)** Other not published entities by ID or by Filter can be requested only by ADMIN users.
+  
+
+ - For any Request with POST method:
+  + **(PRE  VALIDATION NO DB ACCESS)** Anonymous users can't create an entity of any kind.
+  + **(PRE  VALIDATION NO DB ACCESS)** Only ADMIN users can create entities other than Ingredient, Recipe and RecipeIngredient.
+
+ - For any Request with PUT method:
+  + **(PRE  VALIDATION NO DB ACCESS)** Anonymous users can't update any entity.
+  + **(PRE  VALIDATION WITH DB ACCESS)** Only the Owner can update Recipe and RecipeIngredients.
+  + **(PRE  VALIDATION NO DB ACCESS)** Any other entity can be updated only by ADMIN users.
+
+ - For any Request with DELETE method:
+  + **(PRE  VALIDATION NO DB ACCESS)** Anonymous users can't delete any entity.
+  + **(PRE  VALIDATION WITH DB ACCESS)** Only the Owner can delete Recipe and RecipeIngredients.
+  + **(PRE  VALIDATION NO DB ACCESS)** Any other entity can be deleted only by ADMIN users.

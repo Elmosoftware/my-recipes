@@ -13,7 +13,7 @@ import { AuthService } from './auth-service';
  */
 export class EntityService {
 
-  constructor(private entityDef: EntityDef, 
+  constructor(private entityDef: EntityDef,
     private http: HttpClient,
     private cache: Cache,
     private auth: AuthService) { }
@@ -21,7 +21,7 @@ export class EntityService {
   /**
    * Invalidates any cache related to this Entity. 
    */
-  private invalidateCache(){
+  private invalidateCache() {
     //If the entity holds a cache key, we need to invalidate the cache so it will be refreshed next time is accessed:
     if (this.getCacheKey()) {
       this.cache.invalidateOne(this.getCacheKey() as CACHE_MEMBERS)
@@ -43,7 +43,7 @@ export class EntityService {
    * If the entity has a Cache Key, this method will return it.
    * @returns The Cache Key of this Entity or an empty string if the Entity is not in Cache.
    */
-  getCacheKey(): string { 
+  getCacheKey(): string {
     return this.entityDef.cacheKey;
   }
 
@@ -53,8 +53,8 @@ export class EntityService {
    * the documents at least there is any contraint defined in the query parameters.
    * @param query Query parameters for the API like top, sort, filter and others. 
    */
-  get(id: string = "", query: EntityServiceQueryParams) : Observable<Object>{
-    return this.http.get(this.getUrl(id, query),  { headers: this.buildAPIHeaders() });
+  get(id: string = "", query: EntityServiceQueryParams): Observable<Object> {
+    return this.http.get(this.getUrl(id, query), { headers: this.buildAPIHeaders() });
   }
 
   /**
@@ -64,7 +64,7 @@ export class EntityService {
   save(entity): Observable<Object> {
 
     this.invalidateCache();
-    
+
     //If it's an update:
     if (entity._id) {
       return this.http.put(this.getUrl(entity._id), entity, { headers: this.buildAPIHeaders() });
@@ -92,7 +92,7 @@ export class EntityService {
    */
   private getUrl(param?: string, query?: EntityServiceQueryParams): string {
 
-    let queryText:string = "";
+    let queryText: string = "";
 
     //Recall: This "param" is the ObjectId:
     if (!param) {
@@ -110,11 +110,11 @@ export class EntityService {
 
     let ret: HttpHeaders = new HttpHeaders()
       .set("Content-Type", "application/json");
-      
+
     if (this.auth.isAuthenticated) {
       ret = ret.append("Authorization", "Bearer " + this.auth.userProfile.accessToken);
     }
-    
+
     return ret;
   }
 }
@@ -134,10 +134,26 @@ export const enum QUERY_PARAM_PUB {
   notpub = "notpub"
 };
 
+export const enum QUERY_PARAM_OWNER {
+  /**
+   * Include any entity in the results, regardless of which user is the owner.
+   */
+  any = "any",
+  /**
+   * Include only entities owned by the current user.
+   */
+  me = "me",
+  /**
+   *  Only include entities owned by other users that the current one.
+   */
+  others = "others"
+};
+
 export class EntityServiceQueryParams {
-  
-  constructor(pop: string = "", filter: string = "", top: string = "", skip: string = "", 
-    sort: string = "", count: string = "", fields: string = "", pub: QUERY_PARAM_PUB = QUERY_PARAM_PUB.default) {
+
+  constructor(pop: string = "", filter: string = "", top: string = "", skip: string = "",
+    sort: string = "", count: string = "", fields: string = "", pub: QUERY_PARAM_PUB = QUERY_PARAM_PUB.default,
+    owner: QUERY_PARAM_OWNER = QUERY_PARAM_OWNER.any) {
     this.pop = pop;
     this.top = top;
     this.skip = skip;
@@ -146,8 +162,9 @@ export class EntityServiceQueryParams {
     this.count = count;
     this.fields = fields;
     this.pub = pub;
+    this.owner = owner;
   }
-  
+
   top: string;
   skip: string;
   sort: string;
@@ -155,7 +172,8 @@ export class EntityServiceQueryParams {
   filter: string;
   count: string;
   fields: string;
-  pub: QUERY_PARAM_PUB
+  pub: QUERY_PARAM_PUB;
+  owner: QUERY_PARAM_OWNER;
 
   getQueryString(): string {
 

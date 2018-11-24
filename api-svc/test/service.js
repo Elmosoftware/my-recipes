@@ -53,7 +53,7 @@ describe("Service", () => {
         });
     }
 
-    function setQuery(top, skip, sort, pop, count, filter, fields, pub) {
+    function setQuery(top, skip, sort, pop, count, filter, fields, pub, owner) {
       const ret = {
         top: "",
         skip: "",
@@ -62,7 +62,8 @@ describe("Service", () => {
         count: "",
         filter: "",
         fields: "",
-        pub: ""
+        pub: "",
+        owner: ""
       };
 
       if (top) {
@@ -95,6 +96,10 @@ describe("Service", () => {
 
       if (pub) {
         ret.pub = pub;
+      }
+
+      if (owner) {
+        ret.owner = owner;
       }
 
       return ret;
@@ -356,6 +361,16 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.notCalled);
     });
+    it("Shouldn't complete with a 'pub' parameter that has an invalid string value", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "invalid-value"))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
     it("Shouldn't complete with a 'pub' parameter with value 'all' when no user is logged", () => {
 
       stubModelFind = setStub();
@@ -382,13 +397,13 @@ describe("Service", () => {
       svc.find(JSON.stringify({
           $and: [ 
             { mealType: { $in: ["1", "2", "3"] },
-            $or: [ { createdBy: "USER1"}, { estimatedTime: 30} ] 
+            $or: [ { usedBy: "USER1"}, { estimatedTime: 30} ] 
           }]
         }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "notpub"));
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
-      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"createdBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$eq":null}}`)
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"usedBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$eq":null}}`)
     });
     it("Should complete with a JSON filter, no user logged in and 'pub'=''", () => {
 
@@ -396,13 +411,13 @@ describe("Service", () => {
       svc.find(JSON.stringify({
           $and: [ 
             { mealType: { $in: ["1", "2", "3"] },
-            $or: [ { createdBy: "USER1"}, { estimatedTime: 30} ] 
+            $or: [ { usedBy: "USER1"}, { estimatedTime: 30} ] 
           }]
         }), null, null, setQuery("", "", "", "", "", "", "", ""));
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
-      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"createdBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$ne":null}}`)
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"usedBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$ne":null}}`)
     });
     it("Should complete with an Object ID as condition, no user logged in and 'pub'=''", () => {
 
@@ -412,6 +427,210 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.called);
       assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"_id":"5a387f92ccbd71477022ea65"}`);
+    });
+    it("Should complete with a valid 'owner' parameter (parameter value: '')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Should complete with a valid 'owner' parameter (parameter value: 'me')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "", "me"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Should complete with a valid 'owner' parameter (parameter value: 'others')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "", "others"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Should complete with a valid 'owner' parameter (parameter value: 'any')", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "", "any"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+    });
+    it("Shouldn't complete with a 'owner' parameter that is not a string", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "", 34))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Shouldn't complete with a 'owner' parameter that has an invalid string value", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, setUser("1", false), setQuery("", "", "", "", "", "", "", "", "invalid-value"))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Shouldn't complete with a 'owner' parameter with value 'me' when no user is logged", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "", "", "", "", "", "", "", "me"))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Shouldn't complete with a 'owner' parameter with value 'others' when no user is logged", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "", "", "", "", "", "", "", "others"))
+        .catch((err) => {
+        });
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Should complete with a JSON filter without a '$and' condition in it, a user logged in and 'owner'='me'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          mealType: { $in: ["1", "2", "3"] },
+          level: { $ne: "4" }
+        }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "all", "me"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), 
+        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"$and":[{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}]}`)
+    });
+    it("Should complete with a JSON filter with a '$and' condition in it, a user logged in and 'owner'='me'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+        $and: [ 
+          { mealType: { $in: ["1", "2", "3"] },
+          $or: [ { __v: 0}, { estimatedTime: 30} ] 
+        }],
+        level: { $ne: "4" }
+        }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "all", "me"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), 
+        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"level":{"$ne":"4"}}`)
+    });
+    it("Should complete with a JSON filter without a '$and' condition in it, a user logged in and 'owner'='others'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          mealType: { $in: ["1", "2", "3"] },
+          level: { $ne: "4" }
+        }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "all", "others"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), 
+        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"$and":[{"createdBy":{"$ne":"1"}},{"lastUpdateBy":{"$ne":"1"}}]}`)
+    });
+    it("Should complete with a JSON filter with a '$and' condition in it, a user logged in and 'owner'='others'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+        $and: [ 
+          { mealType: { $in: ["1", "2", "3"] },
+          $or: [ { __v: 0}, { estimatedTime: 30} ] 
+        }],
+        level: { $ne: "4" }
+        }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "all", "others"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), 
+        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"createdBy":{"$ne":"1"}},{"lastUpdateBy":{"$ne":"1"}}],"level":{"$ne":"4"}}`)
+    });
+    it("Should complete with a JSON filter without a '$and' condition in it, a user logged in and 'owner'='any'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          mealType: { $in: ["1", "2", "3"] },
+          level: { $ne: "4" }
+        }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "all", "any"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), 
+        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"}}`)
+    });
+    it("Should complete with a JSON filter with a '$and' condition in it, a user logged in and 'owner'='any'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+        $and: [ 
+          { mealType: { $in: ["1", "2", "3"] },
+          $or: [ { __v: 0}, { estimatedTime: 30} ] 
+        }],
+        level: { $ne: "4" }
+        }), null, setUser("1", false), setQuery("", "", "", "", "", "", "", "all", "any"));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), 
+        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]}],"level":{"$ne":"4"}}`)
+    });
+    it("Should complete with an Object ID as condition, no user logged in and 'owner'=''", () => {
+
+      stubModelFind = setStub();
+      svc.find("5a387f92ccbd71477022ea65", null, null, setQuery("", "", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.called);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"_id":"5a387f92ccbd71477022ea65"}`);
+    });
+    it("Shouldn't complete with a JSON filter that includes the invalid attribute 'publishedOn'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          $and: [ 
+            { mealType: { $in: ["1", "2", "3"] }},
+            { publishedOn: { $eq: true }}
+          ]}), null, null, setQuery("", "", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Shouldn't complete with a JSON filter that includes the invalid attribute 'createdBy'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          $and: [ 
+            { mealType: { $in: ["1", "2", "3"] }},
+            { createdBy: { $eq: true }}
+          ]}), null, null, setQuery("", "", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
+    });
+    it("Shouldn't complete with a JSON filter that includes the invalid attribute 'lastUpdateBy'", () => {
+
+      stubModelFind = setStub();
+      svc.find(JSON.stringify({
+          $and: [ 
+            { mealType: { $in: ["1", "2", "3"] }},
+            { lastUpdateBy: { $eq: true }}
+          ]}), null, null, setQuery("", "", "", "", "", "", "", "", ""));
+      stubModelFind.restore();
+
+      assert.ok(stubModelFind.notCalled);
     });
   });
   describe("delete()", () => {

@@ -439,6 +439,7 @@ class Service {
             ret = JSON.parse(decodeURIComponent(conditions));
 
             //Adding conditions for "pub" query value:
+            //----------------------------------------
             //Default behaviour is to include only published entities:
             if (query.pub == "" || query.pub.toLowerCase() == "default") {
                 ret.publishedOn = { $ne: null };
@@ -446,6 +447,31 @@ class Service {
             //If was request to include not published entities only:
             else if (query.pub == "notpub") {
                 ret.publishedOn = { $eq: null };
+            }
+
+            //Adding conditions for "owner" query value:
+            //----------------------------------------
+            if (user && user.id) {
+
+                let conditions = new Array();
+
+                if (query.owner.toLowerCase() == "me") {
+                    conditions.push({ $or: [ { lastUpdateBy: user.id}, {createdBy: user.id }]})
+                } 
+                else if (query.owner.toLowerCase() == "others") {
+                    conditions.push({ createdBy: {$ne: user.id}});
+                    conditions.push({ lastUpdateBy: {$ne: user.id}});
+                }
+
+                if (conditions.length > 0) {
+                    if (!ret.$and) {
+                        ret.$and = new Array();
+                    }
+
+                    conditions.forEach((cond) => {
+                        ret.$and.push(cond);
+                    });                    
+                }
             }
         }
 
