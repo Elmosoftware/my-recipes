@@ -1,6 +1,7 @@
 // @ts-check
 var mongoose = require("mongoose");
 const ServiceValidator = require("./service-validator");
+const Security = require("./security-service");
 const Entities = require("./entities");
 
 class Service {
@@ -17,7 +18,9 @@ class Service {
         var val = new ServiceValidator();
         var promises = [];
 
-        if (!val.validateCallback(callback).isValid) {
+        if (!val.validateCallback(callback)
+            .validateAccess(Security.ACCESS_TYPE.WRITE, this._entity, user)
+            .isValid) {
             return (callback(val.getErrors(), {}));
         }
 
@@ -106,7 +109,7 @@ class Service {
 
                     obj.isNew = true;
                     obj.createdOn = new Date();
-                    obj.createdBy = (user && user.id) ? user.id : "anonymous";
+                    obj.createdBy = user.id;
                     obj.lastUpdateOn = null;
                     obj.lastUpdateBy = null;
                     obj.save(callback);
@@ -125,7 +128,9 @@ class Service {
         var val = new ServiceValidator();
         var promises = [];
 
-        if (!val.validateCallback(callback).isValid) {
+        if (!val.validateCallback(callback)
+            .validateAccess(Security.ACCESS_TYPE.WRITE, this._entity, user)
+            .isValid) {
             return (callback(val.getErrors(), {}));
         }
 
@@ -141,14 +146,15 @@ class Service {
             .then((results) => {
                 try {
                     let model = results.pop();
-
                     document.lastUpdateOn = new Date();
-                    document.lastUpdateBy = (user && user.id) ? user.id : "anonymous";
+                    document.lastUpdateBy = user.id;
 
-                    model.update({ _id: id }, document, (err, data) => {
+                    model.update(this._parseConditions(Security.ACCESS_TYPE.WRITE, id, user), document, (err, data) => {
                         //The attempt to update a non existent document by Id is not reported as error by Mongoose:
                         if (!err && data.n == 0) {
-                            err = new Error("The last UPDATE operation affects no documents. Verify the document exists before to retry this operation.");
+                            err = new Error(`The last UPDATE operation affects no documents. This can be caused by the following issues: \n
+                                - The document you try to update no longer exists.
+                                - The document is owned by another user and therefore you are not able to change it in any way.`);
                         }
 
                         return (callback(err, {}));
@@ -167,11 +173,12 @@ class Service {
 
         if (!val.validateConditions(conditions, false)
             .validateQuery(query, user)
+            .validateAccess(Security.ACCESS_TYPE.READ, this._entity, user, query)
             .isValid) {
             return Promise.reject(val.getErrors());
         }
 
-        return this._entity.model.count(this._parseConditions(conditions, user, query))
+        return this._entity.model.count(this._parseConditions(Security.ACCESS_TYPE.READ, conditions, user, query))
             .exec();
     }
 
@@ -181,11 +188,12 @@ class Service {
 
         if (!val.validateConditions(conditions, false)
             .validateQuery(query, user)
+            .validateAccess(Security.ACCESS_TYPE.READ, this._entity, user, query)
             .isValid) {
             return Promise.reject(val.getErrors());
         }
 
-        cursor = this._entity.model.find(this._parseConditions(conditions, user, query), projection)
+        cursor = this._entity.model.find(this._parseConditions(Security.ACCESS_TYPE.READ, conditions, user, query), projection)
             .skip(Number(query.skip));
 
         if (query.fields) {
@@ -316,16 +324,24 @@ class Service {
         return cursor.exec();
     }
 
-    delete(conditions, user, query, callback) {
+    delete(id, user, callback) {
         var val = new ServiceValidator();
 
         if (!val.validateCallback(callback)
-            .validateConditions(conditions, true) //We will admit only an Object Id here as condition.
+            .validateConditions(id, true) //We will admit only an Object Id here as condition.
+            .validateAccess(Security.ACCESS_TYPE.DELETE, this._entity, user, null)
             .isValid) {
             return (callback(val.getErrors(), {}));
         }
 
-        this._entity.model.remove(this._parseConditions(conditions, user, query), (err, data) => {
+        /*
+        TODO:
+         Can we implement this here????
+         - For any Request with DELETE method:
+            + **(PRE  VALIDATION WITH DB ACCESS)** Only the Owner can delete Recipe and RecipeIngredients.
+        */
+
+        this._entity.model.remove(this._parseConditions(Security.ACCESS_TYPE.DELETE, id, user), (err, data) => {
 
             //The attempt to remove a non existent document by Id is not reported as error by Mongoose:
             if (!err && data.result.n == 0) {
@@ -424,56 +440,101 @@ class Service {
         return ret;
     }
 
-    _parseConditions(conditions, user, query) {
+    _parseConditions(accessType, conditions, user, query) {
         var val = new ServiceValidator();
+        var secSvc = new Security.SecurityService();
         let ret = {};
 
         if (!conditions) {
-            conditions = "{}";     
+            conditions = "{}";
         }
-        
-        if (val.isValidObjectId(conditions)) {
-            ret._id = conditions;
-        }
-        else {
-            ret = JSON.parse(decodeURIComponent(conditions));
 
-            //Adding conditions for "pub" query value:
-            //----------------------------------------
-            //Default behaviour is to include only published entities:
-            if (query.pub == "" || query.pub.toLowerCase() == "default") {
-                ret.publishedOn = { $ne: null };
-            }
-            //If was request to include not published entities only:
-            else if (query.pub == "notpub") {
-                ret.publishedOn = { $eq: null };
-            }
+        switch (accessType) {
+            case Security.ACCESS_TYPE.READ:
 
-            //Adding conditions for "owner" query value:
-            //----------------------------------------
-            if (user && user.id) {
-
-                let conditions = new Array();
-
-                if (query.owner.toLowerCase() == "me") {
-                    conditions.push({ $or: [ { lastUpdateBy: user.id}, {createdBy: user.id }]})
-                } 
-                else if (query.owner.toLowerCase() == "others") {
-                    conditions.push({ createdBy: {$ne: user.id}});
-                    conditions.push({ lastUpdateBy: {$ne: user.id}});
+                if (val.isValidObjectId(conditions)) {
+                    ret._id = conditions;
                 }
+                else {
+                    ret = JSON.parse(decodeURIComponent(conditions));
 
-                if (conditions.length > 0) {
-                    if (!ret.$and) {
-                        ret.$and = new Array();
+                    //Adding conditions for "pub" query value:
+                    //----------------------------------------
+                    //Default behaviour is to include only published entities:
+                    if (query.pub == "" || query.pub.toLowerCase() == "default") {
+                        ret.publishedOn = { $ne: null };
+                    }
+                    //If was requested to include not published entities only:
+                    else if (query.pub == "notpub") {
+                        ret.publishedOn = { $eq: null };
                     }
 
-                    conditions.forEach((cond) => {
-                        ret.$and.push(cond);
-                    });                    
+                    //Adding conditions for "owner" query value:
+                    //----------------------------------------
+                    if (user && user.id) {
+
+                        let conditions = new Array();
+
+                        if (query.owner.toLowerCase() == "me") {
+                            //conditions.push({ $or: [{ lastUpdateBy: user.id }, { createdBy: user.id }] })
+                            conditions.push(secSvc.getOnlyOwnerAccessCondition(user));
+                        }
+                        else if (query.owner.toLowerCase() == "others") {
+                            conditions.push({ createdBy: { $ne: user.id } });
+                            conditions.push({ lastUpdateBy: { $ne: user.id } });
+                        }
+
+                        if (conditions.length > 0) {
+                            if (!ret.$and) {
+                                ret.$and = new Array();
+                            }
+
+                            conditions.forEach((cond) => {
+                                ret.$and.push(cond);
+                            });
+                        }
+                    }
                 }
-            }
+                break;
+
+            case Security.ACCESS_TYPE.WRITE:
+
+                let isRecipeRelatedEntity = ["recipe", "recipeingredient"].includes(this._entity.name); 
+                /*
+                    TODO: MEJORAR ESTO. "isRecipeRelatedEntity" deberia ser un atributo de this._entity directamente!
+                    Se usa acá y en el método "validateAccess" del ServiceValidator.
+                */
+                
+                if (val.isValidObjectId(conditions)) {
+                    ret._id = conditions;
+                    //We also need to ensure that if is a Recipe related entity, only the owner can edit it:
+                    if (isRecipeRelatedEntity) {
+                        ret.$and = new Array();
+                        ret.$and.push({ $or: [{ lastUpdateBy: user.id }, { createdBy: user.id }] });
+                    }
+                }
+                else{ //This has been previously validated, but anyway we will throw if not Object ID was sent:
+                    throw new Error(`We wait for an Object ID as condition for the DELETE operation, Current condition is ${String(conditions)}`);
+                }    
+                
+                break;
+            case Security.ACCESS_TYPE.DELETE:
+               
+                if (val.isValidObjectId(conditions)) {
+                    ret._id = conditions;
+                }
+                else{ //This has been previously validated, but anyway we will throw if not Object ID was sent:
+                    throw new Error(`We wait for an Object ID as condition for the DELETE operation, Current condition is ${String(conditions)}`);
+                }
+            
+                break;
+            default:
+                throw new Error(`The provided "accessType" not been defined yet!`);
         }
+
+        //If there is any security specific filter that has to be added based on the kind of access or the specific 
+        //entity security needs, will be handled by the Security service.
+        secSvc.updateQueryFilterWithSecurityConstraints(accessType, ret, this._entity, user, query);
 
         return ret;
     }

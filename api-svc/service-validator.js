@@ -1,11 +1,25 @@
 //@ts-check
 
 const ValidatorBase = require("./validator-base");
+const Security = require("./security-service");
 
 class ServiceValidator extends ValidatorBase {
 
     constructor() {
         super();
+        this.svcSec = new Security.SecurityService();
+    }
+
+    validateAccess(accessType, entity, user, query) {
+        let ret = ""
+
+        ret = this.svcSec.validateAccessRequest(accessType, entity, user, query);
+        
+        if (ret) {
+            super._addError(ret);
+        }
+
+        return this;
     }
 
     validateCallback(callback) {
@@ -45,18 +59,18 @@ class ServiceValidator extends ValidatorBase {
             if (!isJSONFilter && conditions && !this.isValidObjectId(conditions.toString())) {
                 ret = `The Object Id '${conditions}' is not a valid object Id.`;
             }
-            
+
             if (!ret && isJSONFilter) {
                 invalidAttr.forEach((attr) => {
-                    if (!invalidAttrFound && conditions.indexOf(`"${attr}":`) != -1 ) {
+                    if (!invalidAttrFound && conditions.indexOf(`"${attr}":`) != -1) {
                         invalidAttrFound = true;
                     }
                 });
 
                 if (invalidAttrFound) {
                     ret = `At least one of the following invalid attributes were found in the JSON filter: ${invalidAttr.join(", ")}
-                        Please use the query parameters "pub" and "owner" to get specific sets of data involving those attributes.`   
-                }                
+                        Please use the query parameters "pub" and "owner" to get specific sets of data involving those attributes.`
+                }
             }
         }
 

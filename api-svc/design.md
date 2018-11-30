@@ -176,20 +176,46 @@ DONE
 We need to implement the following server side security features.
 
  - For any Requests with GET method:
-  + **(POST VALIDATION)** Only Owners can request a Recipe or RecipeIngredient by his Object ID that is not published.
-  + **(PRE  VALIDATION NO DB ACCESS)** Other not published entities by ID or by Filter can be requested only by ADMIN users.
-  
-
+  + **(PRE  VALIDATION NO DB ACCESS)** Not published entities other than Recipe or RecipeIngredient by ID or by Filter can be requested only by ADMIN users.
+    DONE
  - For any Request with POST method:
   + **(PRE  VALIDATION NO DB ACCESS)** Anonymous users can't create an entity of any kind.
   + **(PRE  VALIDATION NO DB ACCESS)** Only ADMIN users can create entities other than Ingredient, Recipe and RecipeIngredient.
-
+    DONE
  - For any Request with PUT method:
   + **(PRE  VALIDATION NO DB ACCESS)** Anonymous users can't update any entity.
   + **(PRE  VALIDATION WITH DB ACCESS)** Only the Owner can update Recipe and RecipeIngredients.
   + **(PRE  VALIDATION NO DB ACCESS)** Any other entity can be updated only by ADMIN users.
-
+    DONE
  - For any Request with DELETE method:
   + **(PRE  VALIDATION NO DB ACCESS)** Anonymous users can't delete any entity.
   + **(PRE  VALIDATION WITH DB ACCESS)** Only the Owner can delete Recipe and RecipeIngredients.
   + **(PRE  VALIDATION NO DB ACCESS)** Any other entity can be deleted only by ADMIN users.
+    DONE
+
+REFACTORING USING ATTRS IN THE ENTITY DEFINITION:
+====================================================
+readNotPublishedPrivileges
+  Anonymous         
+  Authenticated     
+  Owner			    -> Para Recipes y RecipeIngredients 
+	(aplica en: _parseConditions)
+  Administrators	-> Para el resto 
+	(aplica en: validateAccess )
+
+writePrivileges
+  Anonymous
+  Authenticated		-> Para Ingredients
+    (aplica en: validateAccess)
+  Owner			    -> Para Recipes y Recipe Ingredients
+    (aplica en: _parseConditions)
+  Administrators	-> Para el resto
+    (aplica en: validateAccess)
+
+deletePrivileges
+  Anonymous
+  Authenticated		
+  Owner			-> Para Recipes y Recipe Ingredients
+    (aplica en: _parseConditions)
+  Administrators	-> Para el resto
+    (aplica en: validateAccess)

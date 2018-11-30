@@ -1,12 +1,56 @@
 // @ts-check
 
+const Security = require("./security-service");
+
 const entities = {
-    units: { name:"unit", model: require("./models/unit-of-measure"), references: [] },
-    levels: { name:"level", model: require("./models/level"), references: [] },
-    mealtypes: { name:"mealtype", model: require("./models/meal-type"), references: [] },
-    ingredients: { name:"ingredient", model: require("./models/ingredient"), references: [] },
-    recipes: { name:"recipe", model: require("./models/recipe"), references: [] },
-    recipeingredients: { name:"recipeingredient", model: require("./models/recipe-ingredients"), references: [] }
+    units: {
+        name: "unit",
+        model: require("./models/unit-of-measure"),
+        references: [],
+        readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        writePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+    },
+    levels: { 
+        name: "level", 
+        model: require("./models/level"), 
+        references: [],
+        readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        writePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+    },
+    mealtypes: { 
+        name: "mealtype", 
+        model: require("./models/meal-type"), 
+        references: [],
+        readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        writePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+    },
+    ingredients: { 
+        name: "ingredient", 
+        model: require("./models/ingredient"), 
+        references: [],
+        readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        writePrivileges: Security.ACCESS_PRIVILEGES.AUTHENTICATED,
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+    },
+    recipes: { 
+        name: "recipe", 
+        model: require("./models/recipe"), 
+        references: [],
+        readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.OWNER,
+        writePrivileges: Security.ACCESS_PRIVILEGES.OWNER,
+        deletePrivileges: Security.ACCESS_PRIVILEGES.OWNER
+    },
+    recipeingredients: { 
+        name: "recipeingredient", 
+        model: require("./models/recipe-ingredients"), 
+        references: [],
+        readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.OWNER,
+        writePrivileges: Security.ACCESS_PRIVILEGES.OWNER,
+        deletePrivileges: Security.ACCESS_PRIVILEGES.OWNER
+    }
 };
 
 class Entities {
@@ -58,32 +102,9 @@ class Entities {
         }
     }
 
-    // getEntityByKeyName(keyName) {
-    //     let ret = null;
-
-    //     for (let name of Object.getOwnPropertyNames(this._items)) {
-    //         if (this._items[name].name == keyName) {
-    //             ret = this._items[name];
-    //             break;
-    //         }
-    //     }
-
-    //     if (!ret) {
-    //         throw new Error(`There is no entity defined by key name "${keyName}".`);
-    //     }
-
-    //     return ret;
-    // }
-
     getEntityByModelName(modelName){
 
         let ret = null;
-
-        // Object.getOwnPropertyNames(this._items).forEach((name) => {           
-        //     if (this._items[name].model.modelName == modelName) {
-        //         ret = this._items[name];
-        //     }
-        // })
 
         for (let name of Object.getOwnPropertyNames(this._items)) {
             if (this._items[name].model.modelName == modelName) {

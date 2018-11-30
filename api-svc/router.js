@@ -106,7 +106,7 @@ routerData.delete("/*", function (req, res) {
     const svc = new Service(req["context"].entity);
 
     if (req["context"].params.length > 0) {
-        svc.delete(req["context"].params[0], req["context"].user, req["context"].query, (err, data) => {
+        svc.delete(req["context"].params[0], req["context"].user, (err, data) => {
             req["context"].sendResponse(err, data);
         });
     }
