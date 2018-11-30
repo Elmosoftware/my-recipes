@@ -16,7 +16,7 @@ export class EntityFactory {
         Unit: new EntityDef(Unit, "units", () => { return new Unit(); }, CACHE_MEMBERS.Units),
         Ingredient: new EntityDef(Ingredient, "ingredients", () => { return new Ingredient(); }, CACHE_MEMBERS.Ingredients),
         RecipeIngredient: new EntityDef(RecipeIngredient, "recipeingredients", () => { return new RecipeIngredient(); }),
-        Recipe: new EntityDef(Recipe, "recipes", () => { return new Recipe(); })
+        Recipe: new EntityDef(Recipe, "recipes", () => { return new Recipe(); }, CACHE_MEMBERS.LatestRecipes)
     };
 
     constructor() { }
