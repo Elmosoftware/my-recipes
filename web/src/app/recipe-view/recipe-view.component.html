@@ -14,7 +14,7 @@
       <div class="col-11 text-center recipeTitle">
         {{ model.name }}
       </div>
-      <div class="col-1">
+      <div *ngIf="isOwner" class="col-1">
         <button id="btnEditRecipe" class="btn btn-primary" type="button" (click)="editRecipe()">
           <i class="fa fa-pencil-square-o" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Editar esta receta."></i>
         </button>

@@ -11,8 +11,7 @@ import { ErrorLog } from '../model/error-log';
 import { StandardDialogService, ConfirmDialogConfiguration } from "../standard-dialogs/standard-dialog.service";
 import { ToasterHelperService } from '../services/toaster-helper-service';
 import { SubscriptionService } from "../services/subscription.service";
-
-//declare var $: any; //jQuery
+import { AuthService } from '../services/auth-service';
 
 @Component({
   selector: 'app-recipe-view',
@@ -30,7 +29,8 @@ export class RecipeViewComponent implements OnInit {
   lastStepDone: number;
   shoppingList: string[];
 
-  constructor(private router: Router,
+  constructor(private svcAuth: AuthService,
+    private router: Router,
     private route: ActivatedRoute,
     private subs: SubscriptionService,
     private dlgSvc: StandardDialogService,
@@ -75,7 +75,16 @@ export class RecipeViewComponent implements OnInit {
     //   });
 
     // })
+  }
 
+  get isOwner() :boolean {
+    let ret: boolean = false;
+
+    if (this.model && this.svcAuth.isAuthenticated) {
+      ret = this.model.createdBy == this.svcAuth.userProfile.userId || this.model.lastUpdateBy == this.svcAuth.userProfile.userId;
+    }
+    
+    return ret;
   }
 
   enablePreparationMode(): void {
