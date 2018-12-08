@@ -1,35 +1,31 @@
 // @ts-check
 
-/*
-class *RecipeIngredient*
-    Recipe:
-        type: Recipe
-        desc: The recipe in which this ingredient take part.
-        req: true
-    Ingredient:
-        type: Ingredient
-        req: true
-        unique: true for this recipe.
-    Amount:
-        type: Number
-        req: true
-    Unit:
-        type: UnitOfMeasure
-        req: true
-end class
-*/
-
 var mongoose = require("mongoose");
+var helper = require("../entity-helper");
 
-module.exports = mongoose.model("RecipeIngredient",
-    new mongoose.Schema({
-        recipe: { type: mongoose.Schema.Types.ObjectId, ref: "Recipe" },
-        ingredient: { type: mongoose.Schema.Types.ObjectId, ref: "Ingredient" },
-        amount: { type: Number, required: true},
-        unit: { type: mongoose.Schema.Types.ObjectId, ref: "UnitOfMeasure" },
-        createdOn: { type: Date, required: true},
-        createdBy: { type: String, required: true},
-        lastUpdateOn: { type: Date, required: false},
-        lastUpdateBy: { type: String, required: false},
-        publishedOn: { type: Date, required: false }
-    }));
+let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
+    /**
+     * A reference to the Recipe to which this RecipeIngredient belongs.  
+     */
+    recipe: { type: mongoose.Schema.Types.ObjectId, ref: "Recipe" },
+    /**
+     * A reference to the ingredient.
+     */
+    ingredient: { type: mongoose.Schema.Types.ObjectId, ref: "Ingredient" },
+    /**
+     * Amount of the Ingredient to be used in the Recipe.
+     */
+    amount: { type: Number, required: true },
+    /**
+     * Unit of measure in which the Ingredient is expressed.
+     */
+    unit: { type: mongoose.Schema.Types.ObjectId, ref: "UnitOfMeasure" }
+}));
+
+schema.methods.toJSON = function () {
+    return helper.preProcessJSON(this);
+}
+
+schema.index({ recipe: 1, ingredient: 1 }, { background: true, name: "RecipeIngredient_Recipe_Ingredient" })
+
+module.exports = mongoose.model("RecipeIngredient", schema);

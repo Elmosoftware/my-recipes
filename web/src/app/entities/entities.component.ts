@@ -136,7 +136,7 @@ export class EntitiesComponent implements OnInit {
 
     this.helper.removeTooltips(this.zone);
     this.dlgSvc.showConfirmDialog(new ConfirmDialogConfiguration("Confirmación de borrado",
-      "¿Confirma la eliminación de la Unidad de medida?")).subscribe(result => {
+      "¿Confirma la eliminación del item seleccionado?")).subscribe(result => {
 
         console.log(`Dialog closed. Result: "${result}" `);
 

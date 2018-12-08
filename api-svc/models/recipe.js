@@ -1,51 +1,46 @@
 // @ts-check
 
-/*
-class *Recipe*
-    Name: 
-        type: String
-        desc: Name of the recipe
-        req: true
-        unique: true
-    Description: 
-        type: String
-        desc: A no more than 2 lines dish description like "An easy to cook version of the marinade sausage that our kids will love".
-    EstimatedTime: 
-        type: Number
-        desc: Total preparation time Stored in minutes. 
-    Level:
-        type: Level
-        desc: Represent the skill level required for this preparation.
-    MealType:
-        type: MealType
-        desc: The type of meal this recipe is.
-    Ingredients: 
-        type: RecipeIngredient[]
-        desc: List of ingredientes and amount of each one as other details.
-    Directions:
-        type: String[]
-        desc: The set of directions required to prepare the recipe.
-end class
-*/
-
 var mongoose = require("mongoose");
+var helper = require("../entity-helper");
 
-var recipeSchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true },
+let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
+    /**
+     * Recipe name.
+     */
+    name: { type: String, required: true },
+    /**
+     * Recipe description. A no more than 2 lines dish description like "An easy to cook version of the 
+     * marinade sausage that our kids will love".
+     */
     description: { type: String },
+    /**
+     * Total preparation time Stored in minutes.
+     */
     estimatedTime: { type: Number },
+    /**
+     * Skill level required for this preparation.
+     */
     level: { type: mongoose.Schema.Types.ObjectId, ref: "Level", required: true },
+    /**
+     * The type of meal this recipe is intended for, (like a main dish, appetizer, etc.)
+     */
     mealType: { type: mongoose.Schema.Types.ObjectId, ref: "MealType", required: true },
+    /**
+     * List of ingredients, amounts, and other details.
+     */
     ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: "RecipeIngredient", required: true }],
-    directions: [{ type: String, required: true }],
-    createdOn: { type: Date, required: true },
-    createdBy: { type: String, required: true },
-    lastUpdateOn: { type: Date, required: false },
-    lastUpdateBy: { type: String, required: false },
-    publishedOn: { type: Date, required: false }
-})
+    /**
+     * The complete set of directions required to prepare the recipe.
+     */
+    directions: [{ type: String, required: true }]
+}));
 
-recipeSchema.index(
+schema.methods.toJSON = function () {
+    return helper.preProcessJSON(this);
+}
+
+schema.index({ name: 1, deletedOn: 1 }, { unique: true, background: true, name: "EntityConstraint" })
+schema.index(
     {
         name: "text",
         description: "text",
@@ -61,4 +56,4 @@ recipeSchema.index(
           },
     });
 
-module.exports = mongoose.model("Recipe", recipeSchema);
+module.exports = mongoose.model("Recipe", schema);

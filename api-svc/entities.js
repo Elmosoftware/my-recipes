@@ -9,7 +9,9 @@ const entities = {
         references: [],
         readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
         writePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
-        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        hiddenFields: [],
+        notQueryableFields: []
     },
     levels: { 
         name: "level", 
@@ -17,7 +19,9 @@ const entities = {
         references: [],
         readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
         writePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
-        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        hiddenFields: [],
+        notQueryableFields: []
     },
     mealtypes: { 
         name: "mealtype", 
@@ -25,7 +29,9 @@ const entities = {
         references: [],
         readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
         writePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
-        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        hiddenFields: [],
+        notQueryableFields: []
     },
     ingredients: { 
         name: "ingredient", 
@@ -33,7 +39,9 @@ const entities = {
         references: [],
         readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
         writePrivileges: Security.ACCESS_PRIVILEGES.AUTHENTICATED,
-        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS
+        deletePrivileges: Security.ACCESS_PRIVILEGES.ADMINISTRATORS,
+        hiddenFields: [],
+        notQueryableFields: []
     },
     recipes: { 
         name: "recipe", 
@@ -41,7 +49,9 @@ const entities = {
         references: [],
         readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.OWNER,
         writePrivileges: Security.ACCESS_PRIVILEGES.OWNER,
-        deletePrivileges: Security.ACCESS_PRIVILEGES.OWNER
+        deletePrivileges: Security.ACCESS_PRIVILEGES.OWNER,
+        hiddenFields: [],
+        notQueryableFields: []
     },
     recipeingredients: { 
         name: "recipeingredient", 
@@ -49,7 +59,9 @@ const entities = {
         references: [],
         readNotPublishedPrivilege: Security.ACCESS_PRIVILEGES.OWNER,
         writePrivileges: Security.ACCESS_PRIVILEGES.OWNER,
-        deletePrivileges: Security.ACCESS_PRIVILEGES.OWNER
+        deletePrivileges: Security.ACCESS_PRIVILEGES.OWNER,
+        hiddenFields: [],
+        notQueryableFields: []
     }
 };
 
@@ -59,6 +71,8 @@ class Entities {
 
         for (var key in this._items){
             this._items[key].references = this._getModelReferences(this._items[key].model);
+            this._items[key].hiddenFields = this._getHiddenFields(this._items[key].model);
+            this._items[key].notQueryableFields = this._getNotQueryableFields(this._items[key].model);
         }
     }
 
@@ -71,6 +85,30 @@ class Entities {
                 ret.push(key);
             }
         }
+
+        return ret;
+    }
+
+    _getHiddenFields(model){
+        const ret = new Array();
+
+        Object.getOwnPropertyNames(model.schema.obj).forEach((prop) => {
+            if (model.schema.obj[prop].hidden) {
+                ret.push(prop);
+            }
+        });
+
+        return ret;
+    }
+
+    _getNotQueryableFields(model){
+        const ret = new Array();
+
+        Object.getOwnPropertyNames(model.schema.obj).forEach((prop) => {
+            if (model.schema.obj[prop].notQueryable) {
+                ret.push(prop);
+            }
+        });
 
         return ret;
     }

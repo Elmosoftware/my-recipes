@@ -219,3 +219,38 @@ deletePrivileges
     (aplica en: _parseConditions)
   Administrators	-> Para el resto
     (aplica en: validateAccess)
+
+-------------------------------------------------------------------------------------------------------------
+
+iSSUE #38 SOFT DELETION
+========================
+
+Vamos a crear el siguiente atributo en todos los entities:
+
+deletedOn: { type: Date, required: false }
+    DONE
+
+-El atributo no puede estar incluido en la data que el cliente envia para un post, (debe generar una excepción).
+    DONE
+-Al crear o actualizar un documento el atributo "deletedOn" deberá poseer valor "null".
+    DONE
+-El atributo nunca debe llegar al cliente, (debe ser eliminado del JSON).
+Implementar esto en el Security service llamado desde el Servicio en los métodos add() y find()
+    DONE    
+-Se debe agregar una condición de filtro especial para filtrar SIEMPRE los eliminados.
+    DONE
+-Modificar el método DELETE para que no borre sino haga un update del atributo "deletedOn".
+    algo asi como:  model.update({ _id: "XXXXXXX" }, { $set: { "deletedOn": new Date() } }
+    DONE
+
+Issues:
+- Al borrar un doc que tiene un atributo en el modelo con el modificador "unique: true", no va a poder crearse otro item
+con el mismo valor a pesar de ser posible porque el original fué borrado.
+MItigación:
+    -Quitamos el atributo unique de todos los campos.
+    -Creamos a mano el indice unique correspondiente, pero esta vez incluyendo el atributo deletedOn de la siguiente forma:
+        mySchema.index({ atributoUnique: 1, deletedOn: 1}, { unique: true, background: true, name: "NombredelIndice"})
+    DONE
+
+    
+    

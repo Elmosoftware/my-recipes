@@ -67,6 +67,7 @@ function setUser(id, isAdmin) {
 
 describe("Service", () => {
   describe("update()", () => {
+    //#region update() test
 
     var e = entities.getEntity("units");
     var svc = new Service(e);
@@ -116,15 +117,26 @@ describe("Service", () => {
         done();
       });
     });
+    it("Shouldn't complete if a hidden attribute is part of the document.", (done) => {
+
+      stubModelUpdate = sinon.stub(e.model, "update");
+
+      svc.update(svc.getNewobjectId(), { deletedOn: new Date() }, setUser(1, true), (err, data) => {
+        stubModelUpdate.restore();
+        assert.ok(stubModelUpdate.notCalled);
+        assert.equal(err.message, `-At least one of the following attributes were found in the JSON filter: deletedOn. Those attributes are for internal use only, please remove them from the document and try again.`);
+        done();
+      });
+    });
+    //#endregion
   });
   describe("find()", () => {
-
-    // var e = entities.getEntity("units");
+    //#region find() test
     var e = entities.getEntity("recipes");
     var svc = new Service(e);
     var stubModelFind;
 
-    function setStub(e= null) {
+    function setStub(e = null) {
 
       if (!e) {
         e = entities.getEntity("recipes");
@@ -432,8 +444,8 @@ describe("Service", () => {
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
-      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), 
-      `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"usedBy":"USER1"},{"estimatedTime":30}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"publishedOn":{"$eq":null}}`)
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]),
+        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"usedBy":"USER1"},{"estimatedTime":30}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"publishedOn":{"$eq":null},"deletedOn":{"$eq":null}}`)
     });
     it("Should complete with a JSON filter, no user logged in and 'pub'=''", () => {
 
@@ -448,7 +460,7 @@ describe("Service", () => {
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
-      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"usedBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$ne":null}}`)
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"usedBy":"USER1"},{"estimatedTime":30}]}],"publishedOn":{"$ne":null},"deletedOn":{"$eq":null}}`)
     });
     it("Should complete with an Object ID as condition, no user logged in and 'pub'=''", () => {
 
@@ -457,7 +469,7 @@ describe("Service", () => {
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
-      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"_id":"5a387f92ccbd71477022ea65"}`);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"_id":"5a387f92ccbd71477022ea65","deletedOn":{"$eq":null},"publishedOn":{"$ne":null}}`);
     });
     it("Should complete with a valid 'owner' parameter (parameter value: '')", () => {
 
@@ -542,7 +554,7 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.called);
       assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]),
-        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"$and":[{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}]}`)
+        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"$and":[{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"deletedOn":{"$eq":null}}`)
     });
     it("Should complete with a JSON filter with a '$and' condition in it, a user logged in, 'pub'='all' and 'owner'='me'", () => {
 
@@ -559,7 +571,7 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.called);
       assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]),
-        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"level":{"$ne":"4"}}`);
+        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"level":{"$ne":"4"},"deletedOn":{"$eq":null}}`);
     });
     it("Should complete with a JSON filter without a '$and' condition in it, a user logged in and 'owner'='others'", () => {
 
@@ -572,7 +584,7 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.called);
       assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]),
-        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"$and":[{"createdBy":{"$ne":"1"}},{"lastUpdateBy":{"$ne":"1"}},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}]}`)
+        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"$and":[{"createdBy":{"$ne":"1"}},{"lastUpdateBy":{"$ne":"1"}},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"deletedOn":{"$eq":null}}`)
     });
     it("Should complete with a JSON filter with a '$and' condition in it, a user logged in, 'pub'='all' and 'owner'='others'", () => {
 
@@ -589,7 +601,7 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.called);
       assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]),
-        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"createdBy":{"$ne":"1"}},{"lastUpdateBy":{"$ne":"1"}},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"level":{"$ne":"4"}}`)
+        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"createdBy":{"$ne":"1"}},{"lastUpdateBy":{"$ne":"1"}},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"level":{"$ne":"4"},"deletedOn":{"$eq":null}}`)
     });
     it("Should complete with a JSON filter without a '$and' condition in it, a user logged in, 'pub'='all' and 'owner'='any'", () => {
 
@@ -602,7 +614,7 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.called);
       assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]),
-        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"$and":[{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}]}`)
+        `{"mealType":{"$in":["1","2","3"]},"level":{"$ne":"4"},"deletedOn":{"$eq":null},"$and":[{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}]}`)
     });
     it("Should complete with a JSON filter with a '$and' condition in it, a user logged in 'pub'='all' and 'owner'='any'", () => {
 
@@ -619,7 +631,7 @@ describe("Service", () => {
 
       assert.ok(stubModelFind.called);
       assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]),
-        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"level":{"$ne":"4"}}`)
+        `{"$and":[{"mealType":{"$in":["1","2","3"]},"$or":[{"__v":0},{"estimatedTime":30}]},{"$or":[{"lastUpdateBy":"1"},{"createdBy":"1"}]}],"level":{"$ne":"4"},"deletedOn":{"$eq":null}}`)
     });
     it("Should complete with an Object ID as condition, no user logged in and 'owner'=''", () => {
 
@@ -628,7 +640,7 @@ describe("Service", () => {
       stubModelFind.restore();
 
       assert.ok(stubModelFind.called);
-      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"_id":"5a387f92ccbd71477022ea65"}`);
+      assert.equal(JSON.stringify(stubModelFind.getCall(0).args[0]), `{"_id":"5a387f92ccbd71477022ea65","deletedOn":{"$eq":null},"publishedOn":{"$ne":null}}`);
     });
     it("Shouldn't complete with a JSON filter that includes the invalid attribute 'publishedOn'", () => {
 
@@ -639,8 +651,8 @@ describe("Service", () => {
           { publishedOn: { $eq: true } }
         ]
       }), null, null, setQuery("", "", "", "", "", "", "", "", ""))
-      .catch((err) => {
-      });
+        .catch((err) => {
+        });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -654,8 +666,8 @@ describe("Service", () => {
           { createdBy: { $eq: true } }
         ]
       }), null, null, setQuery("", "", "", "", "", "", "", "", ""))
-      .catch((err) => {
-      });
+        .catch((err) => {
+        });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -669,8 +681,8 @@ describe("Service", () => {
           { lastUpdateBy: { $eq: true } }
         ]
       }), null, null, setQuery("", "", "", "", "", "", "", "", ""))
-      .catch((err) => {
-      });
+        .catch((err) => {
+        });
       stubModelFind.restore();
 
       assert.ok(stubModelFind.notCalled);
@@ -679,7 +691,7 @@ describe("Service", () => {
 
       let e = entities.getEntity("units");
       let svc = new Service(e);
-    
+
       stubModelFind = setStub(e);
       svc.find(JSON.stringify({ myProp: true }), null, setUser(1, false), setQuery("", "", "", "", "", "", "", "all", ""))
         .catch((err) => {
@@ -689,15 +701,16 @@ describe("Service", () => {
           done();
         });
     });
+    //#endregion
   });
   describe("delete()", () => {
-
+    //#region delete() test
     var e = entities.getEntity("units");
     var svc = new Service(e);
     var stubModelRemove;
 
     function setStub() {
-      return sinon.stub(e.model, "remove");
+      return sinon.stub(e.model, "update"); //The stub is for the "update" method since the inclusion of the "soft delete" feature.
     }
 
     it("Should complete with all valid parameters", () => {
@@ -748,9 +761,10 @@ describe("Service", () => {
         done();
       });
     });
+    //#endregion
   });
   describe("add()", () => {
-
+    //#region add() test
     var e = entities.getEntity("units");
     var svc = new Service(e);
     var stubModelAdd;
@@ -796,7 +810,7 @@ describe("Service", () => {
         done();
       });
     });
-    it("Shouldn't complete if the user is not ADMIN and attempt to update an entity other than Ingredients or Recipes.", (done) => {
+    it("Shouldn't complete if the user is not ADMIN and attempt to add an entity other than Ingredients or Recipes.", (done) => {
 
       stubModelAdd = setStub();
 
@@ -807,6 +821,18 @@ describe("Service", () => {
         done();
       });
     });
+    it("Shouldn't complete if a hidden attribute is part of the document.", (done) => {
+
+      stubModelAdd = setStub();
+
+      svc.update(svc.getNewobjectId(), { deletedOn: new Date() }, setUser(1, true), (err, data) => {
+        stubModelAdd.restore();
+        assert.ok(stubModelAdd.notCalled);
+        assert.equal(err.message, `-At least one of the following attributes were found in the JSON filter: deletedOn. Those attributes are for internal use only, please remove them from the document and try again.`);
+        done();
+      });
+    });
+    //#endregion
   });
 });
 

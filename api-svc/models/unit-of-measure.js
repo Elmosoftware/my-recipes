@@ -1,28 +1,23 @@
 // @ts-check
 
-/*
-class *UnitOfMeasure*
-    Abbrev:
-        type: String
-        req: true
-        unique: true
-        desc: Acronym or short name, like: "l" for litres, "cm3" for cubic centimeters, teaspoon, etc.
-    Name:
-        type: String
-        req: true
-        desc: like: "Litres", "Cubic centimeters", etc.
-end class 
-*/
-
 var mongoose = require("mongoose");
+var helper = require("../entity-helper");
 
-module.exports = mongoose.model("UnitOfMeasure",
-    new mongoose.Schema({
-        abbrev: { type: String, required: true, unique: true },
-        name: { type: String, required: true },
-        createdOn: { type: Date, required: true},
-        createdBy: { type: String, required: true},
-        lastUpdateOn: { type: Date, required: false},
-        lastUpdateBy: { type: String, required: false},
-        publishedOn: { type: Date, required: false }
-    }));
+let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
+    /**
+     * Unit abbreviation, acronym or short name, like: "l" for litres, "cm3" for cubic centimeters, teaspoon, etc.
+     */
+    abbrev: { type: String, required: true },
+    /**
+     * Unit full name, (like Kilogram, Cubic centimeters, Litres, etc.)
+     */
+    name: { type: String, required: true }
+}));
+
+schema.methods.toJSON = function () {
+    return helper.preProcessJSON(this);
+}
+
+schema.index({ abbrev: 1, deletedOn: 1 }, { unique: true, background: true, name: "EntityConstraint" })
+
+module.exports = mongoose.model("UnitOfMeasure", schema);

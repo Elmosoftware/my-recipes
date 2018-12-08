@@ -22,6 +22,38 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
+    validateDocument(document, entity) {
+        let ret = "";
+        
+        if (!document) {
+            ret = `The parameter "document" can't be a null reference. Parameter value: '${document}'.`;
+        }
+        else if (!(document === Object(document))) {
+            ret = `We expected an Object for parameter "document" and we get a type of '${typeof document}'.`;
+        }
+
+        if (!ret) {
+            let hasHidden = false;
+
+            Object.getOwnPropertyNames(document).forEach((prop) => {
+                if (entity.hiddenFields.includes(prop)) {
+                    hasHidden = true;
+                }
+            })
+
+            if (hasHidden) {
+                ret = `At least one of the following attributes were found in the JSON filter: ${entity.hiddenFields.join(", ")}. ` +
+                    `Those attributes are for internal use only, please remove them from the document and try again.`
+            }
+        }
+
+        if (ret) {
+            super._addError(ret);
+        }
+
+        return this;
+    }
+
     validateCallback(callback) {
         let ret = "";
 
@@ -36,9 +68,8 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
-    validateConditions(conditions, onlyAllowObjectId) {
-        let invalidAttr = ["publishedOn", "createdBy", "lastUpdateBy"];
-        let invalidAttrFound = false;
+    validateConditions(conditions, onlyAllowObjectId, entity) {
+        let notQueryableFieldsFound = false;
         let ret = "";
 
         onlyAllowObjectId = (onlyAllowObjectId) ? true : false;
@@ -60,15 +91,16 @@ class ServiceValidator extends ValidatorBase {
                 ret = `The Object Id '${conditions}' is not a valid object Id.`;
             }
 
+            //We check for not queryable fields included in the JSOn filter:
             if (!ret && isJSONFilter) {
-                invalidAttr.forEach((attr) => {
-                    if (!invalidAttrFound && conditions.indexOf(`"${attr}":`) != -1) {
-                        invalidAttrFound = true;
+                entity.notQueryableFields.forEach((attr) => {
+                    if (!notQueryableFieldsFound && conditions.indexOf(`"${attr}":`) != -1) {
+                        notQueryableFieldsFound = true;
                     }
                 });
 
-                if (invalidAttrFound) {
-                    ret = `At least one of the following invalid attributes were found in the JSON filter: ${invalidAttr.join(", ")}
+                if (notQueryableFieldsFound) {
+                    ret = `At least one of the following invalid attributes were found in the JSON filter: ${entity.notQueryableFields.join(", ")}
                         Please use the query parameters "pub" and "owner" to get specific sets of data involving those attributes.`
                 }
             }

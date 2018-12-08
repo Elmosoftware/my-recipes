@@ -1,31 +1,23 @@
 // @ts-check
 
-/*
-class *Level*
-    Name:
-        type: String
-        desc: Name of the Level.
-        req: true
-        unique: true
-        note: So far the following levels will be added:
-            - Beginner
-            - Intermediate
-            - Expert
-    Description:
-        type: String
-        desc: Level Description.
-end class
-*/
-
 var mongoose = require("mongoose");
+var helper = require("../entity-helper");
 
-module.exports = mongoose.model("Level",
-    new mongoose.Schema({
-        name: { type: String, required: true, unique: true },
-        description: { type: String, required: true },
-        createdOn: { type: Date, required: true},
-        createdBy: { type: String, required: true},
-        lastUpdateOn: { type: Date, required: false},
-        lastUpdateBy: { type: String, required: false},
-        publishedOn: { type: Date, required: false }
-    }));
+let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
+    /**
+     * Level name.
+     */
+    name: { type: String, required: true },
+    /**
+     * Level description.
+     */
+    description: { type: String, required: true }
+}));
+
+schema.methods.toJSON = function () {
+    return helper.preProcessJSON(this);
+}
+
+schema.index({ name: 1, deletedOn: 1 }, { unique: true, background: true, name: "EntityConstraint" })
+
+module.exports = mongoose.model("Level", schema);

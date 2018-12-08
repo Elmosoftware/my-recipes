@@ -1,32 +1,23 @@
 // @ts-check
 
-/*
-enum *MealType*
-     Name:
-        type: String
-        desc: Name of the meal type.
-        req: true
-        unique: true
-        note: Composed by the following:
-            - Appetizer
-            - Breakfast
-            - MainDish
-            - Dessert
-    Description:
-        type: String
-        desc: Level Description.
-end enum
-*/
-
 var mongoose = require("mongoose");
+var helper = require("../entity-helper");
 
-module.exports = mongoose.model("MealType",
-    new mongoose.Schema({
-        name: { type: String, required: true, unique: true },
-        description: { type: String, required: true },
-        createdOn: { type: Date, required: true},
-        createdBy: { type: String, required: true},
-        lastUpdateOn: { type: Date, required: false},
-        lastUpdateBy: { type: String, required: false},
-        publishedOn: { type: Date, required: false }
-    }));
+let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
+    /**
+     * Meal name, (like Appetizer, Breakfast, etc.)
+     */
+    name: { type: String, required: true },
+    /**
+     * Meal description.
+     */
+    description: { type: String, required: true }
+}));
+
+schema.methods.toJSON = function () {
+    return helper.preProcessJSON(this);
+}
+
+schema.index({ name: 1, deletedOn: 1 }, { unique: true, background: true, name: "EntityConstraint" })
+
+module.exports = mongoose.model("MealType", schema);

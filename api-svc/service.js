@@ -23,9 +23,8 @@ class Service {
             .isValid) {
             return (callback(val.getErrors(), {}));
         }
-
-        /*  IMPORTANT NOTE RELATED TO SUBDOCUMENTS AND THE WAY MONGO DB DEAL WITH THEM:
-            ===========================================================================
+        //#region IMPORTANT NOTE RELATED TO SUBDOCUMENTS AND THE WAY MONGO DB DEAL WITH THEM:
+        /*  ===========================================================================
 
             ISSUE DESCRIPTION:
             ------------------
@@ -87,7 +86,7 @@ class Service {
             }
             3rd - Now we can save the parent object without issues.
         */
-
+        //#endregion
         if (!val.isValidObjectId(document._id)) {
             document._id = this.getNewobjectId();
         }
@@ -112,8 +111,8 @@ class Service {
                     obj.createdBy = user.id;
                     obj.lastUpdateOn = null;
                     obj.lastUpdateBy = null;
+                    obj.deletedOn = null;
                     obj.save(callback);
-
                 } catch (err) {
                     callback(err, {});
                 }
@@ -130,6 +129,7 @@ class Service {
 
         if (!val.validateCallback(callback)
             .validateAccess(Security.ACCESS_TYPE.WRITE, this._entity, user)
+            .validateDocument(document, this._entity)
             .isValid) {
             return (callback(val.getErrors(), {}));
         }
@@ -148,6 +148,7 @@ class Service {
                     let model = results.pop();
                     document.lastUpdateOn = new Date();
                     document.lastUpdateBy = user.id;
+                    document.deletedOn = null;
 
                     model.update(this._parseConditions(Security.ACCESS_TYPE.WRITE, id, user), document, (err, data) => {
                         //The attempt to update a non existent document by Id is not reported as error by Mongoose:
@@ -171,7 +172,7 @@ class Service {
     count(conditions, user, query) {
         var val = new ServiceValidator();
 
-        if (!val.validateConditions(conditions, false)
+        if (!val.validateConditions(conditions, false, this._entity)
             .validateQuery(query, user)
             .validateAccess(Security.ACCESS_TYPE.READ, this._entity, user, query)
             .isValid) {
@@ -186,7 +187,7 @@ class Service {
         var val = new ServiceValidator();
         var cursor = null;
 
-        if (!val.validateConditions(conditions, false)
+        if (!val.validateConditions(conditions, false, this._entity)
             .validateQuery(query, user)
             .validateAccess(Security.ACCESS_TYPE.READ, this._entity, user, query)
             .isValid) {
@@ -226,7 +227,8 @@ class Service {
                 //If the subdoc has references to  other documents, we need to add them to the populate list:
                 if (subdocEntity.references.length > 0) {
                     subdocEntity.references.forEach((ref) => {
-                        /* WATCH OUT!:
+                        //#region WATCH OUT!
+                        /* 
                             If the subdocument have a reference to the parent document, we MUST NOT 
                             POPULATE IT IN ORDER TO AVOID CIRCULAR REFERENCES.
                             
@@ -308,6 +310,7 @@ class Service {
                             This means that if for example if the categories holds a property that is a reference to another 
                             model. That property won't be populated.
                         */
+                        //#endregion
                         if (subdocEntity.model.schema.tree[ref].ref != this._entity.model.modelName) {
                             cursor.populate({
                                 path: item,
@@ -328,29 +331,38 @@ class Service {
         var val = new ServiceValidator();
 
         if (!val.validateCallback(callback)
-            .validateConditions(id, true) //We will admit only an Object Id here as condition.
+            .validateConditions(id, true, this._entity) //We will admit only an Object Id here as condition.
             .validateAccess(Security.ACCESS_TYPE.DELETE, this._entity, user, null)
             .isValid) {
             return (callback(val.getErrors(), {}));
         }
 
-        /*
-        TODO:
-         Can we implement this here????
-         - For any Request with DELETE method:
-            + **(PRE  VALIDATION WITH DB ACCESS)** Only the Owner can delete Recipe and RecipeIngredients.
-        */
+        // this._entity.model.remove(this._parseConditions(Security.ACCESS_TYPE.DELETE, id, user), (err, data) => {
 
-        this._entity.model.remove(this._parseConditions(Security.ACCESS_TYPE.DELETE, id, user), (err, data) => {
+        //     //The attempt to remove a non existent document by Id is not reported as error by Mongoose:
+        //     if (!err && data.result.n == 0) {
+        //         // err = new Error("The last DELETE operation affects no documents. Verify the document exists before to retry this operation.");
+        //         err = new Error(`The last DELETE operation affects no documents. This can be caused by the following issues: \n
+        //                         - The document you try to delete no longer exists.
+        //                         - The document is owned by another user and therefore you are not able to change it in any way.`);
+        //     }
 
-            //The attempt to remove a non existent document by Id is not reported as error by Mongoose:
-            if (!err && data.result.n == 0) {
-                err = new Error("The last DELETE operation affects no documents. Verify the document exists before to retry this operation.");
-            }
+        //     data = {}; //Is not supposed that an update op returns any data.
+        //     return (callback(err, data));
+        // });
 
-            data = {}; //Is not supposed that an update op returns any data.
-            return (callback(err, data));
-        });
+        //model.update({ _id: "XXXXXXX" }, { $set: { "deletedOn": new Date() } }
+        this._entity.model.update(this._parseConditions(Security.ACCESS_TYPE.DELETE, id, user),
+            { $set: { deletedOn: new Date() } }, (err, data) => {
+                //The attempt to soft delete a non existent document by Id is not reported as error by Mongoose:
+                if (!err && data.n == 0) {
+                    err = new Error(`The last DELETE operation affects no documents. This can be caused by the following issues: \n
+                                - The document you try to delete no longer exists.
+                                - The document is owned by another user and therefore you are not able to change it in any way.`);
+                }
+
+                return (callback(err, {}));
+            });
     }
 
     saveSubDocs(doc, isParentDocument = false) {
@@ -476,7 +488,6 @@ class Service {
                         let conditions = new Array();
 
                         if (query.owner.toLowerCase() == "me") {
-                            //conditions.push({ $or: [{ lastUpdateBy: user.id }, { createdBy: user.id }] })
                             conditions.push(secSvc.getOnlyOwnerAccessCondition(user));
                         }
                         else if (query.owner.toLowerCase() == "others") {
@@ -499,38 +510,38 @@ class Service {
 
             case Security.ACCESS_TYPE.WRITE:
 
-                let isRecipeRelatedEntity = ["recipe", "recipeingredient"].includes(this._entity.name); 
-                /*
-                    TODO: MEJORAR ESTO. "isRecipeRelatedEntity" deberia ser un atributo de this._entity directamente!
-                    Se usa acá y en el método "validateAccess" del ServiceValidator.
-                */
-                
+                //let isRecipeRelatedEntity = ["recipe", "recipeingredient"].includes(this._entity.name);
+
                 if (val.isValidObjectId(conditions)) {
                     ret._id = conditions;
-                    //We also need to ensure that if is a Recipe related entity, only the owner can edit it:
-                    if (isRecipeRelatedEntity) {
-                        ret.$and = new Array();
-                        ret.$and.push({ $or: [{ lastUpdateBy: user.id }, { createdBy: user.id }] });
-                    }
+                    //BELOW was already added in the call to secSvc.updateQueryFilterWithSecurityConstraints
+                    // //We also need to ensure that if is a Recipe related entity, only the owner can edit it:
+                    // if (isRecipeRelatedEntity) {
+                    //     ret.$and = new Array();
+                    //     ret.$and.push({ $or: [{ lastUpdateBy: user.id }, { createdBy: user.id }] });
+                    // }
                 }
-                else{ //This has been previously validated, but anyway we will throw if not Object ID was sent:
+                else { //This has been previously validated, but anyway we will throw if not Object ID was sent:
                     throw new Error(`We wait for an Object ID as condition for the DELETE operation, Current condition is ${String(conditions)}`);
-                }    
-                
+                }
+
                 break;
             case Security.ACCESS_TYPE.DELETE:
-               
+
                 if (val.isValidObjectId(conditions)) {
                     ret._id = conditions;
                 }
-                else{ //This has been previously validated, but anyway we will throw if not Object ID was sent:
+                else { //This has been previously validated, but anyway we will throw if not Object ID was sent:
                     throw new Error(`We wait for an Object ID as condition for the DELETE operation, Current condition is ${String(conditions)}`);
                 }
-            
+
                 break;
             default:
                 throw new Error(`The provided "accessType" not been defined yet!`);
         }
+
+        //Whatever is the access to the DB, we need to ensure only NOT DELETED documents will be affected:
+        ret.deletedOn = { $eq: null };
 
         //If there is any security specific filter that has to be added based on the kind of access or the specific 
         //entity security needs, will be handled by the Security service.
