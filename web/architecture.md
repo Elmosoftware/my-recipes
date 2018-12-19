@@ -39,7 +39,8 @@ with the following accounts:
 -Configuration management (Using NOW).
 -Record a FREE domain name.
 -Configure an email provider in Auth0 so we can modify email templates.
-
-
-
+-How to configure .env file for ProD on API
+-How to create a certificate for the site.
+-How to create a different Project for prod in AUTH0
+-How to create a Cloud instance of Mongo for Prod env.  
 
