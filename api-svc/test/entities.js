@@ -47,9 +47,6 @@ describe("Entities", () => {
     it("Shouldn't throw when requesting entity 'recipeingredients'", () => {
       assert.ok(entities.getEntity("recipeingredients"));
     });
-    // it("Shouldn't throw when requesting entity 'recipeDirections'", () => {
-    //   assert.ok(entities.getEntity("recipeDirections"));
-    // });
     it("Should throw when requesting entity 'unknownEntity'", () => {
       assert.throws(() => {
         entities.getEntity("unknownEntity")

@@ -4,16 +4,28 @@ const ServiceValidator = require("./service-validator");
 const Security = require("./security-service");
 const Entities = require("./entities");
 
+/**
+ * Data API Service
+ */
 class Service {
 
     constructor(entity) {
         this._entity = entity;
     }
 
+    /**
+     * Return a new Entity Object ID
+     */
     getNewobjectId() {
         return mongoose.Types.ObjectId();
     }
 
+    /**
+     * Add an Entity document to the database.
+     * @param {object} document Entity document
+     * @param {object} user RequestContext.user object.
+     * @param {function} callback Callback function.
+     */
     add(document, user, callback) {
         var val = new ServiceValidator();
         var promises = [];
@@ -123,6 +135,13 @@ class Service {
             });
     }
 
+    /**
+     * Update an existing Entity document.
+     * @param {number} id Object ID of the Entity document to update
+     * @param {*} document Entity Document updated data.
+     * @param {*} user RequestContext.user object.
+     * @param {*} callback Callback function.
+     */
     update(id, document, user, callback) {
         var val = new ServiceValidator();
         var promises = [];
@@ -169,6 +188,12 @@ class Service {
             });
     }
 
+    /**
+     * Count projection.
+     * @param {string} conditions JSON Filter conditions.
+     * @param {*} user RequestContext.user object.
+     * @param {*} query RequestContext.query object.
+     */
     count(conditions, user, query) {
         var val = new ServiceValidator();
 
@@ -183,6 +208,13 @@ class Service {
             .exec();
     }
 
+    /**
+     * Search an Entity document by his Id or all that match the provided JSON Filter conditions.
+     * @param {string} conditions JSON Filter conditions or and Entity Object ID.
+     * @param {*} projection Query Projection.
+     * @param {*} user RequestContext.user object.
+     * @param {*} query RequestContext.query object.
+     */
     find(conditions, projection, user, query) {
         var val = new ServiceValidator();
         var cursor = null;
@@ -327,6 +359,12 @@ class Service {
         return cursor.exec();
     }
 
+    /**
+     * Delete an Entity document from the database.
+     * @param {string} id Entity Object ID
+     * @param {object} user RequestContext.user
+     * @param {function} callback Callback Function.
+     */
     delete(id, user, callback) {
         var val = new ServiceValidator();
 
@@ -337,21 +375,6 @@ class Service {
             return (callback(val.getErrors(), {}));
         }
 
-        // this._entity.model.remove(this._parseConditions(Security.ACCESS_TYPE.DELETE, id, user), (err, data) => {
-
-        //     //The attempt to remove a non existent document by Id is not reported as error by Mongoose:
-        //     if (!err && data.result.n == 0) {
-        //         // err = new Error("The last DELETE operation affects no documents. Verify the document exists before to retry this operation.");
-        //         err = new Error(`The last DELETE operation affects no documents. This can be caused by the following issues: \n
-        //                         - The document you try to delete no longer exists.
-        //                         - The document is owned by another user and therefore you are not able to change it in any way.`);
-        //     }
-
-        //     data = {}; //Is not supposed that an update op returns any data.
-        //     return (callback(err, data));
-        // });
-
-        //model.update({ _id: "XXXXXXX" }, { $set: { "deletedOn": new Date() } }
         this._entity.model.update(this._parseConditions(Security.ACCESS_TYPE.DELETE, id, user),
             { $set: { deletedOn: new Date() } }, (err, data) => {
                 //The attempt to soft delete a non existent document by Id is not reported as error by Mongoose:
@@ -364,6 +387,8 @@ class Service {
                 return (callback(err, {}));
             });
     }
+
+    //#region Private Methods
 
     saveSubDocs(doc, isParentDocument = false) {
         var val = new ServiceValidator();
@@ -510,16 +535,8 @@ class Service {
 
             case Security.ACCESS_TYPE.WRITE:
 
-                //let isRecipeRelatedEntity = ["recipe", "recipeingredient"].includes(this._entity.name);
-
                 if (val.isValidObjectId(conditions)) {
                     ret._id = conditions;
-                    //BELOW was already added in the call to secSvc.updateQueryFilterWithSecurityConstraints
-                    // //We also need to ensure that if is a Recipe related entity, only the owner can edit it:
-                    // if (isRecipeRelatedEntity) {
-                    //     ret.$and = new Array();
-                    //     ret.$and.push({ $or: [{ lastUpdateBy: user.id }, { createdBy: user.id }] });
-                    // }
                 }
                 else { //This has been previously validated, but anyway we will throw if not Object ID was sent:
                     throw new Error(`We wait for an Object ID as condition for the DELETE operation, Current condition is ${String(conditions)}`);
@@ -549,6 +566,7 @@ class Service {
 
         return ret;
     }
+    //#endregion
 }
 
 module.exports = Service;

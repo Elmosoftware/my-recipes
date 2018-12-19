@@ -11,7 +11,7 @@ const allowedHTTPMethods = {
 }
 
 /**
- * @class This class acts as a context for each individual request providing:
+ * This class acts as a context for each individual request providing:
  * - Request validations.
  * - Simplifies access to request, URL, parameters, (both URL & query), user data, etc.
  * - Provides methods to work with the response.  
@@ -172,7 +172,6 @@ class RequestContext {
     /**
      * Allows to add a HTTP header to the response. Also we can indicate to include that header in the response body to facilitate 
      * getting the value on client side.
-     * If 
      * @param {string} name HTTP Header name
      * @param {string} value HTTP Header value
      * @param {boolean} addToHeadersInPayload Indicates if this header must be included also in the "headers" attribute in the response body.
@@ -348,7 +347,7 @@ class RequestContext {
 }
 
 /**
- * @class This class holds the configuration for the RequestContext instance.
+ * This class holds the configuration for the RequestContext instance.
  */
 class RequestContextOptions {
 

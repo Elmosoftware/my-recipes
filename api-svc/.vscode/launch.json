@@ -14,7 +14,10 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Server",
-            "program": "${workspaceFolder}\\server.js"
+            "program": "${workspaceFolder}\\index.js",
+            "env": {
+                "NODE_ENV": "development"
+            }
         },
         {
             "name": "Launch Test",

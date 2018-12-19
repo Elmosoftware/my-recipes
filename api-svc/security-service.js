@@ -1,9 +1,15 @@
+/**
+ * Enumeration holding the possible access types to this API. 
+ */
 const ACCESS_TYPE = Object.freeze({
     READ: 'READ',
     WRITE: "WRITE",
     DELETE: "DELETE"
 });
 
+/**
+ * Enumeration holding the Access granted targets.
+ */
 const ACCESS_PRIVILEGES = Object.freeze({
     ANONYMOUS: 'ANONYMOUS',
     AUTHENTICATED: 'AUTHENTICATED',
@@ -11,11 +17,23 @@ const ACCESS_PRIVILEGES = Object.freeze({
     ADMINISTRATORS: 'ADMINISTRATORS'
 });
 
+/**
+ * This class responsibility is to secure API Access inthe following ways:
+ *  - Resolve if an access is valid.
+ *  - Add or create filter conditions specific to application security and integrity.
+ */
 class SecurityService {
 
     constructor() {
     }
 
+    /**
+     * Returns an empty string if the access is allowed. otherwise return the access violation details.
+     * @param {ACCESS_TYPE} accessType Requested access type, (like read, update, etc.) 
+     * @param {object} entity Entity object
+     * @param {object} user RequestContext.user object
+     * @param {object} query RequestContext.query object
+     */
     validateAccessRequest(accessType, entity, user = null, query = null) {
         let ret = "";
         let isNotPubAccess = Boolean(query && query.pub && ["all", "notpub"].includes(String(query.pub).toLowerCase()));
@@ -51,6 +69,14 @@ class SecurityService {
         return ret;
     }
 
+    /**
+     * Update the provided filter conditions object by adding specific data integrity and security filters.
+     * @param {ACCESS_TYPE} accessType Requested Access Type.
+     * @param {object} conditionsObject Filter conditions object.
+     * @param {object} entity Entity object. 
+     * @param {object} user RequestContext.user object
+     * @param {object} query RequestContext.query object.  
+     */
     updateQueryFilterWithSecurityConstraints(accessType, conditionsObject, entity, user = null, query = null){
 
         let restrictOwnerOnly = false;
@@ -112,10 +138,16 @@ class SecurityService {
         }
     }
 
+    /**
+     * Return a filter condition required to return only documents owned by the provided user.
+     * @param {object} user RequestContext.user object
+     */
     getOnlyOwnerAccessCondition(user){
         this._checkUserParam(user);
         return { $or: [{ lastUpdateBy: user.id }, { createdBy: user.id }] };
     }
+
+    //#region Private Members
 
     _validatePrivileges(accessPrivileges, user){
         
@@ -227,6 +259,7 @@ class SecurityService {
             throw new Error(ret);
         }
     }
+    //#endregion
 }
 
 module.exports = { SecurityService, ACCESS_TYPE, ACCESS_PRIVILEGES }

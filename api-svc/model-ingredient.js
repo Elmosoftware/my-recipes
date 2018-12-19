@@ -1,17 +1,17 @@
 // @ts-check
 
 var mongoose = require("mongoose");
-var helper = require("../entity-helper");
+var helper = require("./entity-helper");
 
 let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
-    /**
-     * Level name.
-     */
+   /**
+    * Ingredient name
+    */
     name: { type: String, required: true },
     /**
-     * Level description.
+     * List of compatible units of measure for this ingredient.
      */
-    description: { type: String, required: true }
+    compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: "Unit" }]
 }));
 
 schema.methods.toJSON = function () {
@@ -20,4 +20,4 @@ schema.methods.toJSON = function () {
 
 schema.index({ name: 1, deletedOn: 1 }, { unique: true, background: true, name: "EntityConstraint" })
 
-module.exports = mongoose.model("Level", schema);
+module.exports = mongoose.model("Ingredient", schema, "ingredients");

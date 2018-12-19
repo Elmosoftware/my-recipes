@@ -66,9 +66,9 @@ function setUser(id, isAdmin) {
 }
 
 describe("Service", () => {
-  describe("update()", () => {
-    //#region update() test
+  //#region update() test
 
+  describe("update()", () => {
     var e = entities.getEntity("units");
     var svc = new Service(e);
     var stubModelUpdate;
@@ -128,10 +128,12 @@ describe("Service", () => {
         done();
       });
     });
-    //#endregion
   });
+
+  //#endregion
+
+  //#region find() test
   describe("find()", () => {
-    //#region find() test
     var e = entities.getEntity("recipes");
     var svc = new Service(e);
     var stubModelFind;
@@ -701,10 +703,11 @@ describe("Service", () => {
           done();
         });
     });
-    //#endregion
   });
-  describe("delete()", () => {
-    //#region delete() test
+  //#endregion
+  
+  //#region delete() test
+  describe("delete()", () => {  
     var e = entities.getEntity("units");
     var svc = new Service(e);
     var stubModelRemove;
@@ -761,10 +764,11 @@ describe("Service", () => {
         done();
       });
     });
-    //#endregion
   });
+  //#endregion
+
+  //#region add() test
   describe("add()", () => {
-    //#region add() test
     var e = entities.getEntity("units");
     var svc = new Service(e);
     var stubModelAdd;
@@ -831,8 +835,8 @@ describe("Service", () => {
         assert.equal(err.message, `-At least one of the following attributes were found in the JSON filter: deletedOn. Those attributes are for internal use only, please remove them from the document and try again.`);
         done();
       });
-    });
-    //#endregion
+    });  
   });
+  //#endregion
 });
 

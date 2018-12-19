@@ -1,7 +1,5 @@
 // @ts-check
 
-const DEV_PORT = 3000; //TCP port, (this is used only for dev environment).
-
 //App configuration:
 const result = require('dotenv').config({ path: __dirname + '/.env' })
 const ConfigValidator = require("./config-validator");
@@ -14,6 +12,10 @@ const bodyParser = require("body-parser");
 
 //DB setup:
 const mongoose = require("mongoose");
+const mongooseOptions = {
+    useNewUrlParser: true, //(node:61064) DeprecationWarning: current URL string parser is deprecated.
+    useCreateIndex: true //(node:61064) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+};
 
 //Auth settings:
 const jwt = require('express-jwt');
@@ -29,7 +31,7 @@ const authCheckMiddleware = jwt({
     audience: `https://${process.env.AUTHMANAGEMENT_DOMAIN}/api/v2/`,
     issuer: `https://${process.env.AUTHMANAGEMENT_DOMAIN}/`,
     algorithms: ['RS256']
-}); //This is the middeware function that will check the token in the Auuthorization header
+}); //This is the middeware function that will check the token in the Authorization header
 
 //Main routes:
 const router = require("./router"); //API Data route.
@@ -49,20 +51,17 @@ if (!cfgVal.validateConfig().isValid) {
     Please, review your ".env" file and adjust it accordingly.`);
 }
 
-console.log(JSON.stringify(result.parsed) + "\n");
+console.log(JSON.stringify(result.parsed)
+    .replace(/,/g, "\n")
+    .replace(/{/g, "")
+    .replace(/}/g, "") + "\n");
 
 //As a safe-guard, we modify specific environment related settings:
 
 //We must not add delay to request in PROD env:
-if (process.env.NODE_ENV == "prod" && Number(process.env.REQUESTS_ADDED_DELAY) >= 0) {
+if (process.env.NODE_ENV == "production" && Number(process.env.REQUESTS_ADDED_DELAY) >= 0) {
     process.env.REQUESTS_ADDED_DELAY = "0"
     console.error(`Environment is "prod', so REQUESTS_ADDED_DELAY was set to "0".`)
-}
-
-//If we are in dev environment, we need to set the PORT environment variable:
-if (process.env.NODE_ENV == "dev") {
-    process.env.PORT = String(DEV_PORT);
-    console.warn(`Environment is "dev', so PORT was set to "${process.env.PORT}".`)
 }
 
 mongoose.Promise = global.Promise; // Using native promises.
@@ -70,7 +69,15 @@ mongoose.Promise = global.Promise; // Using native promises.
 app.use(bodyParser.json()); // to support JSON-encoded bodies.
 app.use(bodyParser.urlencoded({ extended: true })); // to support URL-encoded bodies.
 
+//Routing of Welcome page:
+app.get('/', function(req, res){
+    res.sendFile(__dirname + "/index.html");
+});
+
+//Routing of Management API:
 app.use("/api/management", authCheckMiddleware, routerManagement);
+
+//Routing of Data API:
 // @ts-ignore
 app.use("/api", authCheckMiddleware.unless((req) => {
 
@@ -82,26 +89,39 @@ app.use("/api", authCheckMiddleware.unless((req) => {
     return ret;
 }), router);
 
-mongoose.connect(process.env.DB_ENDPOINT, { useMongoClient: true }, function (err) {
+//Adding specific Mongo DB connect options for Prod:
+if (process.env.NODE_ENV == "production") {
+    mongooseOptions.autoCreate = false;
+    mongooseOptions.autoIndex = false;
+}
+
+mongoose.connect(process.env.DB_ENDPOINT, mongooseOptions, function (err) {
     if (err) {
-        console.log("There was an error connecting to Mongo instance. Error description:\n" + err);
+        console.log("There was an error connecting to Mongo DB instance. Error description:\n" + err);
     }
     else {
-        console.log("Successfully connected to Mongo instance!");
+        console.log(`Successfully connected to Mongo DB instance!
+Connection options in use:\n${JSON.stringify(mongooseOptions)
+                .replace(/,/g, "\n")
+                .replace(/{/g, "")
+                .replace(/}/g, "")}\n`)
     }
 });
 
 app.listen(process.env.PORT, () => {
-    console.log(`Server running at http://localhost:${process.env.PORT}/`);
+    console.log(`Server is listening on port: ${process.env.PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV}`);
 
-    if (process.env.NODE_ENV == "dev" && process.env.REQUESTS_ADDED_DELAY && Number(process.env.REQUESTS_ADDED_DELAY) > 0) {
-        console.warn(`\n\nWarning!, the configuration value REQUESTS_ADDED_DELAY is established to ${process.env.REQUESTS_ADDED_DELAY} milliseconds.
-        This is normally used for debugging purposes and to emulate production environment conditions.\n`)
+    if (process.env.NODE_ENV == "development" && process.env.REQUESTS_ADDED_DELAY && Number(process.env.REQUESTS_ADDED_DELAY) > 0) {
+        console.warn(`\nWarning!, the configuration value REQUESTS_ADDED_DELAY is established to ${process.env.REQUESTS_ADDED_DELAY} milliseconds.
+        This is normally used for debugging purposes and to emulate production environment conditions.`)
     }
 
-    if (process.env.NODE_ENV == "prod") {
-        console.warn(`\n\nCURRENT ENVIRONMENT SETTINGS CORRESPONDS TO: PRODUCTION SITE.\n`)
+    if (process.env.NODE_ENV == "production") {
+        console.warn(`\n
+        =============================================================
+        CURRENT ENVIRONMENT SETTINGS CORRESPONDS TO: PRODUCTION SITE.
+        =============================================================\n`)
     }
 
     console.log(`Executing on folder: ${__dirname}`);

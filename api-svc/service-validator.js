@@ -3,6 +3,10 @@
 const ValidatorBase = require("./validator-base");
 const Security = require("./security-service");
 
+/**
+ * Data API Service validator.
+ * @extends ValidatorBase
+ */
 class ServiceValidator extends ValidatorBase {
 
     constructor() {
@@ -10,7 +14,14 @@ class ServiceValidator extends ValidatorBase {
         this.svcSec = new Security.SecurityService();
     }
 
-    validateAccess(accessType, entity, user, query) {
+    /**
+     * Validates the requested access.
+     * @param {object} accessType Requested Access Type.
+     * @param {object} entity Entity object. 
+     * @param {object} user RequestContext.user object
+     * @param {object} query RequestContext.query object.  
+     */
+    validateAccess(accessType, entity, user = null, query = null) {
         let ret = ""
 
         ret = this.svcSec.validateAccessRequest(accessType, entity, user, query);
@@ -22,6 +33,11 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
+    /**
+     * Validates the document to be created or updatedby this API.
+     * @param {object} document Entity object to be validated.
+     * @param {object} entity Entity model object. 
+     */
     validateDocument(document, entity) {
         let ret = "";
         
@@ -54,6 +70,10 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
+    /**
+     * Validate the supplied callback function.
+     * @param {function} callback 
+     */
     validateCallback(callback) {
         let ret = "";
 
@@ -68,6 +88,12 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
+    /**
+     * 
+     * @param {string} conditions Filter conditions or an Object ID.
+     * @param {boolean} onlyAllowObjectId Boolean value indicating if only an Object ID will be acceptable as parameter.
+     * @param {object} entity Entity model object.
+     */
     validateConditions(conditions, onlyAllowObjectId, entity) {
         let notQueryableFieldsFound = false;
         let ret = "";
@@ -113,6 +139,11 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
+    /**
+     * Validate the supplied querystring parameters in the HTTP request.
+     * @param {object} query RequestContext.query object.
+     * @param {object} user RequestContext.user object
+     */
     validateQuery(query, user) {
         let ret = "";
 
@@ -150,6 +181,10 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
+    /**
+     * Returns a boolean value indicating if the supplied string is a valid Object ID.
+     * @param {string} id Object ID
+     */
     isValidObjectId(id) {
         /*
             Created by Felipe Lorenzo VI 
@@ -173,6 +208,8 @@ class ServiceValidator extends ValidatorBase {
             return false;
         }
     }
+
+    //#region Private Members
 
     _validatePagination(skip, top) {
         let ret = "";
@@ -325,6 +362,7 @@ class ServiceValidator extends ValidatorBase {
         return this;
     }
 
+    //#endregion
 }
 
 module.exports = ServiceValidator;

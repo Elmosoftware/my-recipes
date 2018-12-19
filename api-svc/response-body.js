@@ -1,5 +1,8 @@
 //@ts-check
 
+/**
+ * This class encapsulates the unified response body sent always by this API.
+ */
 class ResponseBody{
 
     constructor(err, data, headers = null){

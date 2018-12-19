@@ -1,7 +1,7 @@
 // @ts-check
 
 var mongoose = require("mongoose");
-var helper = require("../entity-helper");
+var helper = require("./entity-helper");
 
 let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
     /**
@@ -19,7 +19,7 @@ let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
     /**
      * Unit of measure in which the Ingredient is expressed.
      */
-    unit: { type: mongoose.Schema.Types.ObjectId, ref: "UnitOfMeasure" }
+    unit: { type: mongoose.Schema.Types.ObjectId, ref: "Unit" }
 }));
 
 schema.methods.toJSON = function () {
@@ -28,4 +28,4 @@ schema.methods.toJSON = function () {
 
 schema.index({ recipe: 1, ingredient: 1 }, { background: true, name: "RecipeIngredient_Recipe_Ingredient" })
 
-module.exports = mongoose.model("RecipeIngredient", schema);
+module.exports = mongoose.model("RecipeIngredient", schema, "recipeingredients");

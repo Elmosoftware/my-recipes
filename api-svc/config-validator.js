@@ -2,25 +2,30 @@
 
 const ValidatorBase = require("./validator-base");
 
+/**
+ * This  class provides a method to validate .env config file.
+ * @extends ValidatorBase
+ */
 class ConfigValidator extends ValidatorBase {
 
     constructor() {
         super();
     }
 
+    /**
+     * Validates the .env Config file after been loaded.
+     */
     validateConfig() {
+
+        let validEnvValues = ["development", "production"];
     
         //NODE_ENV is required and can be only one of the following values "dev", "prod":
-        if (!process.env.NODE_ENV || !(process.env.NODE_ENV == "dev" || process.env.NODE_ENV == "prod")) {
-            super._addError("NODE_ENV is required and can be only one of the following values: 'dev', 'prod'");
+        if (!process.env.NODE_ENV || !validEnvValues.includes(process.env.NODE_ENV)) {
+            super._addError(`NODE_ENV is missing or it has an invalid value.
+            Current value is: "${(process.env.NODE_ENV) ? process.env.NODE_ENV : "null or undefined"}".
+            Possible values are: ${validEnvValues.join(", ")}.`);
         }
     
-        // //PORT configuration is required and must be a valid port number:
-        // if(process.env.PORT && (isNaN(Number(process.env.PORT)) || Number(process.env.PORT) < 0 || 
-        //         Number(process.env.PORT) > 65535)){
-        //     super._addError("PORT is not a number or is out of the range of valid port numbers, (0 to 65535)");
-        // }
-        
         //DB_ENDPOINT is required and can't be null or empty:
         if(!process.env.DB_ENDPOINT){
             super._addError("DB_ENDPOINT is required and can't be null or empty.");

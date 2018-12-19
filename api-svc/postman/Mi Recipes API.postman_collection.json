@@ -310,7 +310,7 @@
 									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
 								},
 								"url": {
-									"raw": "http://localhost:3000/api/units/",
+									"raw": "http://localhost:3000/api/units/?pub=default",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -320,6 +320,12 @@
 										"api",
 										"units",
 										""
+									],
+									"query": [
+										{
+											"key": "pub",
+											"value": "default"
+										}
 									]
 								}
 							},
@@ -1063,7 +1069,7 @@
 									"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
 								},
 								"url": {
-									"raw": "http://localhost:3000/api/mealtypes/?filter{ \"$or\" : [ { \"name\": \"Desayuno\" }, { \"name\": \"Aperitivo\" } ] }",
+									"raw": "http://localhost:3000/api/mealtypes/?filter={ \"$or\" : [ { \"name\": \"Desayuno\" }, { \"name\": \"Aperitivo\" } ] }",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1076,8 +1082,8 @@
 									],
 									"query": [
 										{
-											"key": "filter{ \"$or\" : [ { \"name\": \"Desayuno\" }, { \"name\": \"Aperitivo\" } ] }",
-											"value": null
+											"key": "filter",
+											"value": "{ \"$or\" : [ { \"name\": \"Desayuno\" }, { \"name\": \"Aperitivo\" } ] }"
 										}
 									]
 								}
@@ -1653,6 +1659,55 @@
 							"response": []
 						},
 						{
+							"name": "/api/recipes/ By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/5b1d8d502410d134e46aa1e6",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										"5b1d8d502410d134e46aa1e6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ By Id Copy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EQXhSVFUyTlVZNU5UUTFSVVpGUkRBNFJEUkRPVUV3TVRreU56UkdOamN4UWpaRFFqSTJOQSJ9.eyJodHRwczovL2VsbW9zb2Z0d2FyZS5jb20vYXBwX21ldGFkYXRhIjp7InJvbGUiOiJhZG1pbiJ9LCJpc3MiOiJodHRwczovL2VsbW9zb2Z0d2FyZS5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDgyNzc2MTQ3MTkwODIyODA0MDgiLCJhdWQiOlsiaHR0cHM6Ly9lbG1vc29mdHdhcmUuYXV0aDAuY29tL2FwaS92Mi8iLCJodHRwczovL2VsbW9zb2Z0d2FyZS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTQzNTgyMTIyLCJleHAiOjE1NDM1ODkzMjIsImF6cCI6InoycFg4UTdibjFjZUxpMDNPcEcxMUFDZlEyZzB4WjJvIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCB1cGRhdGU6Y3VycmVudF91c2VyX21ldGFkYXRhIn0.mUCD122oEwJpBmUFUkolCp1e43aDw_OxMQIKgw3SXyMRkfhUPfaFtGhrHv_-oYxUXoRl9CDcqhXjAWl4nqKzbVUc1cv9eJrQ232Mfv6qxqkOLugO0SRGnq1Dw44OlKX9YVGQ8LrCyagb5HJFARDMwEBtCFe02mBfDBsNtn8L4SSnckcwLo45Ham538OGbYW2lz37-1JjM27SHPi_eqHBRten2oZsfMs-9UiZBUTASn2m22_nKtbPkUjW9t_ENIlzuw32Zhrxc3xBcmQ7ggeSTrXzthU9XIbcNlEnmayA9xx-22TO0ArcMvh-TIwzgEoituA1Quki7heTEVpll9lAZw"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/5c012f05ec4f389e748696fb",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										"5c012f05ec4f389e748696fb"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "/api/recipes/ Latest",
 							"request": {
 								"method": "GET",
@@ -1703,7 +1758,7 @@
 								"header": [],
 								"body": {},
 								"url": {
-									"raw": "http://localhost:3000/api/recipes/?pop=false&fields=name description directions&filter={\"$text\":{\"$search\":\"\\\"receta\\\"\"}}",
+									"raw": "http://localhost:3000/api/recipes/?pop=false&fields=name description directions publishedOn&filter={\"$text\":{\"$search\":\"\\\"receta\\\"\"}}&pub=all",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -1721,11 +1776,15 @@
 										},
 										{
 											"key": "fields",
-											"value": "name description directions"
+											"value": "name description directions publishedOn"
 										},
 										{
 											"key": "filter",
 											"value": "{\"$text\":{\"$search\":\"\\\"receta\\\"\"}}"
+										},
+										{
+											"key": "pub",
+											"value": "all"
 										}
 									]
 								}
@@ -1762,6 +1821,114 @@
 										{
 											"key": "filter",
 											"value": "{\"ingredients.ingredient._id\": \"5af2005152bf1d8be0edd40b\"}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ Search Mealtype",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/?pop=true&fields=-ingredients -directions&filter={ \"mealType\": { \"$in\": [\"5af1f92f52bf1d8be0edd3fd\", \"5af1f91b52bf1d8be0edd3fc\"] }}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "true"
+										},
+										{
+											"key": "fields",
+											"value": "-ingredients -directions"
+										},
+										{
+											"key": "filter",
+											"value": "{ \"mealType\": { \"$in\": [\"5af1f92f52bf1d8be0edd3fd\", \"5af1f91b52bf1d8be0edd3fc\"] }}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ Search  by User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/?pop=true&fields=-ingredients -directions&filter={ \"$or\": [ { \"lastUpdateBy\": \"auth0|5bad1851654f067ba2541111\" }, { \"createdBy\":  \"auth0|5bad1851654f067ba2541111\"} ] }",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "true"
+										},
+										{
+											"key": "fields",
+											"value": "-ingredients -directions"
+										},
+										{
+											"key": "filter",
+											"value": "{ \"$or\": [ { \"lastUpdateBy\": \"auth0|5bad1851654f067ba2541111\" }, { \"createdBy\":  \"auth0|5bad1851654f067ba2541111\"} ] }"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/api/recipes/ Search  by User and MealType",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"url": {
+									"raw": "http://localhost:3000/api/recipes/?pop=true&fields=-ingredients -directions&filter={\n\t\"$and\": [{\n\t\t\"mealType\": {\n\t\t\t\"$in\": [\"5af1f92f52bf1d8be0edd3fd\", \"5af1f91b52bf1d8be0edd3fc\"]\n\t\t},\n\t\t\"$or\": [{\n\t\t\t\"lastUpdateBy\": \"auth0|5bad1851654f067ba2541111\"\n\t\t}, {\n\t\t\t\"createdBy\": \"auth0|5bad1851654f067ba2541111\"\n\t\t}]\n\t}]\n}",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"recipes",
+										""
+									],
+									"query": [
+										{
+											"key": "pop",
+											"value": "true"
+										},
+										{
+											"key": "fields",
+											"value": "-ingredients -directions"
+										},
+										{
+											"key": "filter",
+											"value": "{\n\t\"$and\": [{\n\t\t\"mealType\": {\n\t\t\t\"$in\": [\"5af1f92f52bf1d8be0edd3fd\", \"5af1f91b52bf1d8be0edd3fc\"]\n\t\t},\n\t\t\"$or\": [{\n\t\t\t\"lastUpdateBy\": \"auth0|5bad1851654f067ba2541111\"\n\t\t}, {\n\t\t\t\"createdBy\": \"auth0|5bad1851654f067ba2541111\"\n\t\t}]\n\t}]\n}"
 										}
 									]
 								}
@@ -2108,6 +2275,76 @@
 							]
 						},
 						"description": "Request an access token for testing purposes."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PROD DEPLOYMENT TEST",
+			"description": "This is to test a recently deployed endpoint",
+			"item": [
+				{
+					"name": "/api/units/ {No filter}",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"Test ING 01\",\r\n\"compatibleUnits\": \r\n        compatibleUnits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UnitOfMeasure' }]\r\n    }"
+						},
+						"url": {
+							"raw": "https://misrecetas-api.now.sh/api/units/?pub=default",
+							"protocol": "https",
+							"host": [
+								"misrecetas-api",
+								"now",
+								"sh"
+							],
+							"path": [
+								"api",
+								"units",
+								""
+							],
+							"query": [
+								{
+									"key": "pub",
+									"value": "default"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Welcome Page",
+			"description": "",
+			"item": [
+				{
+					"name": "Test of welcome page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:3000/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								""
+							]
+						}
 					},
 					"response": []
 				}

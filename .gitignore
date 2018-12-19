@@ -3,15 +3,22 @@
 *.ps1
 *.rar
 *.zip
+*.xlsx
+*.docx
+*.env
 .env
 .env.*
 
+#Solution documents
+doc/**
+
 #Mongo DB data folder
 data/**
+data.bak/**
 
 # compiled output
-/dist
-/tmp
+api-svc/dist/**
+api-svc/tmp/**
 /out-tsc
 
 # IDE - VSCode

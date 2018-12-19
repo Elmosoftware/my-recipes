@@ -1,7 +1,7 @@
 // @ts-check
 
 var mongoose = require("mongoose");
-var helper = require("../entity-helper");
+var helper = require("./entity-helper");
 
 let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
     /**
@@ -56,4 +56,4 @@ schema.index(
           },
     });
 
-module.exports = mongoose.model("Recipe", schema);
+module.exports = mongoose.model("Recipe", schema, "recipes");

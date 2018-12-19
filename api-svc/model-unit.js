@@ -1,7 +1,7 @@
 // @ts-check
 
 var mongoose = require("mongoose");
-var helper = require("../entity-helper");
+var helper = require("./entity-helper");
 
 let schema = new mongoose.Schema(helper.addCommonEntityAttributes({
     /**
@@ -20,4 +20,4 @@ schema.methods.toJSON = function () {
 
 schema.index({ abbrev: 1, deletedOn: 1 }, { unique: true, background: true, name: "EntityConstraint" })
 
-module.exports = mongoose.model("UnitOfMeasure", schema);
+module.exports = mongoose.model("Unit", schema, "units");

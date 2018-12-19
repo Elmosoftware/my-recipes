@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "name": "Mis Recetas API",
+    "env": {
+        "NODE_ENV": "production"
+    },
+    "builds": [
+        {
+            "src": "*.js",
+            "use": "@now/node"
+        }
+    ]
+}
