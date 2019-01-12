@@ -32,6 +32,7 @@ import { SearchBoxComponent } from './search-box/search-box.component';
 import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 import { UnauthorizedErrorPageComponent } from './error-pages/unauthorized/unauthorized.component';
+import { NotFoundErrorPageComponent } from "./error-pages/not-found/not-found.component";
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 
 //Services
@@ -72,6 +73,7 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     AuthCallbackComponent,
     UserPreferencesComponent,
     UnauthorizedErrorPageComponent,
+    NotFoundErrorPageComponent,
     MyRecipesComponent
   ],
   imports: [
