@@ -27,7 +27,7 @@ export class NavigationBarComponent implements OnInit {
   isVisible: boolean;
 
   constructor(private router: Router,
-    private authSvc: AuthService,
+    public authSvc: AuthService,
     private toastrSvc: ToasterHelperService,
     private dlgSvc: StandardDialogService) {
   }

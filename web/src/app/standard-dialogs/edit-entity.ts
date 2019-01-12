@@ -4,13 +4,12 @@ import { Entity } from "../model/entity";
 export class EditEntity {
 
     private dialogRef: any;
-    public model: Entity;
+    public model: Entity | any;
     public helper: Helper;
     public isPublished: boolean; //We add a boolean property to handle easily the publishing.
     public readonly autoPublish: boolean;
 
-
-    constructor(entity: Entity, autoPublish: boolean = false, dialogRef: any = null) {
+    constructor(entity: Entity | any, autoPublish: boolean = false, dialogRef: any = null) {
         this.helper = new Helper();
         this.model = entity;
         this.autoPublish = autoPublish;

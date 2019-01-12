@@ -19,6 +19,8 @@ data.bak/**
 # compiled output
 api-svc/dist/**
 api-svc/tmp/**
+web/dist/**
+web/tmp/**
 /out-tsc
 
 # IDE - VSCode

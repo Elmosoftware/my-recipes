@@ -1,0 +1,29 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Production Build",
+            "type": "npm",
+            "script": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Production RUN (WATCH OUT!!: Will run with PRODUCTION SETTINGS!!)",
+            "type": "shell",
+            "command": "http-server",
+            "args": [
+                "./dist",
+                "-p 8080",
+                "--cors"
+              ]
+        },
+        {
+            "label": "Staging Build and Run",
+            "type": "npm",
+            "script": "buildAndRunStage",
+            "problemMatcher": []
+        }
+    ]
+}

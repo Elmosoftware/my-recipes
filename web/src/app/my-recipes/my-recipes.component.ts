@@ -37,10 +37,10 @@ export class MyRecipesComponent implements OnInit {
 
   constructor(private zone: NgZone,
     private router: Router,
-    private cache: Cache,
+    public cache: Cache,
     private subs: SubscriptionService,
     private svcFactory: EntityServiceFactory,
-    private authSvc: AuthService,
+    public authSvc: AuthService,
     private toast: ToasterHelperService) {
   }
 

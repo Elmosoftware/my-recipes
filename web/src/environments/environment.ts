@@ -8,9 +8,9 @@ export const environment = {
   appURL: "http://localhost:8080",
   apiURL: "http://localhost:3000/api/",
   authSettings: {
-    clientID: 'z2pX8Q7bn1ceLi03OpG11ACfQ2g0xZ2o',
-    domain: 'elmosoftware.auth0.com',
-    audience: 'https://elmosoftware.auth0.com/api/v2/', 
+    clientID: 'IbLockBJXrOl9ozFMrqWTr0rH0IAlobF', //Mis Recetas - Stage
+    domain: 'elmosoftware-stage.auth0.com',
+    audience: 'https://elmosoftware-stage.auth0.com/api/v2/', 
     dbConnection: "Username-Password-Authentication",
     responseType: 'token id_token',
     redirectURI: 'http://localhost:8080/auth-callback',

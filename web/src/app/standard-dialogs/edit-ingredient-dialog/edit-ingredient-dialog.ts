@@ -15,7 +15,7 @@ export class EditIngredientDialog extends EditEntity implements OnInit {
   constructor(
     private ref: MatDialogRef<EditIngredientDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private cache: Cache) {
+    public cache: Cache) {
       super(data.entity, data.autoPublish, ref);
      }
 

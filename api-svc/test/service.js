@@ -89,6 +89,7 @@ describe("Service", () => {
       stubModelUpdate = sinon.stub(e.model, "update");
 
       assert.throws(() => {
+        //@ts-ignore
         svc.update(svc.getNewobjectId(), {}, setUser(1, true), "invalid callback parameter");
       })
 
@@ -182,7 +183,7 @@ describe("Service", () => {
     it("Shouldn't complete with valid parameters and a null query object", () => {
 
       stubModelFind = setStub();
-      svc.find("5a387f92ccbd71477022ea65", null, null)
+      svc.find("5a387f92ccbd71477022ea65", null, null, null)
         .catch((err) => {
         });
       stubModelFind.restore();
@@ -728,6 +729,7 @@ describe("Service", () => {
 
       stubModelRemove = setStub();
       assert.throws(() => {
+        //@ts-ignore
         svc.delete("5a387f92ccbd71477022ea65", setUser(1, true), "invalid callback parameter");
       })
       stubModelRemove.restore();
@@ -797,6 +799,7 @@ describe("Service", () => {
 
       stubModelAdd = setStub();
       assert.throws(() => {
+        //@ts-ignore
         svc.add({ _id: "5a387f92ccbd71477022ea65" }, setUser(1, true), "invalid callback parameter");
       })
       stubModelAdd.restore();

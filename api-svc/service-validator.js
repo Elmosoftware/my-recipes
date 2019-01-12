@@ -198,7 +198,7 @@ class ServiceValidator extends ValidatorBase {
 
         // check if id is a valid string
         if (typeof id !== 'string') {
-            id = id.toString();
+            id = String(id);
         }
 
         // simply match the id from regular expression

@@ -137,10 +137,10 @@ class Service {
 
     /**
      * Update an existing Entity document.
-     * @param {number} id Object ID of the Entity document to update
-     * @param {*} document Entity Document updated data.
-     * @param {*} user RequestContext.user object.
-     * @param {*} callback Callback function.
+     * @param {string | object} id Object ID of the Entity document to update
+     * @param {object} document Entity Document updated data.
+     * @param {object} user RequestContext.user object.
+     * @param {function} callback Callback function.
      */
     update(id, document, user, callback) {
         var val = new ServiceValidator();
@@ -191,8 +191,8 @@ class Service {
     /**
      * Count projection.
      * @param {string} conditions JSON Filter conditions.
-     * @param {*} user RequestContext.user object.
-     * @param {*} query RequestContext.query object.
+     * @param {object} user RequestContext.user object.
+     * @param {object} query RequestContext.query object.
      */
     count(conditions, user, query) {
         var val = new ServiceValidator();
@@ -204,7 +204,7 @@ class Service {
             return Promise.reject(val.getErrors());
         }
 
-        return this._entity.model.count(this._parseConditions(Security.ACCESS_TYPE.READ, conditions, user, query))
+        return this._entity.model.countDocuments(this._parseConditions(Security.ACCESS_TYPE.READ, conditions, user, query))
             .exec();
     }
 
@@ -212,8 +212,8 @@ class Service {
      * Search an Entity document by his Id or all that match the provided JSON Filter conditions.
      * @param {string} conditions JSON Filter conditions or and Entity Object ID.
      * @param {*} projection Query Projection.
-     * @param {*} user RequestContext.user object.
-     * @param {*} query RequestContext.query object.
+     * @param {object} user RequestContext.user object.
+     * @param {object} query RequestContext.query object.
      */
     find(conditions, projection, user, query) {
         var val = new ServiceValidator();

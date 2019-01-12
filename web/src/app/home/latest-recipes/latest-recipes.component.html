@@ -1,5 +1,5 @@
 <a id="recently-added"></a>
-<div *ngIf="cache.latestRecipes && cache.latestRecipes.length; else noData ">
+<div *ngIf="cache.latestRecipes && cache.latestRecipes.length; else noData">
   <div class="jumbotron recently-added-section">
     <div class="container my-3">
       <div class="row">
@@ -13,11 +13,11 @@
       </div>
     </div>
   </div>
-  <ng-template #noData>
-    <div class="col-md-12 my-lg-5 my-sm-2">
-      <h3 class="text-center my-5">Aún no hay ninguna receta creada!</h3>
-      <h6 class="my-1">¿Que esperas para
-        <a routerLink="/new-recipe">crear una nueva</a>?</h6>
-    </div>
-  </ng-template>
 </div>
+<ng-template #noData>
+  <div class="col-md-12 my-lg-5 my-sm-2">
+    <h3 class="text-center my-5">Aún no hay ninguna receta creada!</h3>
+    <h6 class="my-1">¿Que esperas para
+      <a routerLink="/new-recipe">crear una nueva</a>?</h6>
+  </div>
+</ng-template>

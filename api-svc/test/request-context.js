@@ -94,7 +94,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is and empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -149,7 +149,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is and empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -212,7 +212,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is an empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -287,7 +287,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is and empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -360,7 +360,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is an empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -419,7 +419,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is an empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -474,7 +474,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is an empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -529,7 +529,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is and empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -587,7 +587,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is and empty string", () => {
       assert.equal(context.modelPopulateOpts, "");
@@ -645,7 +645,7 @@ describe("RequestContext (disabling all Request Context Options)", () => {
       assert.ok(context.entity);
     });
     it("Model is 'units'", () => {
-      assert.equal(context.model.modelName, "UnitOfMeasure");
+      assert.equal(context.model.modelName, "Unit");
     });
     it("modelPopulateOpts is and empty string", () => {
       assert.equal(context.modelPopulateOpts, "");

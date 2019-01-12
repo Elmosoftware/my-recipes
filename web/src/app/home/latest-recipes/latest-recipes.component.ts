@@ -25,7 +25,7 @@ export class LatestRecipesComponent implements OnInit {
   helper: Helper;
 
   constructor(private subs: SubscriptionService,
-    private cache: Cache,
+    public cache: Cache,
     private toast: ToasterHelperService) {
   }
   // constructor(private subs: SubscriptionService,
