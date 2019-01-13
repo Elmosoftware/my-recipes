@@ -27,6 +27,7 @@ export class EntitiesComponent implements OnInit {
   globalErrorSubscription: any;
   type: string;
   title: string;
+  defaultSort: string;
   svc: EntityService;
 
   constructor(
@@ -46,6 +47,7 @@ export class EntitiesComponent implements OnInit {
 
     this.type = this.route.snapshot.data['type'];
     this.title = this.route.snapshot.data['title'];
+    this.defaultSort = this.route.snapshot.data['defaultSort'];
     this.svc = this.svcFactory.getService(this.type);
 
     this.dataRefresh();
@@ -59,6 +61,10 @@ export class EntitiesComponent implements OnInit {
 
     let q = new EntityServiceQueryParams();
     q.pub = QUERY_PARAM_PUB.all; //We would like to see all the entities, regardless if they are published or not.
+
+    if (this.defaultSort) {
+      q.sort = this.defaultSort;
+    }
 
     this.svc.get("", q)
       .subscribe(

@@ -66,6 +66,7 @@ const routes: Routes = [
     data: { 
       type: "Level", 
       title: "Niveles de dificultad", 
+      defaultSort: "name",
       authGuard: { 
         adminOnly: true, 
         allowSocialUsers: true 
@@ -79,6 +80,7 @@ const routes: Routes = [
     data: { 
       type: "MealType", 
       title: "Platos", 
+      defaultSort: "name",
       authGuard: { 
         adminOnly: true, 
         allowSocialUsers: true 
@@ -91,6 +93,7 @@ const routes: Routes = [
     data: { 
       type: "Unit", 
       title: "Unidades de medida", 
+      defaultSort: "abbrev",
       authGuard: { 
         adminOnly: true, 
         allowSocialUsers: true 
@@ -104,6 +107,7 @@ const routes: Routes = [
     data: { 
       type: "Ingredient", 
       title: "Ingredientes", 
+      defaultSort: "name",
       authGuard: { 
         adminOnly: true, 
         allowSocialUsers: true 
