@@ -4,7 +4,7 @@ var express = require("express");
 var routerData = express.Router();
 var HttpStatus = require("http-status-codes");
 var Context = require("./request-context");
-const Service = require("./service");
+const Service = require("./data-service");
 
 //Middleware function specific to this route:
 routerData.use(function (req, res, next) {

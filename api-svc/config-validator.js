@@ -51,11 +51,38 @@ class ConfigValidator extends ValidatorBase {
         if(!process.env.AUTHMANAGEMENT_CLIENT_SECRET){
             super._addError("AUTHMANAGEMENT_CLIENT_SECRET is required and can't be null or empty.");
         }
+
         //AUTHMANAGEMENT_SCOPE is required and can't be null or empty:
         if(!process.env.AUTHMANAGEMENT_SCOPE){
             super._addError("AUTHMANAGEMENT_SCOPE is required and can't be null or empty.");
         }
-        
+
+        //CDN_CLOUD_NAME is required and can't be null or empty:
+        if(!process.env.CDN_CLOUD_NAME){
+            super._addError("CDN_CLOUD_NAME is required and can't be null or empty.");
+        }
+
+        //CDN_API_KEY is required and can't be null or empty:
+        if(!process.env.CDN_API_KEY){
+            super._addError("CDN_API_KEY is required and can't be null or empty.");
+        }
+
+        //CDN_API_SECRET is required and can't be null or empty:
+        if(!process.env.CDN_API_SECRET){
+            super._addError("CDN_API_SECRET is required and can't be null or empty.");
+        }
+
+        //CDN_CAROUSEL_PREFIX is required and can't be null or empty:
+        if(!process.env.CDN_CAROUSEL_PREFIX){
+            super._addError("CDN_CAROUSEL_PREFIX is required and can't be null or empty.");
+        }
+
+        //CDN_CAROUSEL_SUBFOLDERS must be a number greater than 0 and less than max 32bit integer value.
+        if(isNaN(Number(process.env.CDN_CAROUSEL_SUBFOLDERS)) || Number(process.env.CDN_CAROUSEL_SUBFOLDERS) < 1 || 
+                Number(process.env.CDN_CAROUSEL_SUBFOLDERS) >= 255){
+                    super._addError("CDN_CAROUSEL_SUBFOLDERS is not a number or is out of range, (Valid range is 1 to 255)");
+        }
+
         return this;
     }
 }

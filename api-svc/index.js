@@ -34,8 +34,9 @@ const authCheckMiddleware = jwt({
 }); //This is the middeware function that will check the token in the Authorization header
 
 //Main routes:
-const router = require("./router"); //API Data route.
+const routerData = require("./router-data"); //API Data route.
 const routerManagement = require("./router-management"); //API Management route.
+const routerMedia = require("./router-media"); //API Management route.
 
 console.log("\n -----  MY RECIPES API  -----\n");
 console.log("APP Configuration:");
@@ -77,6 +78,9 @@ app.get('/', function(req, res){
 //Routing of Management API:
 app.use("/api/management", authCheckMiddleware, routerManagement);
 
+//Routing of Media API:
+app.use("/api/media", routerMedia);
+
 //Routing of Data API:
 // @ts-ignore
 app.use("/api", authCheckMiddleware.unless((req) => {
@@ -87,7 +91,7 @@ app.use("/api", authCheckMiddleware.unless((req) => {
     let ret = req.method.toLowerCase() == "options" || (req.method.toLowerCase() == "get" && !req.headers.authorization);
 
     return ret;
-}), router);
+}), routerData);
 
 //Adding specific Mongo DB connect options for Prod:
 if (process.env.NODE_ENV == "production") {

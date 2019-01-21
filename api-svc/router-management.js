@@ -22,6 +22,7 @@ routerManagement.use(function (req, res, next) {
 
     options.disableEntityCheck = true; //Management API doesn't use entities.
     options.doNotApplyConfiguredDelay = true; //Configured delay doesn't apply to this API.
+    options.validEndpoints = [ "user" ];
 
     req["context"] = new Context.RequestContext(req, res, options);
 

@@ -293,6 +293,10 @@ class RequestContext {
                 errors.push(`-The requested URI is invalid: "${encodeURI(this.url)}", no entity defined with that name.`)
             }
         }
+        else if (this._options.validEndpoints && this._options.validEndpoints.length > 0 && 
+            !this._options.validEndpoints.includes(this.url.replace(/\//g, ""))) {
+            errors.push(`-The requested URI is invalid: "${encodeURI(this.url)}", no endpoint defined with that name.`)
+        }
 
         if (!(this._options && this._options.disableMethodCheck)) {
             //Check if the method is supported:
@@ -357,16 +361,20 @@ class RequestContextOptions {
      * @param {boolean} disableEntityCheck Force not check for entity names in the URL.
      * @param {boolean} disableMethodCheck Indicates to not check if the HTTP method is allowed.
      * @param {boolean} doNotApplyConfiguredDelay This allows to overwrite any configured delay in .env file.
+     * @param {Array} validEndpoints In the case the Entity check is disabled, this will hold the valid 
+     * endpoints so the request can be validated against.
      */
     constructor(disableCORSHeaders = false,
         disableEntityCheck = false,
         disableMethodCheck = false,
-        doNotApplyConfiguredDelay = false) {
+        doNotApplyConfiguredDelay = false,
+        validEndpoints = []) {
 
         this.disableCORSHeaders = disableCORSHeaders;
         this.disableEntityCheck = disableEntityCheck;
         this.disableMethodCheck = disableMethodCheck;
         this.doNotApplyConfiguredDelay = doNotApplyConfiguredDelay;
+        this.validEndpoints = validEndpoints;
     }
 }
 
