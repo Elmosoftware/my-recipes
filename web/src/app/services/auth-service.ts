@@ -317,7 +317,7 @@ export class AuthService {
       param = "";
     }
 
-    return `${environment.apiURL}management/${functionName}/${param}`;
+    return `${environment.apiURL}${environment.apiManagementEndpoint}${functionName}/${param}`;
   }
 
   private _buildManagementAPIHeaders(accessToken: string): HttpHeaders {

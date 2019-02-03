@@ -2,6 +2,8 @@ export const environment = {
   production: true,
   appURL: "https://misrecetas.now.sh",
   apiURL: "https://misrecetas-api.now.sh/api/",
+  apiManagementEndpoint: "management/",
+  apiMediaEndpoint: "media/",
   authSettings: {
     clientID: 'z2pX8Q7bn1ceLi03OpG11ACfQ2g0xZ2o', //Mis Recetas
     domain: 'elmosoftware.auth0.com',

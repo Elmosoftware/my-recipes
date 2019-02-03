@@ -151,3 +151,22 @@ Changes in Frontend
     Done
 
 ------------------------------------------------------------
+New Carousel
+============
+
+Create a new component we can reutilize, this could be good later for other set of images like on Recipes :-)
+
+This component must have a model that need to be an array of the following object:
+items: [
+    {
+    logo: {
+        src:        --> Src to the Logo image.
+        author:     --> Image Author/Site Name for crediting purposes.
+        authorURL:  --> Author/Site URL.
+        },
+    caption: {
+        src:        --> Src to the caption image.
+        text:       --> Caption text.
+        }
+    }
+]

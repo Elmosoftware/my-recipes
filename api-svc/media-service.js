@@ -18,19 +18,25 @@ class MediaService {
 
     getCarouselPictures(callback) {
         var val = new ServiceValidator();
+        var options = {
+            type: 'upload',
+            prefix: this._getRandomCarouselFolder(),
+            context: true
+        }
 
         if (!val.validateCallback(callback)
             .isValid) {
             return (callback(val.getErrors(), {}));
         }
 
-        cloudinary.api.resources({ type: 'upload', prefix: this._getRandomCarouselFolder(), context: true }, (err, data) => {
-            
+        cloudinary.api.resources(options, (err, data) => {
+
             let resources = [];
 
             if (!err && data && data.resources) {
                 data.resources.forEach(resource => {
-                    let obj = new Carousel(resource.secure_url, (resource.context && resource.context.custom) ? resource.context.custom : null);
+                    let obj = new Carousel(this._applyImageTransformations(resource.secure_url),
+                        (resource.context && resource.context.custom) ? resource.context.custom : null);
                     resources.push(obj);
                 });
             }
@@ -42,7 +48,7 @@ class MediaService {
     /**
      * This method selects a random subfolder of Carousel pictures from the CDN.
      */
-    _getRandomCarouselFolder(){
+    _getRandomCarouselFolder() {
         return `${process.env.CDN_CAROUSEL_PREFIX}/${this._randomInt(1, Number(process.env.CDN_CAROUSEL_SUBFOLDERS)).toString()}`
     }
 
@@ -57,10 +63,29 @@ class MediaService {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
+
+    _applyImageTransformations(url) {
+
+        let part = "/image/upload/"
+
+        if (!url) {
+            return url;
+        }
+
+        //If we set a default carousel image height:
+        if (process.env.CDN_CAROUSEL_IMAGE_HEIGHT) {
+            url = String(url).replace(`/${process.env.CDN_CLOUD_NAME}${part}`,
+                `/${process.env.CDN_CLOUD_NAME}${part}c_scale,h_${process.env.CDN_CAROUSEL_IMAGE_HEIGHT}/`)
+        }
+
+        //Apply other configured transformations here...        
+
+        return url;
+    }
 }
 
-class Carousel{
-    constructor(url, metadata){
+class Carousel {
+    constructor(url, metadata) {
         this.url = url
         this.metadata = metadata
     }

@@ -1,0 +1,30 @@
+.carousel-image{
+    width:100%;
+}
+
+.carousel-caption-container{
+    background-color: rgb(183, 183, 183, 0.5);
+    border-radius: 50%;
+    padding-bottom: 3%;
+    padding-top: 3%;
+}
+
+.carousel-center-logo{
+    width: 35%;
+}
+
+.carousel-center-text{
+    padding-top: 10px;
+}
+
+.carousel-logo-credits{
+    color: rgb(240, 231, 231)
+}
+
+.text-responsive {
+    /* Source: https://bootstrapcreative.com/can-adjust-text-size-bootstrap-responsive-design/ */
+    font-size: calc(100% + 1vw + 1vh);
+}
+
+
+  

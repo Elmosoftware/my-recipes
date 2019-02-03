@@ -93,7 +93,26 @@ export class Helper {
         })
     }
 
+    /**
+     * Returns a shortened version of the supplied text.
+     * @param text Test  to be shortened.
+     * @param startPosition Positions of first character to show, default will be the beginning.
+     * @param maxLength Total numbers of characters to show, default will be 150.
+     * @param posfix the posfix or string terminator to add at the end. Default will be "..." html entity "&hellip;".
+     */
     getShortText(text: string, startPosition: number = 0, maxLength: number = 150, posfix: string = "&hellip;") {
         return (text && text.length > maxLength) ? text.substr(startPosition, maxLength - 1) + '&hellip;' : text;
+    }
+
+    /**
+     * Returns a random integer between the specified interval.
+     * @param {number} min Minimum random integer to include in the results.
+     * @param {number} max Maximum random integer to include in the results.
+     * @author Source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+     */
+    getRandomNumberFromInterval(min: number, max: number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }

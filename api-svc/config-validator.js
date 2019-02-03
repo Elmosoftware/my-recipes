@@ -83,6 +83,12 @@ class ConfigValidator extends ValidatorBase {
                     super._addError("CDN_CAROUSEL_SUBFOLDERS is not a number or is out of range, (Valid range is 1 to 255)");
         }
 
+        //CDN_CAROUSEL_IMAGE_HEIGHT if specified must be a number greater than 0 and less than max 32bit integer value.
+        if(process.env.CDN_CAROUSEL_IMAGE_HEIGHT && (isNaN(Number(process.env.CDN_CAROUSEL_IMAGE_HEIGHT)) || Number(process.env.CDN_CAROUSEL_IMAGE_HEIGHT) <= 0 || 
+                Number(process.env.CDN_CAROUSEL_IMAGE_HEIGHT) >= 2147483647)){
+                    super._addError("CDN_CAROUSEL_IMAGE_HEIGHT is not a number or is out of the range of valid image height size in pixels, (1 to Max 32bit integer value)");
+        }
+
         return this;
     }
 }

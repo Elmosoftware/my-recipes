@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntityServiceFactory } from "../../services/entity-service-factory";
 import { EntityService, EntityServiceQueryParams } from "../../services/entity-service";
+import { MediaService } from "../../services/media-service";
 import { APIResponseParser } from "../../services/api-response-parser";
 import { Entity } from "../../model/entity";
 import { CacheItem } from "./cache-item";
@@ -11,14 +12,14 @@ export const enum CACHE_MEMBERS {
     Levels = "LEVELS",
     MealTypes = "MEALTYPES",
     Units = "UNITS",
-    LatestRecipes = "LATEST_RECIPES"
+    LatestRecipes = "LATEST_RECIPES",
+    HomePageCarouselPictures = "HOME_PAGE_CAROUSEL_PICTURES"
 };
 export const DEFAULT_API_RESULT = { error: null, payload: [] };
 
 @Injectable()
 export class Cache extends CacheRepository {
 
-    private 
     private svcIngredient: EntityService;
     private svcLevel: EntityService;
     private svcMealType: EntityService;
@@ -26,8 +27,9 @@ export class Cache extends CacheRepository {
     private svcRecipe: EntityService;
 
     private readonly DEFAULT_DURATION: number = (10 * 60); //Default 10 minutes cache duration.
+    private readonly UNLIKELY_TO_CHANGE_DURATION: number = (60 * 60); //Default 60 minutes cache duration.
 
-    constructor(private svcFactory: EntityServiceFactory) {
+    constructor(private svcFactory: EntityServiceFactory, private svcMedia: MediaService) {
         super();
         console.log("Cache Created");
         
@@ -52,6 +54,7 @@ export class Cache extends CacheRepository {
         super.add(this.createCacheMealTypes());
         super.add(this.createCacheUnits());
         super.add(this.createCacheLatestRecipes());
+        super.add(this.createCacheHomePagePictures());
     }
 
     private refreshStaleCache(item: CacheItem): void {
@@ -165,6 +168,24 @@ export class Cache extends CacheRepository {
         let item: CacheItem = super.get(CACHE_MEMBERS.LatestRecipes);
         this.refreshStaleCache(item);        
         return new APIResponseParser(item.value).entities;
+    }
+    //#endregion
+
+    //#region Home Page Carousel Pictures
+    private createCacheHomePagePictures(): CacheItem {
+        let item: CacheItem = new CacheItem(CACHE_MEMBERS.HomePageCarouselPictures, this.UNLIKELY_TO_CHANGE_DURATION, []);
+        item.setRefreshCallback(this, this.refreshCacheHomePagePictures);
+        return item;
+    }
+
+    private refreshCacheHomePagePictures(): Promise<Object> {
+        return this.svcMedia.getDynamicHomePagePictures().toPromise();
+    }
+
+    public get homePagePictures(): any[] {
+        let item: CacheItem = super.get(CACHE_MEMBERS.HomePageCarouselPictures);
+        this.refreshStaleCache(item);        
+        return item.value;
     }
     //#endregion
 }

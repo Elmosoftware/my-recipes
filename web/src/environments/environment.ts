@@ -7,6 +7,8 @@ export const environment = {
   production: false,
   appURL: "http://localhost:8080",
   apiURL: "http://localhost:3000/api/",
+  apiManagementEndpoint: "management/",
+  apiMediaEndpoint: "media/",
   authSettings: {
     clientID: 'IbLockBJXrOl9ozFMrqWTr0rH0IAlobF', //Mis Recetas - Stage
     domain: 'elmosoftware-stage.auth0.com',

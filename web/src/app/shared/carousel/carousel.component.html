@@ -1,0 +1,21 @@
+<div id="carouselComponent" class="carousel slide" data-ride="carousel" data-interval="5000">
+  <div class="carousel-inner" role="listbox">
+    <div *ngFor="let item of items; let i = index" class="carousel-item" [ngClass]="{'active': (i == 0), '': (i != 0) }">
+      <img class="d-block img-fluid carousel-image" [src]="item.imageSrc">
+      <div class="carousel-caption carousel-caption-container">
+        <img *ngIf="item.captionImageSrc" class="carousel-center-logo" [src]="item.captionImageSrc" alt="My Recipes Website">
+        <h3 class="carousel-center-text text-responsive">{{item.captionText}}</h3>
+        <small *ngIf="item.authorName" class="carousel-logo-credits text-right d-block ">Foto de 
+          <a class="carousel-logo-credits" [href]="(item.authorURL) ? item.authorURL : ''">{{item.authorName}}</a></small>
+      </div>
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselComponent" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Anterior</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselComponent" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Siguiente</span>
+  </a>
+</div>

@@ -34,6 +34,7 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
 import { UnauthorizedErrorPageComponent } from './error-pages/unauthorized/unauthorized.component';
 import { NotFoundErrorPageComponent } from "./error-pages/not-found/not-found.component";
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
+import { CarouselComponent } from './shared/carousel/carousel.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -43,6 +44,7 @@ import { Cache } from "./shared/cache/cache";
 import { ToasterHelperService } from "./services/toaster-helper-service";
 import { AuthService } from "./services/auth-service";
 import { AuthGuard } from './services/auth-guard';
+import { MediaService } from "./services/media-service";
 
 //Dialogs
 import { ConfirmDialogComponent } from './standard-dialogs/confirm-dialog/confirm-dialog.component'
@@ -51,7 +53,6 @@ import { EditLevelDialog } from './standard-dialogs/edit-level-dialog/edit-level
 import { EditUnitDialog } from './standard-dialogs/edit-unit-dialog/edit-unit-dialog';
 import { EditIngredientDialog } from "./standard-dialogs/edit-ingredient-dialog/edit-ingredient-dialog";
 import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direction-dialog/edit-recipe-direction-dialog";
-
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     UserPreferencesComponent,
     UnauthorizedErrorPageComponent,
     NotFoundErrorPageComponent,
-    MyRecipesComponent
+    MyRecipesComponent,
+    CarouselComponent
   ],
   imports: [
     FormsModule,
@@ -117,7 +119,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     StandardDialogService,
     Cache,
     ToasterHelperService,
-    { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true },
+    MediaService
   ],
   bootstrap: [AppComponent]
 })
