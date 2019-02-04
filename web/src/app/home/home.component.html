@@ -34,13 +34,20 @@
       <div class="col-md-4 text-right">
         <ul class="list-inline">
           <li>
-            <a href="#privacyModal">Acerca del sitio</a>
+            <a routerLink="/about">Acerca del sitio</a>
           </li>
           <li>
-            <a href="#contact">Contacto</a>
+            <a [href]="contactEmailLink">Contacto</a>
           </li>
           <li>
-            <a href="#contact">Términos de uso</a>
+            <a href="../assets/misc/terms.pdf" target="_blank">Términos de uso</a>
+          </li>
+          <li>
+            <a href="../assets/misc/privacy.pdf" target="_blank">Politica de privacidad</a>
+          </li>
+          <li>
+            <a [href]="procastinationRandomUrl" target="_blank" data-toggle="tooltip" data-placement="top" 
+            title="Procastinar: Aplazar tareas, deberes y responsabilidades por otras actividades que nos resultan más gratificantes pero que son irrelevantes.">Procastinación</a>
           </li>
         </ul>
       </div>

@@ -12,6 +12,7 @@ import { AuthGuard } from "./services/auth-guard";
 import { UnauthorizedErrorPageComponent } from './error-pages/unauthorized/unauthorized.component';
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { NotFoundErrorPageComponent } from './error-pages/not-found/not-found.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   { 
@@ -136,6 +137,10 @@ const routes: Routes = [
       } 
     }, 
     canActivate: [AuthGuard] 
+  },
+  { 
+    path: 'about', 
+    component: AboutComponent 
   },
   { 
     path: '**', 

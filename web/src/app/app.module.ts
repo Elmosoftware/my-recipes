@@ -35,6 +35,7 @@ import { UnauthorizedErrorPageComponent } from './error-pages/unauthorized/unaut
 import { NotFoundErrorPageComponent } from "./error-pages/not-found/not-found.component";
 import { MyRecipesComponent } from './my-recipes/my-recipes.component';
 import { CarouselComponent } from './shared/carousel/carousel.component';
+import { AboutComponent } from './about/about.component';
 
 //Services
 import { SubscriptionService } from "./services/subscription.service";
@@ -76,7 +77,8 @@ import { EditRecipeDirectionDialog } from "./standard-dialogs/edit-recipe-direct
     UnauthorizedErrorPageComponent,
     NotFoundErrorPageComponent,
     MyRecipesComponent,
-    CarouselComponent
+    CarouselComponent,
+    AboutComponent
   ],
   imports: [
     FormsModule,

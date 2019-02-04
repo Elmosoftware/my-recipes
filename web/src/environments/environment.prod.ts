@@ -13,5 +13,6 @@ export const environment = {
     redirectURI: 'https://misrecetas.now.sh/auth-callback',
     scope: 'openid profile email update:users update:current_user_metadata' //Standard Open ID Claims so calls 
     //to \userinfo endpoint can return user data. Also this allows us to update users data like, metadata, change email, etc.
-  }
+  },
+  contactEmail: "juancarlosgarcia_arg@hotmail.com"
 };

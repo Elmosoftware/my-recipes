@@ -6,7 +6,7 @@
         <img *ngIf="item.captionImageSrc" class="carousel-center-logo" [src]="item.captionImageSrc" alt="My Recipes Website">
         <h3 class="carousel-center-text text-responsive">{{item.captionText}}</h3>
         <small *ngIf="item.authorName" class="carousel-logo-credits text-right d-block ">Foto de 
-          <a class="carousel-logo-credits" [href]="(item.authorURL) ? item.authorURL : ''">{{item.authorName}}</a></small>
+          <a class="carousel-logo-credits" target="_blank" [href]="(item.authorURL) ? item.authorURL : ''">{{item.authorName}}</a></small>
       </div>
     </div>
   </div>

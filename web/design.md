@@ -170,3 +170,67 @@ items: [
         }
     }
 ]
+
+==================================================================================
+
+¿Que es "Mis Recetas"?
+
+Este sitio fué creado con el proposito de aprender nuevas, pero ya bien establecidas, tecnologías de desarrollo de sitios web y tambien nuevos servicios ahora disponibles que facilitan integrar funcionalidad provista por terceros.
+
+Utilizamos Angular https://angular.io/docs, una plataforma de Google para construir aplicaciones web. Tambien utilizamos Bootstrap https://getbootstrap.com/ en nuestro frontend asi como otros componentes creados por la comunidad open source de desarrolladores de Angular y disponibles en el repositorio público de NPM https://www.npmjs.com/. 
+
+Nuestro backend es un conjunto de REST web services desarrollados con Node.js https://nodejs.org/en/ y Express.js https://expressjs.com/.
+Para almacenar los datos de nuestros usuarios y en función del tipo de información que vamos a almacenar, nos decidimos por Mongo DB https://www.mongodb.com/what-is-mongodb, una base de datos escalable y orientada a documentos.
+
+Nuestro código es open source, (no podia ser de otra forma), utilizamos un repositorio público de GitHub https://github.com/ el cual puede accederse acá https://github.com/Elmosoftware/my-recipes
+
+En nuestro entorno productivo hacemos uso intensivo de diferentes servicios en la nube que son muy interesantes a la vez que generosos ofrecer una versión gratuita. Los invitamos a conocerlos e incorporarlos en tu proximo proyecto.
+
+ZEIT NOW	https://zeit.co/ 
+    Serverless deployments en forma simple.
+Auth0	https://auth0.com/
+    Provee gestión de Autenticación y Autorización de usuarios completa ofreciendo tambien conectores a redes sociales.
+Mongo DB Atlas	https://www.mongodb.com/cloud/atlas
+    Nuestra Base de datos en la nube. Incluyendo en la versión gratuita 500MB de espacio libre y un cluster!
+Cloudinary	https://cloudinary.com/console
+    Plataforma de manejo de imagenes y video en la nube que nos permite a su vez cumplir funciones de CDN.
+
+
+
+PROCASTINACION:
+
+Procastinar: posponer o aplazar tareas, deberes y responsabilidades por otras actividades que nos resultan más gratificantes pero que son irrelevantes.
+
+Procrastinar es una forma de evadir, usando otras actividades como refugio para no enfrentar una responsabilidad, una acción o una decisión que debemos tomar.
+
+Source: https://theuselessweb.com/
+
+https://playsnake.org/
+https://neave.com/swarm/
+http://endless.horse/
+https://worlds-highest-website.com/
+http://tinytuba.com/
+http://www.staggeringbeauty.com/
+http://eelslap.com/
+http://www.koalastothemax.com/
+https://thatsthefinger.com/
+http://www.rrrgggbbb.com/
+http://www.fallingfalling.com/
+http://chrismckenzie.com/
+https://cat-bounce.com/
+https://pointerpointer.com/
+http://www.yesnoif.com/
+http://www.crossdivisions.com/
+http://intotime.com/
+http://www.patience-is-a-virtue.org/
+http://pixelsfighting.com/
+http://onemillionlols.com/
+https://www.omfgdogs.com/
+http://chihuahuaspin.com/
+http://www.blankwindows.com/
+http://www.ascii-middle-finger.com/
+http://spaceis.cool/
+http://www.trashloop.com/
+http://yeahlemons.com/
+http://dogs.are.the.most.moe/
+https://hooooooooo.com/
