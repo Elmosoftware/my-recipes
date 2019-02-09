@@ -234,3 +234,30 @@ http://www.trashloop.com/
 http://yeahlemons.com/
 http://dogs.are.the.most.moe/
 https://hooooooooo.com/
+
+====================================================================
+
+P  I  C  T  U  R  E  S
+-------------------------
+
+Cada receta podrá tener un máximo de 5 fotos en formatos establecidos.
+Cada foto con un peso no mayor a 2MB
+Las fotos podrán tener un orden y una será seleccionada por el usuario como "foto de portada" de la receta.
+La foto de portada debe transformarse desde Cloudinary y mostrarse con un tamaño determinado tanto en la sección Latest Recipes como en Recipe View
+
+Storage
+---------
+
+Crear las funciones en la API Media para subir la foto. La foto debe estar asociada a la receta con el object ID de la receta.
+Ver si crear un folder para la receta en cloudinary o no.
+
+Investigar: como subir files a cloudinary que no sean directo del file system.
+
+Research:
+En now al parecer se puede escribir a alguno de estos folders:
+/tmp
+./data
+Hay que probar si es posible. La otra alternativa es que Cloudinary permita hacer el upload no desde un file sino desde memoria.
+
+De todas formas el paquete https://github.com/expressjs/multer permite configurar un memory storage.
+

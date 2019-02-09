@@ -8,17 +8,17 @@
             "type": "node",
             "request": "attach",
             "name": "Attach",
-            "port": 9229
+            "port": 5858 //Default node debug port
         },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Server",
-            "program": "${workspaceFolder}\\index.js",
-            "env": {
-                "NODE_ENV": "development"
-            }
-        },
+        // {
+        //     "type": "node",
+        //     "request": "launch",
+        //     "name": "Launch Server",
+        //     "program": "${workspaceFolder}\\index.js",
+        //     "env": {
+        //         "NODE_ENV": "development"
+        //     }
+        // },
         {
             "name": "Launch Test",
             "type": "node",

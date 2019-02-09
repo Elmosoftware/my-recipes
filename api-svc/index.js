@@ -1,7 +1,7 @@
 // @ts-check
 
 //App configuration:
-const result = require('dotenv').config({ path: __dirname + '/.env' })
+//const result = require('dotenv').config({ path: __dirname + '/.env' })
 const ConfigValidator = require("./config-validator");
 const cfgVal = new ConfigValidator();
 
@@ -39,12 +39,11 @@ const routerManagement = require("./router-management"); //API Management route.
 const routerMedia = require("./router-media"); //API Management route.
 
 console.log("\n -----  MY RECIPES API  -----\n");
-console.log("APP Configuration:");
 
-//Id dotenv was not able to parse the ".env" file:
-if (result.error) {
-    throw result.error;
-}
+// //Id dotenv was not able to parse the ".env" file:
+// if (result.error) {
+//     throw result.error;
+// }
 
 //We validate the configuration is there and has valid settings:
 if (!cfgVal.validateConfig().isValid) {
@@ -52,10 +51,15 @@ if (!cfgVal.validateConfig().isValid) {
     Please, review your ".env" file and adjust it accordingly.`);
 }
 
-console.log(JSON.stringify(result.parsed)
+//console.log(JSON.stringify(result.parsed)
+
+if (process.env.NODE_ENV != "production") {
+    console.log("\nAPP Configuration (non-production site):\n");
+    console.log(JSON.stringify(process.env)
     .replace(/,/g, "\n")
     .replace(/{/g, "")
     .replace(/}/g, "") + "\n");
+}
 
 //As a safe-guard, we modify specific environment related settings:
 
@@ -130,5 +134,5 @@ app.listen(process.env.PORT, () => {
 
     console.log(`Executing on folder: ${__dirname}`);
     console.log(`Executing script: ${__filename}`);
-    console.log("\nServer is ready!\n");
+    console.log(`\nServer is ready and listening on port:${process.env.PORT}!\n`);
 });

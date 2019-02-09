@@ -252,5 +252,21 @@ MItigación:
         mySchema.index({ atributoUnique: 1, deletedOn: 1}, { unique: true, background: true, name: "NombredelIndice"})
     DONE
 
-    
+-----------------------------------------------------------------------
+Cambios por migración a Heroku
+================================
+
+Nuevos DNS names:
+https://micocina.herokuapp.com/
+https://micocina-api.herokuapp.com/
+
+Cambios a la API:
+-----------------
+Ahora para lanzar la app:
+    npm start
+
+Para depurar:
+    Poner los puntos de interrupción y lanzar la tarea "Attach"
+
+
     
